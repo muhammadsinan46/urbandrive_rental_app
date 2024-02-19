@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:urbandrive/presentation/pages/login/login_page.dart';
+import 'package:urbandrive/presentation/pages/signup/signup_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: SignupPage(),
     );
   }
 }
