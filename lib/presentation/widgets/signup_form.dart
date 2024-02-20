@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-import 'package:urbandrive/application/Userauth/formvalidator.dart';
-import 'package:urbandrive/application/Userauth/user_auth_helper.dart';
+import 'package:urbandrive/domain/Userauth/formvalidator.dart';
+import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/login/login_page.dart';
 import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
 
@@ -23,7 +24,7 @@ class SignupForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   UserauthHelper userauth = UserauthHelper();
-
+final firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,7 +63,8 @@ class SignupForm extends StatelessWidget {
                         suffixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
                         prefixIcon: Icon(Icons.person),
-                        suffixIcon: Icon(Icons.close),
+                        suffixIcon: IconButton(onPressed: (){
+                          nameController.clear();} ,icon:Icon(Icons.close),),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           // borderRadius: BorderRadius.circular(30)
@@ -131,6 +133,11 @@ class SignupForm extends StatelessWidget {
                       User? user = await userauth.signUp(
                           email: emailController.text,
                           password: passwordController.text);
+                            firestore.collection("Users").add({
+                              "Name":nameController.text,
+                              "Email": emailController.text,
+
+                            });
 
                       if (user != null) {
                         Navigator.of(context).pushAndRemoveUntil(
@@ -141,6 +148,8 @@ class SignupForm extends StatelessWidget {
                             child: SnackBar(content: Text("data")));
                       }
                     }
+
+
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 20, bottom: 20),

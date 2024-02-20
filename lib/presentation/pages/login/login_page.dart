@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 
 
-import 'package:urbandrive/application/Userauth/formvalidator.dart';
-import 'package:urbandrive/application/Userauth/user_auth_helper.dart';
+import 'package:urbandrive/domain/Userauth/formvalidator.dart';
+import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
 import 'package:urbandrive/presentation/pages/signup/signup_page.dart';
 
@@ -35,7 +35,11 @@ class LoginPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              actions: [TextButton(onPressed: () {}, child: Text("skip"))],
+              actions: [TextButton(onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => MainPage()),
+                            (route) => false);
+              }, child:const  Text("skip"))],
             ),
             body: SingleChildScrollView(
               child: Form(
