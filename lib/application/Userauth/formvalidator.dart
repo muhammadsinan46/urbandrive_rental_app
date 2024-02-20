@@ -11,7 +11,7 @@ class FormValidator {
       return "Email is required";
     }
     final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (emailRegExp.hasMatch(email)) {
+    if (!emailRegExp.hasMatch(email)) {
       return 'invalid email address';
     }
 
@@ -27,9 +27,9 @@ class FormValidator {
       return 'password must be at least 6 characters long';
     }
 
-    if (!password.contains(r'[A-Z]')) {
-      return 'password  must contain at least one uppercase letter';
-    }
+    // if (!password.contains(r'[A-Z]')) {
+    //   return 'password  must contain at least one uppercase letter';
+    // }
 
     if (!password.contains(RegExp(r'[0-9]'))) {
       return 'password  must contain at least one number';

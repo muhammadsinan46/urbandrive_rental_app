@@ -35,7 +35,9 @@ dependencies:
   firebase_storage: ^11.6.5
   flutter:
     sdk: flutter
+  google_sign_in: ^6.2.1
   intl_phone_field: ^3.2.0
+  loader_overlay: ^4.0.0
   pinput: ^4.0.0
   sign_in_button: ^3.2.0
 

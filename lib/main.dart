@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:urbandrive/presentation/pages/login/login_page.dart';
-import 'package:urbandrive/presentation/pages/signup/signup_page.dart';
+import 'package:urbandrive/application/Userauth/user_verify.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +22,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       // theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home: SignupPage(),
+      home: UserVarify(),
     );
   }
 }
