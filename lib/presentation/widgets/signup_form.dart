@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loader_overlay/loader_overlay.dart';
+
 
 import 'package:urbandrive/domain/Userauth/formvalidator.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
@@ -24,7 +24,8 @@ class SignupForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   UserauthHelper userauth = UserauthHelper();
-final firestore = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
+  final fireauth = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,8 +64,12 @@ final firestore = FirebaseFirestore.instance;
                         suffixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
                         prefixIcon: Icon(Icons.person),
-                        suffixIcon: IconButton(onPressed: (){
-                          nameController.clear();} ,icon:Icon(Icons.close),),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            nameController.clear();
+                          },
+                          icon: Icon(Icons.close),
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           // borderRadius: BorderRadius.circular(30)
@@ -133,11 +138,11 @@ final firestore = FirebaseFirestore.instance;
                       User? user = await userauth.signUp(
                           email: emailController.text,
                           password: passwordController.text);
-                            firestore.collection("Users").add({
-                              "Name":nameController.text,
-                              "Email": emailController.text,
-
-                            });
+                      firestore.collection("Users").doc(fireauth!.uid).set({
+                        "uid": fireauth!.uid,
+                        "Name": nameController.text,
+                        "Email": emailController.text,
+                      });
 
                       if (user != null) {
                         Navigator.of(context).pushAndRemoveUntil(
@@ -148,8 +153,6 @@ final firestore = FirebaseFirestore.instance;
                             child: SnackBar(content: Text("data")));
                       }
                     }
-
-
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 20, bottom: 20),
@@ -199,8 +202,11 @@ final firestore = FirebaseFirestore.instance;
             //   width: 5,
             // ),
             TextButton(
-              onPressed: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginPage())),
+              onPressed: (){  
+
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+              },
               child: const Text(
                 "Login",
                 style: TextStyle(

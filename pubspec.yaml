@@ -31,12 +31,15 @@ dependencies:
   cloud_firestore: ^4.15.4
   cupertino_icons: ^1.0.2
   dob_input_field: ^2.0.0
+  equatable: ^2.0.5
   firebase_auth: ^4.17.4
   firebase_core: ^2.25.4
   firebase_storage: ^11.6.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.4
   google_sign_in: ^6.2.1
+  image_picker: ^1.0.7
   intl_phone_field: ^3.2.0
   loader_overlay: ^4.0.0
   pinput: ^4.0.0

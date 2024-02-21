@@ -28,7 +28,11 @@ class SignupPage extends StatelessWidget {
               ],
             ),
             body: SingleChildScrollView(
-              child: SignupForm(formKey: _formKey, nameController: nameController, emailController: emailController, passwordController: passwordController),
+              child: SignupForm(
+                  formKey: _formKey,
+                  nameController: nameController,
+                  emailController: emailController,
+                  passwordController: passwordController),
             )),
       ],
     );
