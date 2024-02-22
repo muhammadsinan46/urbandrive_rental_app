@@ -20,7 +20,8 @@ class MainPage extends StatelessWidget {
       ],),
       body: Center(child: 
      
-        Text("${auth.currentUser!.email}" )
+        // Text("${auth.currentUser!.email}" ),
+        Text("hhhhhhhhhhhh")
       ),
     );
   }

@@ -14,6 +14,6 @@ class UploadImageEvent extends ProfileimageEvent{
 
   const UploadImageEvent({required this.userImage});
 
-@override
-  List<Object> get props => [userImage];
+// @override
+//   List<Object> get props => [userImage];
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -11,6 +12,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:urbandrive/application/bloc/profileimage/profileimage_bloc.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/login/login_page.dart';
+import 'package:urbandrive/presentation/widgets/profile_picker.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
@@ -19,9 +21,10 @@ class ProfileScreen extends StatelessWidget {
   final mobileController = TextEditingController();
   final dlcontroller = TextEditingController();
   UserauthHelper userh = UserauthHelper();
+  CollectionReference reference =   FirebaseFirestore.instance.collection('Users');
 
     File ? imageFile;
-  Uint8List? proImage;
+  // Uint8List? proImage;
 
   String? birthdate;
   DateTime? dbdate;
@@ -53,35 +56,24 @@ class ProfileScreen extends StatelessWidget {
                           SizedBox(
                             height: 150,
                             width: 150,
-                            child: CircleAvatar(
-                                backgroundImage:
-                                //FileImage(imageFile?.path).
-                               //  imageFile !=null ?
-                                
-                                
-                                //  imageFile == null
-                                //     ? AssetImage(
-                                //             'lib/assets/images/avatarPng.png')
-                                //         as ImageProvider
-                                //     :Image.file(imageFile!)
-                                   NetworkImage(user!.photoURL!)
-                                    ),
+                            child: ProfilePicker(imageFile: imageFile, user: user),
                           ),
-                          BlocBuilder<ProfileimageBloc, ProfileimageState>(
-                            builder: (context, state) {
-                              return TextButton(
-                                  onPressed: () {
-                                    uploadImage(context);
+                          // BlocBuilder<ProfileimageBloc, ProfileimageState>(
+                          //   builder: (context, state) {
+                          //     return TextButton(
+                          //         onPressed: () {
+                          //           uploadImage(context);
                                    
-                                  },
-                                  child: Text(
-                                    "Edit Image",
-                                    style: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 2, 121, 218)),
-                                  ));
-                            },
-                          ),
+                          //         },
+                          //         child: Text(
+                          //           "Edit Image",
+                          //           style: TextStyle(
+                          //               color: const Color.fromARGB(
+                          //                   255, 2, 121, 218)),
+                          //         )
+                          //         );
+                          //   },
+                          // ),
                         ],
                       ),
                       SizedBox(
@@ -175,6 +167,7 @@ class ProfileScreen extends StatelessWidget {
    // String image = ;
    // proImage = Imagefile as Uint8List;
 
-     BlocProvider.of<ProfileimageBloc>(context).add(UploadImageEvent(userImage: imageFile!));
+    // BlocProvider.of<ProfileimageBloc>(context).add(UploadImageEvent(userImage: imageFile!));
   }
 }
+

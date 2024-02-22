@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:urbandrive/domain/Userauth/formvalidator.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/login/login_page.dart';
@@ -26,6 +25,7 @@ class SignupForm extends StatelessWidget {
   UserauthHelper userauth = UserauthHelper();
   final firestore = FirebaseFirestore.instance;
   final fireauth = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -135,22 +135,43 @@ class SignupForm extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
-                      User? user = await userauth.signUp(
-                          email: emailController.text,
-                          password: passwordController.text);
-                      firestore.collection("Users").doc(fireauth!.uid).set({
-                        "uid": fireauth!.uid,
-                        "Name": nameController.text,
-                        "Email": emailController.text,
-                      });
+                      try {
+                        //               await userauth.signUp(
+                        //                         email: emailController.text,
+                        //                         password: passwordController.text);
+                        //                    await firestore.collection("Users").doc(fireauth!.uid).set({
+                        //                       //"uid": fireauth!.uid,
+                        //                       "Name": nameController.text,
+                        //                       "Email": emailController.text,
+                        //                     }).then((value){
+                        //                         Navigator.pushAndRemoveUntil(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => MainPage()),
+                        //   (route) => false,
+                        // );
 
-                      if (user != null) {
-                        Navigator.of(context).pushAndRemoveUntil(
+                        //                     });
+                        final Userfound = await userauth.signUp(
+                            userName: emailController.text,
+                            email: emailController.text,
+                            password: passwordController.text);
+                        final User = fireauth!.uid;
+                        if (Userfound != null) {
+                          print("user found");
+
+                          print(User);
+                          await firestore.collection("newuser").doc(User).set({
+                            "Name": nameController.text,
+                            "Email": emailController.text,
+                          });
+                          Navigator.pushAndRemoveUntil(
+                            context,
                             MaterialPageRoute(builder: (context) => MainPage()),
-                            (route) => false);
-                      } else {
-                        const ScaffoldMessenger(
-                            child: SnackBar(content: Text("data")));
+                            (route) => false,
+                          );
+                        }
+                      } catch (e) {
+                        print('Error navigating to MainPage: $e');
                       }
                     }
                   },
@@ -202,10 +223,9 @@ class SignupForm extends StatelessWidget {
             //   width: 5,
             // ),
             TextButton(
-              onPressed: (){  
-
+              onPressed: () {
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+                    MaterialPageRoute(builder: (context) => LoginPage()));
               },
               child: const Text(
                 "Login",

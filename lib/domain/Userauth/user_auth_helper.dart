@@ -55,20 +55,29 @@ class UserauthHelper {
   }
 
   //signup
-  Future<User?> signUp(
-      {required String email, required String password}) async {
+
+Future<UserCredential?> signUp({
+    required String email,
+    required String password,
+    required String userName,
+  }) async {
+    // if (email.isEmpty || password.isEmpty || userName.isEmpty) {
+    //   return null;
+    // }
+
     try {
-      UserCredential credential = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      final userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-      return credential.user;
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    }
+      if (userCredential.user != null) {
+        await userCredential.user!.updateDisplayName(userName);
+      }
 
-    return null;
-  }
-
+      return userCredential;
+    } catch (e) {
+      return null;
+}
+}
   //signin
 
   Future<User?> signIn(
