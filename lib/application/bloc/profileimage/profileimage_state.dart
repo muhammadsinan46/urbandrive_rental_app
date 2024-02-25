@@ -1,21 +1,21 @@
 part of 'profileimage_bloc.dart';
 
-sealed class ProfileimageState extends Equatable {
-  const ProfileimageState();
+ class ProfileimageState extends Equatable {
+    
+  final XFile? file;
+
   
+   const ProfileimageState({required this.file});
+  
+
+
+
+  ProfileimageState copyWith({XFile? file}){
+   
+    return ProfileimageState(file: file ?? this.file);
+  }
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [file];
 }
 
-final class ProfileimageInitial extends ProfileimageState {}
-final class ProfileimageFailure extends ProfileimageState {}
-final class ProfileimageLoading extends ProfileimageState {}
-final class ProfileimageSuccess extends ProfileimageState {
-  final File userImage;
-
-  const ProfileimageSuccess({required this.userImage});
-
-  @override
-  List<Object> get props => [userImage];
-}
 

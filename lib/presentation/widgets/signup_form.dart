@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:urbandrive/domain/Userauth/formvalidator.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
@@ -10,18 +12,20 @@ import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
 import 'package:urbandrive/presentation/widgets/google_widget.dart';
 
 class SignupForm extends StatelessWidget {
-  SignupForm({
-    super.key,
-    required GlobalKey<FormState> formKey,
-    required this.nameController,
-    required this.emailController,
-    required this.passwordController,
-  }) : _formKey = formKey;
+  SignupForm(
+      {super.key,
+      required GlobalKey<FormState> formKey,
+      required this.nameController,
+      required this.emailController,
+      required this.passwordController,
+      required this.mobileController})
+      : _formKey = formKey;
 
   final GlobalKey<FormState> _formKey;
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final TextEditingController mobileController;
   UserauthHelper userauth = UserauthHelper();
   final firestore = FirebaseFirestore.instance;
   final fireauth = FirebaseAuth.instance.currentUser;
@@ -41,7 +45,7 @@ class SignupForm extends StatelessWidget {
           child: const Text(
             "Create Account",
             style: TextStyle(
-                color: Colors.white, fontSize: 45, fontWeight: FontWeight.bold),
+                color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
@@ -52,23 +56,28 @@ class SignupForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Card(
+                  color: Colors.transparent,
                   child: TextFormField(
                     validator: (value) =>
                         FormValidator().validatename("Full name", value),
                     controller: nameController,
                     decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
                         filled: true,
                         fillColor: Colors.white,
                         prefixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
                         suffixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: Icon(Icons.person_2_outlined),
                         suffixIcon: IconButton(
                           onPressed: () {
                             nameController.clear();
                           },
-                          icon: Icon(Icons.close),
+                          icon: Icon(
+                            Icons.close,
+                            size: 15,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -86,92 +95,145 @@ class SignupForm extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                TextFormField(
-                  validator: (value) => FormValidator().validateEmail(value),
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      prefixIconColor: const Color.fromARGB(255, 191, 191, 191),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 18.0, right: 18),
-                        child: Icon(Icons.mail),
-                      ),
-                      enabledBorder: OutlineInputBorder(
+                Card(
+                  color: Colors.transparent,
+                  child: IntlPhoneField(
+                    dropdownTextStyle: const TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
+                    controller: mobileController,
+                    decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIconColor:
+                            const Color.fromARGB(255, 191, 191, 191),
+                        suffixIconColor:
+                            const Color.fromARGB(255, 191, 191, 191),
+                        prefixIcon: Icon(Icons.email_outlined),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            mobileController.clear();
+                          },
+                          icon: Icon(Icons.close, size: 15),
+                        ),
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(30)),
-                      focusedBorder: OutlineInputBorder(
+                          // borderRadius: BorderRadius.circular(30)
+                        ),
+                        focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Color.fromARGB(255, 79, 107, 158)),
-                          borderRadius: BorderRadius.circular(30)),
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 191, 191, 191),
-                      ),
-                      hintText: "Email"),
+                          //  borderRadius: BorderRadius.circular(30)
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color.fromARGB(255, 191, 191, 191),
+                        ),
+                        hintText: "Mobile number"),
+                    initialCountryCode: 'IN',
+                    onChanged: (phone) {},
+                  ),
+                ),
+                SizedBox(height: 10),
+                Card(
+                  color: Colors.transparent,
+                  child: TextFormField(
+                    validator: (value) => FormValidator().validateEmail(value),
+                    controller: emailController,
+                    decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIconColor:
+                            const Color.fromARGB(255, 191, 191, 191),
+                        suffixIconColor:
+                            const Color.fromARGB(255, 191, 191, 191),
+                        prefixIcon: Icon(Icons.email_outlined),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            emailController.clear();
+                          },
+                          icon: Icon(Icons.close, size: 15),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          // borderRadius: BorderRadius.circular(30)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 79, 107, 158)),
+                          //  borderRadius: BorderRadius.circular(30)
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color.fromARGB(255, 191, 191, 191),
+                        ),
+                        hintText: "Email"),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  validator: (value) => FormValidator().validatePassword(value),
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      prefixIconColor: const Color.fromARGB(255, 191, 191, 191),
-                      prefixIcon: const Icon(Icons.lock),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(30)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
+                Card(
+                  color: Colors.transparent,
+                  child: TextFormField(
+                    validator: (value) =>
+                        FormValidator().validatePassword(value),
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIconColor:
+                            const Color.fromARGB(255, 191, 191, 191),
+                        suffixIconColor:
+                            const Color.fromARGB(255, 191, 191, 191),
+                        prefixIcon: Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            passwordController.clear();
+                          },
+                          icon: Icon(Icons.close, size: 15),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          // borderRadius: BorderRadius.circular(30)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
                               color: Color.fromARGB(255, 79, 107, 158)),
-                          borderRadius: BorderRadius.circular(30)),
-                      hintStyle: const TextStyle(
-                        color: Color.fromARGB(255, 191, 191, 191),
-                      ),
-                      hintText: "Password"),
+                          //  borderRadius: BorderRadius.circular(30)
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color.fromARGB(255, 191, 191, 191),
+                        ),
+                        hintText: "Password"),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-
                       try {
-                        //               await userauth.signUp(
-                        //                         email: emailController.text,
-                        //                         password: passwordController.text);
-                        //                    await firestore.collection("Users").doc(fireauth!.uid).set({
-                        //                       //"uid": fireauth!.uid,
-                        //                       "Name": nameController.text,
-                        //                       "Email": emailController.text,
-                        //                     }).then((value){
-                        //                         Navigator.pushAndRemoveUntil(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => MainPage()),
-                        //   (route) => false,
-                        // );
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Center(
+                                  child: LoadingAnimationWidget.stretchedDots(
+                                      color: Colors.black, size: 50));
+                            });
+                        await userauth.signUp(
+                          userName: nameController.text,
+                          email: emailController.text,
+                          mobile: mobileController.text,
+                          password: passwordController.text,
 
-                        //                     });
-                        final Userfound = await userauth.signUp(
-                            userName: emailController.text,
-                            email: emailController.text,
-                            password: passwordController.text);
-                        final User = fireauth!.uid;
-                        if (Userfound != null) {
-                          print("user found");
+                          //id: fireauth!.uid
+                        );
 
-                          print(User);
-                          await firestore.collection("newuser").doc(User).set({
-                            "Name": nameController.text,
-                            "Email": emailController.text,
-                          });
-                          Navigator.pushAndRemoveUntil(
+                        Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => MainPage()),
-                            (route) => false,
-                          );
-                        }
+                            MaterialPageRoute(
+                              builder: (context) => MainPage(),
+                            ),
+                            (route) => false);
                       } catch (e) {
-                        print('Error navigating to MainPage: $e');
+                        print(e);
                       }
                     }
                   },

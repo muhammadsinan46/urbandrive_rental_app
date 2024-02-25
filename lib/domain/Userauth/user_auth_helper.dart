@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
 
@@ -10,6 +11,7 @@ class UserauthHelper {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+BuildContext? context;
   User? user;
 
   // get user => auth.currentUser;
@@ -35,10 +37,10 @@ class UserauthHelper {
             await auth.signInWithCredential(credential);
         User? user = userCredential.user;
 
-        await firestore.collection("Users").doc(user!.uid).set({
+        await firestore.collection("users").doc(user!.uid).set({
           "uid": user.uid,
-          "Name": user.displayName,
-          "Email": user.email,
+          "name": user.displayName,
+          "email": user.email,
           "profile": user.photoURL
         });
 
@@ -57,24 +59,38 @@ class UserauthHelper {
   //signup
 
 Future<UserCredential?> signUp({
+  //  required String id,
     required String email,
     required String password,
     required String userName,
+    required String mobile,
   }) async {
-    // if (email.isEmpty || password.isEmpty || userName.isEmpty) {
-    //   return null;
-    // }
+
+        //final userid = auth.currentUser!.uid;
 
     try {
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
+      //add data into user collection
       if (userCredential.user != null) {
-        await userCredential.user!.updateDisplayName(userName);
+       await userCredential.user!.updateDisplayName(userName);
+            await firestore.collection("users").doc(auth.currentUser!.uid).set({
+                           "uid":auth.currentUser!.uid,
+                            "name": userName,
+                            "email": email,
+                            "mobile": mobile,
+                          });
       }
 
       return userCredential;
     } catch (e) {
+           ScaffoldMessenger.of(context!).showSnackBar(
+                                      SnackBar(
+                                         // duration: Duration(seconds: 1),
+                                          backgroundColor: Colors.grey[400],
+                                          content: Text(
+                                              'Profile updated successfully')));
       return null;
 }
 }

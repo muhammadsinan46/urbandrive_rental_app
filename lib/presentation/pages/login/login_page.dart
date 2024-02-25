@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 
 
@@ -11,13 +12,13 @@ import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
 import 'package:urbandrive/presentation/pages/signup/signup_page.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+   LoginPage({super.key});
 
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  String? completenumber;
+   String? completenumber;
 
   final formKey = GlobalKey<FormState>();
   UserauthHelper userauth = UserauthHelper();
@@ -35,11 +36,7 @@ class LoginPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              actions: [TextButton(onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => MainPage()),
-                            (route) => false);
-              }, child:const  Text("skip"))],
+            
             ),
             body: SingleChildScrollView(
               child: Form(
@@ -55,7 +52,7 @@ class LoginPage extends StatelessWidget {
                     Container(
                       //  color: Colors.redAccent,
                       margin: const EdgeInsets.only(top: 50, right: 150),
-                      child: Text(
+                      child: const Text(
                         "Welcome Back!",
                         style: TextStyle(
                             color: Colors.white,
@@ -145,8 +142,11 @@ class LoginPage extends StatelessWidget {
                             onTap: () async {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
-                                      
+                                         showDialog(context: context, builder: (context){
+                          return Center(child: LoadingAnimationWidget.stretchedDots(color: Colors.black, size: 50));
+                        });
                                 User? user = await userauth.signIn(
+                                  
                                     email: emailController.text,
                                     password: passwordController.text);
                                 if (user != null) {

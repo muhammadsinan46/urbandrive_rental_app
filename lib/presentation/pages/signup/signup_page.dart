@@ -7,6 +7,7 @@ class SignupPage extends StatelessWidget {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var nameController = TextEditingController();
+  var mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -32,7 +33,9 @@ class SignupPage extends StatelessWidget {
                   formKey: _formKey,
                   nameController: nameController,
                   emailController: emailController,
-                  passwordController: passwordController),
+                  passwordController: passwordController,
+                  mobileController: mobileController,
+                  ),
             )),
       ],
     );

@@ -2,28 +2,36 @@ class UserModel {
   String id;
   String name;
   String email;
-  String mobile;
-  String profile;
+  String? mobile;
+  String? profile;
 
   UserModel(
       {required this.id,
       required this.name,
       required this.email,
-      required this.mobile,
-      required this.profile});
+       this.mobile,
+       this.profile 
+      });
 
-  UserModel copyWith({
-    String? id,
-    String? name,
-    String? email,
-    String? mobile,
-    String? profile,
-  }) {
+
+ factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        mobile: mobile ?? this.mobile,
-        profile: profile ?? this.profile);
+        id: json['uid'],
+        name: json['name'],
+        email: json['email'],
+       mobile: json['mobile'] ?? '',
+       profile: json['profile'] ?? ''
+       );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['uid'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['mobile'] = mobile;
+    data['profile'] = profile;
+
+    return data;
   }
 }
