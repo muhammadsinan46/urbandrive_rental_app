@@ -1,162 +1,721 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/hom_screen_bloc/homescreen_bloc_bloc.dart';
+import 'package:urbandrive/application/profile_screen/users/users_bloc.dart';
 import 'package:urbandrive/domain/brand_model.dart';
-import 'package:urbandrive/domain/category_model.dart';
 import 'package:urbandrive/domain/car_model.dart';
+import 'package:urbandrive/domain/category_model.dart';
+
+import 'package:urbandrive/presentation/pages/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key});
+  HomeScreen({super.key});
+
+  List<BrandModel> brandlist = [];
+  List<CategoryModel> categorylist = [];
+  List<CarModels> carmodelslist = [];
+
+  // final UserModel user;
 
   @override
   Widget build(BuildContext context) {
+    context.read<UsersBloc>().add(GetUserEvent());
     context.read<HomescreenBloc>().add(HomescreenLoadedEvent());
+    double sWidth = MediaQuery.sizeOf(context).width;
+    double sHeight = MediaQuery.sizeOf(context).height;
+    List<Widget> carousalitems = [
+      CarousalFirst(sWidth: sWidth),
+      CarousalFirst(sWidth: sWidth),
+      CarousalFirst(sWidth: sWidth),
+      CarousalFirst(sWidth: sWidth),
+    ];
+    return Scaffold(body: BlocBuilder<HomescreenBloc, HomescreenState>(
+      builder: (context, state) {
+        if (state is HomescreenLoadingState) {
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [sliverAppbar1(context), sliverAppBar2(context, sWidth)];
+            },
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: EdgeInsets.all(12),
+                    height: 100,
+                    width: sWidth,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 100,
+                          width: 100,
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                               // backgroundColor: Colors.red,
+                                radius: 40,
+                              ),
+                              Text("data")
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: CarouselSlider(
+                      items: carousalitems,
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        aspectRatio: 2.0,
+                        // enlargeCenterPage: true
+                      )),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Text(
+                          "Caterogies",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          "View All",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 8, right: 8),
+                        height: 150,
+                        width: sWidth,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(right: 12),
+                              height: 120,
+                              width: 150,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    //  width: 150,
+                                    color: Colors.blue,
+                                  ),
+                                  Text("data")
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Card(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Text(
+                            "Popular Cars",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          trailing: Text(
+                            "View All",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                        Container(
+                          //  color: Colors.red,
+                          height: sHeight,
+                          width: sWidth,
+                          child: GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            // primary: false,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 1.7,
+                                    crossAxisCount: 1,
+                                    mainAxisSpacing: 8.0,
+                                    crossAxisSpacing: 2),
+                            itemCount: carmodelslist.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                  decoration:
+                                      BoxDecoration(border: Border.all()),
+                                  height: 200);
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 100,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (state is HomescreenLoadedState) {
+          brandlist = state.brandList;
+          categorylist = state.categorylist;
+          carmodelslist = state.carmodelsList;
+          print("list of details are ${carmodelslist}");
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                BlocBuilder<UsersBloc, UsersState>(
+                  builder: (context, state) {
+                             print("state is ${state.runtimeType}");
+                    if (state is UsersLoadedState) {
+               
+                      print(state.users.name);
+                      return SliverAppBar(
+                        backgroundColor: Color.fromARGB(255, 192, 221, 245),
+                        //  titleSpacing: BorderSide.strokeAlignCenter,
+                        elevation: 0,
 
-    return Scaffold(
-      body: BlocBuilder<HomescreenBloc, HomescreenState>(
-        builder: (context, state) {
-          List<Widget> carousalItems = List.generate(4, (index) => CarousalFirst());
+                        //expandedHeight: 10,
+                        floating: false,
+                        leading: Container(
+                          margin: EdgeInsets.only(left: 5),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                          ),
+                        ),
+                        title: ListTile(
+                          subtitle: Text(state.users.name),
+                          title: Text("Hi"),
+                        ),
+                        actions: [
+                          GestureDetector(
+                            onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    Color.fromARGB(146, 228, 228, 228),
+                                child: Icon(Icons.person),
+                              ),
+                            ),
+                          ),
+                          // SizedBox(
+                          //   height: 10,
+                          // )
+                        ],
 
-          if (state is HomescreenLoadingState) {
-            return NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  sliverAppbar1(),
-                  sliverAppBar2(context, MediaQuery.of(context).size.width),
-                ];
-              },
-              body: _buildLoadingBody(carousalItems),
-            );
-          } else if (state is HomescreenLoadedState) {
-            return NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  sliverAppbar1(),
-                  sliverAppBar2(context, MediaQuery.of(context).size.width),
-                ];
-              },
-              body: _buildLoadedBody(state.brandList, state.categorylist, state.carmodelsList, carousalItems),
-            );
-          }
+                        flexibleSpace: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return FlexibleSpaceBar(
+                              collapseMode: CollapseMode.parallax,
+                              //background: ,
+                            );
+                          },
+                        ),
+                      );
+                    } else
+                    //  if (state is UsersLoadingState) 
+                     {
+                      return SliverAppBar(
+                        backgroundColor: Color.fromARGB(255, 192, 221, 245),
+                        //  titleSpacing: BorderSide.strokeAlignCenter,
+                        elevation: 0,
 
-          return CircularProgressIndicator();
+                        //expandedHeight: 10,
+                        floating: false,
+                        leading: Container(
+                          margin: EdgeInsets.only(left: 5),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                          ),
+                        ),
+                        title: ListTile(
+                          subtitle: Text("Username"),
+                          title: Text("Hi"),
+                        ),
+                        actions: [
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Color.fromARGB(146, 228, 228, 228),
+                              child: GestureDetector(
+                                onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                                },
+                                child: Icon(Icons.person)),
+                            ),
+                          ),
+                          // SizedBox(
+                          //   height: 10,
+                          // )
+                        ],
+
+                        flexibleSpace: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return FlexibleSpaceBar(
+                              collapseMode: CollapseMode.parallax,
+                              //background: ,
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
+                sliverAppBar2(context, sWidth)
+              ];
+            },
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Text(
+                            "Brands",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(12),
+                          height: 100,
+                          width: sWidth,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: brandlist.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height: 100,
+                                width: 100,
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      // backgroundColor: Colors.red,
+                                      backgroundImage:
+                                          NetworkImage(brandlist[index].logo!),
+                                      radius: 40,
+                                    ),
+                                    Text(brandlist[index].name!)
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: CarouselSlider(
+                      items: carousalitems,
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        aspectRatio: 2.0,
+                        // enlargeCenterPage: true
+                      )),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Text(
+                          "Caterogies",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          "View All",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 8, right: 8),
+                        height: 150,
+                        width: sWidth,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categorylist.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(right: 12),
+                              height: 120,
+                              width: 150,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                categorylist[index].image!))),
+                                    height: 100,
+                                    //  width: 150,
+                                  ),
+                                  Text(categorylist[index].name!)
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Card(
+                    color: Color.fromARGB(255, 237, 244, 245),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Text(
+                            "Popular Cars",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          trailing: Text(
+                            "View All",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                        Container(
+                          //  color: Colors.red,
+                          height: sHeight,
+                          width: sWidth,
+                          child: GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            // primary: false,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 1.5,
+                                    crossAxisCount: 1,
+                                    mainAxisSpacing: 15,
+                                    crossAxisSpacing: 5),
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                decoration: BoxDecoration(),
+                                child: Card(
+                                  color: Colors.white,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                2,
+                                        height: 170,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  carmodelslist[index]
+                                                      .images[0],
+                                                ))),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  carmodelslist[index].price!,
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  "9am -9pm",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.black,
+                                                  borderRadius:
+                                                      BorderRadius.circular(7)),
+                                              child: Center(
+                                                  child: Text(
+                                                carmodelslist[index].category!,
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              )),
+                                              height: 30,
+                                              width: 80,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Colors.black,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                    "${carmodelslist[index].seats!} seats",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                              height: 30,
+                                              width: 80,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Colors.black,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                    carmodelslist[index]
+                                                        .transmit!,
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                              height: 30,
+                                              width: 80,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 100,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        return CircularProgressIndicator();
+      },
+    ));
+  }
+
+  SliverAppBar sliverAppbar1(context) {
+    return SliverAppBar(
+      backgroundColor: Color.fromARGB(255, 192, 221, 245),
+      //  titleSpacing: BorderSide.strokeAlignCenter,
+      elevation: 0,
+
+      //expandedHeight: 10,
+      floating: false,
+      leading: Container(
+        margin: EdgeInsets.only(left: 5),
+        child: CircleAvatar(
+          backgroundColor: Colors.black,
+        ),
+      ),
+      title: ListTile(
+        subtitle: Text("Username"),
+        title: Text("Hi"),
+      ),
+      actions: [
+        Container(
+          margin: EdgeInsets.only(right: 10),
+          child: GestureDetector(
+            onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+            },
+            child: CircleAvatar(
+              backgroundColor: Color.fromARGB(146, 228, 228, 228),
+              child: Icon(Icons.person),
+            ),
+          ),
+        ),
+        // SizedBox(
+        //   height: 10,
+        // )
+      ],
+
+      flexibleSpace: LayoutBuilder(
+        builder: (context, constraints) {
+          return FlexibleSpaceBar(
+            collapseMode: CollapseMode.parallax,
+            //background: ,
+          );
         },
       ),
     );
   }
 
-  Widget _buildLoadingBody(List<Widget> carousalItems) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Container(
-            margin: EdgeInsets.all(12),
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: 100,
-                  width: 100,
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 40,
-                      ),
-                      Text("data"),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: CarouselSlider(
-            items: carousalItems,
-            options: CarouselOptions(
-              autoPlay: true,
-              aspectRatio: 2.0,
-            ),
-          ),
-        ),
-        // Add more slivers for other sections...
-      ],
-    );
-  }
-
-  Widget _buildLoadedBody(
-    List<BrandModel> brandList,
-    List<CategoryModel> categoryList,
-    List<CarModels> carModelsList,
-    List<Widget> carousalItems,
-  ) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Container(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: Text(
-                    "Brands",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(12),
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: brandList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 100,
-                        width: 100,
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(brandList[index].logo!),
-                              radius: 40,
-                            ),
-                            Text(brandList[index].name!),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        // Add more slivers for other sections...
-      ],
-    );
-  }
-
-  SliverAppBar sliverAppbar1() {
-    // Implement your sliverAppBar1
-    return SliverAppBar();
-  }
-
   SliverAppBar sliverAppBar2(context, double width) {
-    // Implement your sliverAppBar2
-    return SliverAppBar();
+    return SliverAppBar(
+      shadowColor: Colors.black,
+      shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50))),
+      backgroundColor: Color.fromARGB(255, 192, 221, 245),
+      //   backgroundColor: const Color.fromARGB(255, 217, 217, 217),
+      pinned: true,
+      title: Container(
+        height: 50,
+        width: width,
+        child: TextField(
+          decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              labelText: "Search for your car",
+              labelStyle: TextStyle(fontSize: 15),
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(
+                Icons.search,
+                size: 20,
+              )),
+        ),
+      ),
+    );
   }
 }
 
 class CarousalFirst extends StatelessWidget {
-  const CarousalFirst({Key? key});
+  const CarousalFirst({
+    super.key,
+    required this.sWidth,
+  });
+
+  final double sWidth;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      // Your carousel widget...
-      child: Container(),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      //  color: Colors.black26,
+      child: Container(
+        width: sWidth,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'lib/assets/images/carousal1.jpg',
+              ),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(10)),
+        height: 250,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 50,
+              left: 10,
+              child: Container(
+                // margin: EdgeInsets.only(left: 50),
+                height: 150,
+                width: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(176, 255, 255, 255),
+                ),
+
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: RichText(
+                            text: TextSpan(
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black),
+                                children: [
+                              TextSpan(text: "Flat "),
+                              TextSpan(
+                                  text: "25% OFF",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: " on"),
+                              TextSpan(text: "\nyour first ride"),
+                            ])),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 8),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black),
+                      height: 40,
+                      width: 140,
+                      child: Text(
+                        "BOOK NOW",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            //
+          ],
+        ),
+      ),
     );
   }
 }
