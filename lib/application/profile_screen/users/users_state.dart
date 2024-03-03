@@ -12,7 +12,7 @@ part of 'users_bloc.dart';
   List<Object> get props => [];
 }
  class UsersLoadedState extends UsersState {
-   UserModel users;
+   final UserModel users;
    UsersLoadedState(this.users);
       @override
   List<Object> get props => [users];

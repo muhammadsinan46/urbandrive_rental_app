@@ -15,7 +15,7 @@ class ProfileimageBloc extends Bloc<ProfileimageEvent, ProfileimageState> {
   final ProfileImage profileImage;
   ProfileimageBloc(this.profileImage) : super( ProfileimageState(file: null)) {
     on<UploadImageEvent>(uploadImage);
-    on<afterUpdateEvent>(afterUpdate);
+    on<AfterUpdateEvent>(afterUpdate);
     
   }
   FutureOr<void> uploadImage(UploadImageEvent event, Emitter<ProfileimageState> emit)async {
@@ -24,7 +24,7 @@ class ProfileimageBloc extends Bloc<ProfileimageEvent, ProfileimageState> {
     emit(state.copyWith(file: file));  
   }
 
-  FutureOr<void> afterUpdate(afterUpdateEvent event, Emitter<ProfileimageState> emit) {
+  FutureOr<void> afterUpdate(AfterUpdateEvent event, Emitter<ProfileimageState> emit) {
       emit(state.copyWith(file: null));  
   }
 }

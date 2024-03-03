@@ -8,5 +8,6 @@ sealed class ProfileimageEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class afterUpdateEvent extends ProfileimageEvent{}
+class AfterUpdateEvent extends ProfileimageEvent{}
 class UploadImageEvent extends ProfileimageEvent{}
+

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:urbandrive/domain/Userauth/formvalidator.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
-import 'package:urbandrive/presentation/pages/login/login_page.dart';
-import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
+import 'package:urbandrive/presentation/pages/login_screen.dart';
+import 'package:urbandrive/presentation/pages/main_page.dart';
 
 import 'package:urbandrive/presentation/widgets/google_widget.dart';
 

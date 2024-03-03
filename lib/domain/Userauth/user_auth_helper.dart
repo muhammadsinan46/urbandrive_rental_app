@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
+import 'package:urbandrive/presentation/pages/main_page.dart';
 
 class UserauthHelper {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -104,7 +104,13 @@ Future<UserCredential?> signUp({
 
       return credential.user;
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.message);
+      if(e.code =='user-not-found'){
+          ScaffoldMessenger(
+                                      child: SnackBar(content: Text("This user does does not exist")));
+      }
+
+    
+      throw Exception(e.code);
     }
   }
 

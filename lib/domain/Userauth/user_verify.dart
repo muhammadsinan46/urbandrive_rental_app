@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:urbandrive/presentation/pages/login/login_page.dart';
-import 'package:urbandrive/presentation/pages/mainpage/mainpage.dart';
+import 'package:urbandrive/presentation/pages/login_screen.dart';
+import 'package:urbandrive/presentation/pages/main_page.dart';
 
 class UserVarify extends StatelessWidget {
   const UserVarify({super.key});
