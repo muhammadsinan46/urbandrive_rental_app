@@ -7,19 +7,18 @@ class UserRepository {
     User? user =FirebaseAuth.instance.currentUser;
 
   Future <UserModel> getUser()async{
-       print("object arguing");
+
 try{
-  print("object");
+
     final userdata = await FirebaseFirestore.instance.collection("users").doc(user!.uid).get();
 
     final data = userdata.data();
-    print("user repo ${user!.uid}");
-      print("data is validating ${data}");
+
     final users = UserModel(id: data!['uid'],email: data['email'],name: data['name'],
      mobile: data['mobile'], profile: data['profile']
     
     );
-  print("users are here.... ${users}");
+
 
     return users;
 } on FirebaseException catch(e){

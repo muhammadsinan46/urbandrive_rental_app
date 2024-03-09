@@ -37,6 +37,7 @@ class SignupPage extends StatelessWidget {
                   emailController: emailController,
                   passwordController: passwordController,
                   mobileController: mobileController,
+                  currentLocation: "Adreess",
                   ),
             )),
       ],

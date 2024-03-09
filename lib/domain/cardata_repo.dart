@@ -85,4 +85,45 @@ class CardataRepo {
       return carmodelslist;
     }
   }
+
+  Future<List<CarModels>> getSpecificModel(String id)async{
+
+    List<CarModels> carmodelData =[];
+
+    try{
+
+      final cardata = await FirebaseFirestore.instance.collection('models').where('id',isEqualTo: id).get();
+
+      cardata.docs.forEach((element) {
+      final   data = element.data();
+
+      final cardata = CarModels(
+            id: data['id'],
+            category: data['category'],
+            brand: data['brand'],
+            model: data['model'],
+            transmit: data['transmit'],
+            fuel: data['fuel'],
+            baggage: data['baggage'],
+            price: data['price'],
+            seats: data['seats'],
+            deposit: data['deposit'],
+            freekms: data['freekms'],
+            extrakms: data['extrakms'],
+            images: data['carImages']);
+
+            carmodelData.add(cardata);
+       });
+
+       return carmodelData;
+
+      
+    }on FirebaseException catch(e){
+
+      print(e.message);
+
+      return carmodelData;
+    }
+
+  }
 }

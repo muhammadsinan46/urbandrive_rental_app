@@ -1,15 +1,16 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:carousel_slider/carousel_slider.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/hom_screen_bloc/homescreen_bloc_bloc.dart';
-import 'package:urbandrive/application/profile_screen/users/users_bloc.dart';
+import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/domain/brand_model.dart';
 import 'package:urbandrive/domain/car_model.dart';
 import 'package:urbandrive/domain/category_model.dart';
+import 'package:urbandrive/presentation/pages/car_booking_screen.dart';
 
 import 'package:urbandrive/presentation/pages/profile_screen.dart';
 
@@ -28,12 +29,12 @@ class HomeScreen extends StatelessWidget {
     context.read<HomescreenBloc>().add(HomescreenLoadedEvent());
     double sWidth = MediaQuery.sizeOf(context).width;
     double sHeight = MediaQuery.sizeOf(context).height;
-    List<Widget> carousalitems = [
-      CarousalFirst(sWidth: sWidth),
-      CarousalFirst(sWidth: sWidth),
-      CarousalFirst(sWidth: sWidth),
-      CarousalFirst(sWidth: sWidth),
-    ];
+    // List<Widget> carousalitems = [
+    //   CarousalFirst(sWidth: sWidth),
+    //   // CarousalFirst(sWidth: sWidth),
+    //   // CarousalFirst(sWidth: sWidth),
+    //   // CarousalFirst(sWidth: sWidth),
+    // ];
     return Scaffold(body: BlocBuilder<HomescreenBloc, HomescreenState>(
       builder: (context, state) {
         if (state is HomescreenLoadingState) {
@@ -70,13 +71,14 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: CarouselSlider(
-                      items: carousalitems,
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 2.0,
-                        // enlargeCenterPage: true
-                      )),
+                  child:CarousalFirst(sWidth: sWidth)
+                  //  CarouselSlider(
+                  //     items: carousalitems,
+                  //     options: CarouselOptions(
+                  //       autoPlay: true,
+                  //       aspectRatio: 2.0,
+                  //       // enlargeCenterPage: true
+                  //     )),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
@@ -87,10 +89,10 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        trailing: Text(
-                          "View All",
-                          style: TextStyle(fontSize: 15),
-                        ),
+                        // trailing: Text(
+                        //   "View All",
+                        //   style: TextStyle(fontSize: 15),
+                        // ),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 8, right: 8),
@@ -131,10 +133,12 @@ class HomeScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          trailing: Text(
-                            "View All",
-                            style: TextStyle(fontSize: 15),
-                          ),
+
+                       
+                          // trailing: Text(
+                          //   "View All",
+                          //   style: TextStyle(fontSize: 15),
+                          // ),
                         ),
                         Container(
                           //  color: Colors.red,
@@ -178,41 +182,47 @@ class HomeScreen extends StatelessWidget {
               return [
                 BlocBuilder<UsersBloc, UsersState>(
                   builder: (context, state) {
-                             print("state is ${state.runtimeType}");
+                           
                     if (state is UsersLoadedState) {
                
-                      print(state.users.name);
+                    
                       return SliverAppBar(
                         backgroundColor: Color.fromARGB(255, 192, 221, 245),
                         //  titleSpacing: BorderSide.strokeAlignCenter,
                         elevation: 0,
-
+    pinned: true,
                         //expandedHeight: 10,
                         floating: false,
-                        leading: Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
+                        leading: GestureDetector(
+                          onTap:(){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                          } ,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                            child: Icon(Icons.person),
+                            ),
                           ),
                         ),
                         title: ListTile(
                           subtitle: Text(state.users.name),
-                          title: Text("Hi"),
+                          title: Text("Hi", style: TextStyle(fontWeight: FontWeight.bold),),
                         ),
                         actions: [
-                          GestureDetector(
-                            onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(right: 10),
-                              child: CircleAvatar(
-                                backgroundColor:
-                                    Color.fromARGB(146, 228, 228, 228),
-                                child: Icon(Icons.person),
-                              ),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                          //   },
+                          //   child: Container(
+                          //     margin: EdgeInsets.only(right: 10),
+                          //     child: CircleAvatar(
+                          //       backgroundColor:
+                          //           Color.fromARGB(146, 228, 228, 228),
+                          //       child: Icon(Icons.search),
+                          //     ),
+                          //   ),
+                          // ),
                           // SizedBox(
                           //   height: 10,
                           // )
@@ -234,32 +244,38 @@ class HomeScreen extends StatelessWidget {
                         backgroundColor: Color.fromARGB(255, 192, 221, 245),
                         //  titleSpacing: BorderSide.strokeAlignCenter,
                         elevation: 0,
-
+                  pinned: true,
                         //expandedHeight: 10,
                         floating: false,
-                        leading: Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                          ),
-                        ),
+                        // leading: GestureDetector(
+                        //   onTap: (){
+                             
+                        //   },
+                        //   child: Container(
+                        //     margin: EdgeInsets.only(left: 5),
+                        //     child: CircleAvatar(
+                        //       child: Icon(Icons.person),
+                        //       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        //     ),
+                        //   ),
+                        // ),
                         title: ListTile(
-                          subtitle: Text("Username"),
-                          title: Text("Hi"),
+                          subtitle: Text("User"),
+                          title: Text("Hi", style: TextStyle(fontWeight:FontWeight.bold ),),
                         ),
                         actions: [
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            child: CircleAvatar(
-                              backgroundColor:
-                                  Color.fromARGB(146, 228, 228, 228),
-                              child: GestureDetector(
-                                onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
-                                },
-                                child: Icon(Icons.person)),
-                            ),
-                          ),
+                          // Container(
+                          //   margin: EdgeInsets.only(right: 10),
+                          //   child: CircleAvatar(
+                          //     backgroundColor:
+                          //         Color.fromARGB(146, 228, 228, 228),
+                          //     child: GestureDetector(
+                          //       onTap: (){
+                                   
+                          //       },
+                          //       child: Icon(Icons.search)),
+                          //   ),
+                          // ),
                           // SizedBox(
                           //   height: 10,
                           // )
@@ -277,7 +293,7 @@ class HomeScreen extends StatelessWidget {
                     }
                   },
                 ),
-                sliverAppBar2(context, sWidth)
+              //  sliverAppBar2(context, sWidth)
               ];
             },
             body: CustomScrollView(
@@ -324,27 +340,29 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: CarouselSlider(
-                      items: carousalitems,
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 2.0,
-                        // enlargeCenterPage: true
-                      )),
+             
+                     child:CarousalFirst(sWidth: sWidth)
+                  //  CarouselSlider(
+                  //     items: carousalitems,
+                  //     options: CarouselOptions(
+                  //       autoPlay: false,
+                  //       aspectRatio: 2.0,
+                  //       // enlargeCenterPage: true
+                  //     )),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
                       ListTile(
                         leading: Text(
-                          "Caterogies",
+                          "Categories",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        trailing: Text(
-                          "View All",
-                          style: TextStyle(fontSize: 15),
-                        ),
+                        // trailing: Text(
+                        //   "View All",
+                        //   style: TextStyle(fontSize: 15),
+                        // ),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 8, right: 8),
@@ -390,10 +408,10 @@ class HomeScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          trailing: Text(
-                            "View All",
-                            style: TextStyle(fontSize: 15),
-                          ),
+                          // trailing: Text(
+                          //   "View All",
+                          //   style: TextStyle(fontSize: 15),
+                          // ),
                         ),
                         Container(
                           //  color: Colors.red,
@@ -410,131 +428,129 @@ class HomeScreen extends StatelessWidget {
                                     crossAxisSpacing: 5),
                             itemCount: 5,
                             itemBuilder: (context, index) {
-                              return Container(
-                                decoration: BoxDecoration(),
-                                child: Card(
-                                  color: Colors.white,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                2,
-                                        height: 170,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  carmodelslist[index]
-                                                      .images[0],
-                                                ))),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  carmodelslist[index].price!,
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(
-                                                  "9am -9pm",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                )
-                                              ],
-                                            ),
-                                          ],
+                              return GestureDetector(
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: carmodelslist[index].id,),)),
+                                child: Container(
+                                  decoration: BoxDecoration(),
+                                  child: Card(
+                                    color: Colors.white,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  2,
+                                          height: 170,
+                                          child: CachedNetworkImage(imageUrl: carmodelslist[index].images.first, fit: BoxFit.cover,),
+                                         
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.black,
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    carmodelslist[index].price!,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    "9am -9pm",
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.black,
+                                                    borderRadius:
+                                                        BorderRadius.circular(7)),
+                                                child: Center(
+                                                    child: Text(
+                                                  carmodelslist[index].category!,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white),
+                                                )),
+                                                height: 30,
+                                                width: 80,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(7)),
-                                              child: Center(
+                                                      BorderRadius.circular(7),
+                                                  color: Colors.black,
+                                                ),
+                                                child: Center(
                                                   child: Text(
-                                                carmodelslist[index].category!,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
-                                              )),
-                                              height: 30,
-                                              width: 80,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(7),
-                                                color: Colors.black,
+                                                      "${carmodelslist[index].seats!} seats",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white)),
+                                                ),
+                                                height: 30,
+                                                width: 80,
                                               ),
-                                              child: Center(
-                                                child: Text(
-                                                    "${carmodelslist[index].seats!} seats",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white)),
+                                              SizedBox(
+                                                width: 10,
                                               ),
-                                              height: 30,
-                                              width: 80,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(7),
-                                                color: Colors.black,
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                    carmodelslist[index]
-                                                        .transmit!,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white)),
-                                              ),
-                                              height: 30,
-                                              width: 80,
-                                            )
-                                          ],
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(7),
+                                                  color: Colors.black,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                      carmodelslist[index]
+                                                          .transmit!,
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white)),
+                                                ),
+                                                height: 30,
+                                                width: 80,
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -565,29 +581,35 @@ class HomeScreen extends StatelessWidget {
 
       //expandedHeight: 10,
       floating: false,
-      leading: Container(
-        margin: EdgeInsets.only(left: 5),
-        child: CircleAvatar(
-          backgroundColor: Colors.black,
+      leading: GestureDetector(
+        onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 5),
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Icon(Icons.person),
+          ),
         ),
       ),
       title: ListTile(
-        subtitle: Text("Username"),
-        title: Text("Hi"),
+        subtitle: Text("User"),
+        title: Text("Hi", style: TextStyle(fontWeight: FontWeight.bold),),
       ),
       actions: [
-        Container(
-          margin: EdgeInsets.only(right: 10),
-          child: GestureDetector(
-            onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
-            },
-            child: CircleAvatar(
-              backgroundColor: Color.fromARGB(146, 228, 228, 228),
-              child: Icon(Icons.person),
-            ),
-          ),
-        ),
+        // Container(
+        //   margin: EdgeInsets.only(right: 10),
+        //   child: GestureDetector(
+        //     onTap: (){
+              
+        //     },
+        //     child: CircleAvatar(
+        //       backgroundColor: Color.fromARGB(146, 228, 228, 228),
+        //       child: Icon(Icons.search),
+        //     ),
+        //   ),
+        // ),
         // SizedBox(
         //   height: 10,
         // )

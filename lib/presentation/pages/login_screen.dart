@@ -8,14 +8,31 @@ import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/main_page.dart';
 import 'package:urbandrive/presentation/pages/signup_screen.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
   UserauthHelper userauth = UserauthHelper();
+
+
+bool isHidden = true;
+
+    togglePassword() {
+    setState(() {
+      isHidden = !isHidden;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +66,7 @@ class LoginPage extends StatelessWidget {
                       "Welcome Back!",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 45,
+                        fontSize: 40,
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -91,6 +108,7 @@ class LoginPage extends StatelessWidget {
                         Card(
                           elevation: 5,
                           child: TextFormField(
+                            obscureText: isHidden? true:false,
                             cursorColor: Colors.black,
                             validator: (value) => FormValidator().validatePassword(value),
                             controller: passwordController,
@@ -102,6 +120,12 @@ class LoginPage extends StatelessWidget {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(color: Colors.white),
                               ),
+                              suffixIcon:  GestureDetector(
+                          onTap: togglePassword,
+                          child: Icon(isHidden
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                        ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(color: Color.fromARGB(255, 79, 107, 158)),
                               ),
@@ -113,15 +137,18 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 280),
-                          child: TextButton(
-                            onPressed: () {
-                              userauth.forgotPassword(emailController.text);
-                            },
-                            child: const Text(
-                              "Forgot Password?",
-                              style: TextStyle(color: Colors.white, fontSize: 15)
-                            )
+                        
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                userauth.forgotPassword(emailController.text);
+                              },
+                              child: const Text(
+                                "Forgot Password?",
+                                style: TextStyle(color: Colors.white, fontSize: 14)
+                              )
+                            ),
                           ),
                         ),
                         GestureDetector(
@@ -132,7 +159,7 @@ class LoginPage extends StatelessWidget {
                                 context: context,
                                 builder: (context) {
                                   return Center(
-                                    child: LoadingAnimationWidget.stretchedDots(color: Colors.black, size: 50)
+                                    child: LoadingAnimationWidget.stretchedDots(color: const Color.fromARGB(255, 255, 255, 255), size: 50)
                                   );
                                 }
                               );
@@ -155,28 +182,21 @@ class LoginPage extends StatelessWidget {
                           child: Container(
                             margin: EdgeInsets.only(top: 20, bottom: 20),
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Colors.blue,
                               borderRadius: BorderRadius.circular(10)
                             ),
-                            height: 45,
-                            width: 120,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  "Login",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18
+                            height: 60,
+                            width: 250,
+                            child: Center(
+                              child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18
+                                    ),
                                   ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                )
-                              ],
-                            ),
+                            )
                           ),
                         ),
                         const Divider(),

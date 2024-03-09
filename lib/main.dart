@@ -2,11 +2,14 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 import 'package:urbandrive/application/hom_screen_bloc/homescreen_bloc_bloc.dart';
-import 'package:urbandrive/application/profile_screen/profile_image_bloc/profileimage_bloc.dart';
-import 'package:urbandrive/application/profile_screen/users/users_bloc.dart';
+import 'package:urbandrive/application/location_bloc/location_bloc.dart';
+import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
+import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/domain/Userauth/user_verify.dart';
 import 'package:urbandrive/domain/cardata_repo.dart';
+import 'package:urbandrive/domain/location_repo.dart';
 
 import 'package:urbandrive/domain/profileutils/user_repos.dart';
 import 'package:urbandrive/domain/profileutils/profile_image.dart';
@@ -41,7 +44,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => UsersBloc(UserRepository()),
         ),
-        BlocProvider(create: (context) => HomescreenBloc(CardataRepo()),)
+        BlocProvider(create: (context) => HomescreenBloc(CardataRepo()),),
+        BlocProvider(create: (context) => CarBookingBloc(CardataRepo()),),
+        BlocProvider(create: (context) => LocationBloc(LocationRepo()),),
       ],
       child: MaterialApp(
         // theme: ThemeData.dark(),

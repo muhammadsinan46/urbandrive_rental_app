@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:urbandrive/application/profile_screen/profile_image_bloc/profileimage_bloc.dart';
-import 'package:urbandrive/application/profile_screen/users/users_bloc.dart';
+import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
+import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/infrastructure/user_model.dart';
 import 'package:urbandrive/presentation/pages/login_screen.dart';
@@ -77,7 +77,13 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
                                             .add(UploadImageEvent());
                                       },
                                       child: userdata.profile == null
-                                          ? Icon(Icons.add_a_photo)
+                                          ? CircleAvatar(
+                                              radius: 50,
+                                              backgroundColor: Colors.white,
+                                           child:     Icon(Icons.add_a_photo) ,
+                                                  )
+                                          
+                                     
                                           : CircleAvatar(
                                               radius: 50,
                                               backgroundColor: Colors.white,
@@ -121,14 +127,17 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
                               width: 350,
                               height: 70,
                               child: IntlPhoneField(
+                                flagsButtonMargin: EdgeInsets.only(top: 2),
                                 dropdownTextStyle:
-                                    const TextStyle(fontSize: 22),
+                                    const TextStyle(fontSize: 22, ),
                                 style: const TextStyle(fontSize: 22),
                                 controller: mobileController,
                                 decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(bottom: 2),
                                     border: const OutlineInputBorder(),
-                                    hintText: mobileController.text,
-                                    labelText: userdata.mobile),
+                                  //  hintText: mobileController.text,
+                                  //  labelText: userdata.mobile
+                                    ),
                                 initialCountryCode: 'IN',
                                 onChanged: (phone) {},
                               ),
@@ -176,11 +185,11 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.black,
                                     ),
-                                    width: 150,
+                                    width: 200,
                                     height: 60,
                                     child: Center(
                                       child: Text(
-                                        "UPDATE PROFILE",
+                                        "Update Profile",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 15,
