@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urbandrive/application/booking_confirmed_bloc/booking_confirm_bloc.dart';
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
+import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/hom_screen_bloc/homescreen_bloc_bloc.dart';
-import 'package:urbandrive/application/location_bloc/location_bloc.dart';
+import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/domain/Userauth/user_verify.dart';
+import 'package:urbandrive/domain/booking_repo.dart';
 import 'package:urbandrive/domain/cardata_repo.dart';
 import 'package:urbandrive/domain/location_repo.dart';
 
@@ -47,6 +50,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => HomescreenBloc(CardataRepo()),),
         BlocProvider(create: (context) => CarBookingBloc(CardataRepo()),),
         BlocProvider(create: (context) => LocationBloc(LocationRepo()),),
+        BlocProvider(create: (context) => DropoffLocationBloc(LocationRepo()),),
+        // BlocProvider(create: (context) => BookingConfirmBloc(BookingRepo()),)
       ],
       child: MaterialApp(
         // theme: ThemeData.dark(),

@@ -10,6 +10,7 @@ import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart
 import 'package:urbandrive/domain/brand_model.dart';
 import 'package:urbandrive/domain/car_model.dart';
 import 'package:urbandrive/domain/category_model.dart';
+import 'package:urbandrive/infrastructure/user_model.dart';
 import 'package:urbandrive/presentation/pages/car_booking_screen.dart';
 
 import 'package:urbandrive/presentation/pages/profile_screen.dart';
@@ -21,6 +22,9 @@ class HomeScreen extends StatelessWidget {
   List<CategoryModel> categorylist = [];
   List<CarModels> carmodelslist = [];
 
+  String? userId;
+
+ //UserModel userdata;
   // final UserModel user;
 
   @override
@@ -40,7 +44,10 @@ class HomeScreen extends StatelessWidget {
         if (state is HomescreenLoadingState) {
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [sliverAppbar1(context), sliverAppBar2(context, sWidth)];
+              return [sliverAppbar1(context),
+              
+            //   sliverAppBar2(context, sWidth)
+               ];
             },
             body: CustomScrollView(
               slivers: [
@@ -176,16 +183,17 @@ class HomeScreen extends StatelessWidget {
           brandlist = state.brandList;
           categorylist = state.categorylist;
           carmodelslist = state.carmodelsList;
-          print("list of details are ${carmodelslist}");
+      
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 BlocBuilder<UsersBloc, UsersState>(
                   builder: (context, state) {
+                
                            
                     if (state is UsersLoadedState) {
-               
-                    
+                      userId = state.users.id;
+                        
                       return SliverAppBar(
                         backgroundColor: Color.fromARGB(255, 192, 221, 245),
                         //  titleSpacing: BorderSide.strokeAlignCenter,
@@ -195,7 +203,8 @@ class HomeScreen extends StatelessWidget {
                         floating: false,
                         leading: GestureDetector(
                           onTap:(){
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                        
+                           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
                           } ,
                           child: Container(
                             margin: EdgeInsets.only(left: 5),
@@ -210,22 +219,22 @@ class HomeScreen extends StatelessWidget {
                           title: Text("Hi", style: TextStyle(fontWeight: FontWeight.bold),),
                         ),
                         actions: [
-                          // GestureDetector(
-                          //   onTap: () {
-                          //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
-                          //   },
-                          //   child: Container(
-                          //     margin: EdgeInsets.only(right: 10),
-                          //     child: CircleAvatar(
-                          //       backgroundColor:
-                          //           Color.fromARGB(146, 228, 228, 228),
-                          //       child: Icon(Icons.search),
-                          //     ),
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 10,
-                          // )
+                          GestureDetector(
+                            onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    Color.fromARGB(146, 228, 228, 228),
+                                child: Icon(Icons.search),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          )
                         ],
 
                         flexibleSpace: LayoutBuilder(
@@ -247,38 +256,38 @@ class HomeScreen extends StatelessWidget {
                   pinned: true,
                         //expandedHeight: 10,
                         floating: false,
-                        // leading: GestureDetector(
-                        //   onTap: (){
+                        leading: GestureDetector(
+                          onTap: (){
                              
-                        //   },
-                        //   child: Container(
-                        //     margin: EdgeInsets.only(left: 5),
-                        //     child: CircleAvatar(
-                        //       child: Icon(Icons.person),
-                        //       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                        //     ),
-                        //   ),
-                        // ),
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: CircleAvatar(
+                              child: Icon(Icons.person),
+                              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            ),
+                          ),
+                        ),
                         title: ListTile(
                           subtitle: Text("User"),
                           title: Text("Hi", style: TextStyle(fontWeight:FontWeight.bold ),),
                         ),
                         actions: [
-                          // Container(
-                          //   margin: EdgeInsets.only(right: 10),
-                          //   child: CircleAvatar(
-                          //     backgroundColor:
-                          //         Color.fromARGB(146, 228, 228, 228),
-                          //     child: GestureDetector(
-                          //       onTap: (){
-                                   
-                          //       },
-                          //       child: Icon(Icons.search)),
-                          //   ),
-                          // ),
-                          // SizedBox(
-                          //   height: 10,
-                          // )
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Color.fromARGB(146, 228, 228, 228),
+                              child: GestureDetector(
+                                onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+                                },
+                                child: Icon(Icons.search)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          )
                         ],
 
                         flexibleSpace: LayoutBuilder(
@@ -429,7 +438,7 @@ class HomeScreen extends StatelessWidget {
                             itemCount: 5,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: carmodelslist[index].id,),)),
+                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: carmodelslist[index].id,userId:userId! ,),)),
                                 child: Container(
                                   decoration: BoxDecoration(),
                                   child: Card(
