@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:urbandrive/domain/car_model.dart';
 import 'package:urbandrive/domain/cardata_repo.dart';
@@ -13,6 +14,7 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
   CarBookingBloc(this.carRepo) : super(CarDataLoadingState()) {
   on<CarDataLaodingEvent>(carDataLoading);
   on<CardDataLoadedEvent>(carDataLoaded);
+  on<CarBookingLoadedEvent>(carbookingloading);
   }
 
   FutureOr<void> carDataLoading(CarDataLaodingEvent event, Emitter<CarBookingState> emit) {
@@ -25,5 +27,17 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
     final carModelData =await carRepo.getSpecificModel(event.modelId!);
 
     emit(CarDataLoadedState(carModel: carModelData));
+  }
+
+  FutureOr<void> carbookingloading(CarBookingLoadedEvent event, Emitter<CarBookingState> emit)async {
+    try{
+
+    await FirebaseFirestore.instance.collection('bookings').doc(event.bookingId).update({"payment-status":event.updateStatus});
+    }catch (e){
+
+      print("error occured ${e.toString()}");
+    }
+
+
   }
 }

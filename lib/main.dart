@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:urbandrive/application/booking_confirmed_bloc/booking_confirm_bloc.dart';
+import 'package:urbandrive/application/bottom_nav_bloc/bottom_nav_bloc.dart';
+
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/hom_screen_bloc/homescreen_bloc_bloc.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CarBookingBloc(CardataRepo()),),
         BlocProvider(create: (context) => LocationBloc(LocationRepo()),),
         BlocProvider(create: (context) => DropoffLocationBloc(LocationRepo()),),
+        BlocProvider(create: (context) => BottomNavBloc(),)
         // BlocProvider(create: (context) => BookingConfirmBloc(BookingRepo()),)
       ],
       child: MaterialApp(

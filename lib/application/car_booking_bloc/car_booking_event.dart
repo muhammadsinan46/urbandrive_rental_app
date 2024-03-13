@@ -14,3 +14,11 @@ class CardDataLoadedEvent extends CarBookingEvent{
 
   const CardDataLoadedEvent({ required this.modelId});
 }
+
+
+class CarBookingLoadedEvent extends CarBookingEvent{
+ final String updateStatus;
+ final String bookingId;
+ CarBookingLoadedEvent({required this.updateStatus, required this.bookingId});
+
+}
