@@ -41,10 +41,11 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
       ),
       body: BlocBuilder<UsersBloc, UsersState>(
         builder: (context, state) {
-          print(state);
+            
           if (state is UsersLoadedState) {
+          //  print("user profile state is ${state.users.mobile}");
             UserModel userdata = state.users;
-            mobileController.text = userdata.mobile!;
+          //  mobileController.text = userdata.mobile!;
 
             return SingleChildScrollView(
               child: Center(

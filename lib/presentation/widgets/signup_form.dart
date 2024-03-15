@@ -8,11 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:location/location.dart';
-import 'package:urbandrive/domain/Userauth/address_model.dart';
 
 import 'package:urbandrive/domain/Userauth/formvalidator.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
+import 'package:urbandrive/infrastructure/user_model.dart';
+import 'package:urbandrive/presentation/pages/location_permission_screen.dart';
 import 'package:urbandrive/presentation/pages/login_screen.dart';
 import 'package:urbandrive/presentation/pages/main_page.dart';
 
@@ -60,57 +60,10 @@ class _SignupFormState extends State<SignupForm> {
       isHidden = !isHidden;
     });
   }
-//   fetchLocation()async{
-
-//     // Future<List<Address>>getAddress(double? long, double? lat){
-
-//     //     final coordinate = Coordinates(longitude,latitude, );
-
-//     // }
-
-//     bool _serviceEnabled;
-//     PermissionStatus  _permissionGranded;
-// _serviceEnabled =await location.serviceEnabled();
-// if(!_serviceEnabled){
-//   _serviceEnabled = await location.requestService();
-//   if(!_serviceEnabled){
-//     return;
-//   }
-// }
-
-// _permissionGranded =await   location.hasPermission();
-// if(_permissionGranded ==PermissionStatus.denied){
-//   _permissionGranded= await location.requestPermission();
-
-//   if(_permissionGranded != PermissionStatus.granted){
-//     return;
-//   }
-// }
-
-// _cureentLocation =await location.getLocation();
-// location.onLocationChanged.listen((LocationData currentLocation) {
-
-//   setState(() {
-//     _cureentLocation =currentLocation;
-//    // getAddress(_cureentLocation!.longitude, _cureentLocation!.latitude).then((value){
-
-//       setState(() {
-//        // _address ="${value.first}";
-//       });
-//     });
-
-    
-//   });
 
 
-//  //});
-//   }
-
-  // @override
-  // void initState() {
-
-  //  // super.initState();
-  // }
+ 
+  UserModel? userdata;
 
   @override
   Widget build(BuildContext context) {
@@ -285,16 +238,12 @@ class _SignupFormState extends State<SignupForm> {
                           email: widget.emailController.text,
                           mobile: widget.mobileController.text,
                           password: widget.passwordController.text,
+                          
 
-                          //id: fireauth!.uid
+                         // id: fireauth!.uid
                         );
-
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainPage(),
-                            ),
-                            (route) => false);
+                          print("Userdata is ${userauth.userId}");
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => LocationPermissionScreen(currentUser:userauth.userId!,),));
                       } catch (e) {
                         print(e);
                       }

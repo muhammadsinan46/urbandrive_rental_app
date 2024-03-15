@@ -5,7 +5,7 @@ class BookingRepo {
   List<BookingModel> bookingDataList = [];
 
   Future<List<BookingModel>> getBookingData(String userId) async {
-          print("booking ");
+
     try {
       final bookingCollection = await FirebaseFirestore.instance
           .collection('bookings')
@@ -19,22 +19,27 @@ class BookingRepo {
           agrchcked: data['checked'],
             userId: data['uid'],
             CarmodelId: data['carmodel-id'],
-           // BookingId: data['booking-id'],
+           BookingId: data['booking-id'],
             BookingDays: data['booking-days'],
-            PickupDate: data['picup-date'],
+            PickupDate: data['pickup-date'],
             PickupTime: data['pick-up time'],
             PickupAddress: data['pickup-address'],
             DropOffDate: data['dropoff-date'],
             DropOffTime: data['drop-off time'],
             DropoffAddress: data['dropoff-location'],
             PaymentAmount: data['toal-pay'].toString(),
-            PaymentStatus: data['payment-status']);
+            PaymentStatus: data['payment-status'],
+            carmodel: data['carmodel']
+            );
+   
 
-            print("booking confirmed data is $bookingdetails");
+         
 
         bookingDataList.add(bookingdetails);
-      });
 
+
+      });
+              print("booking datalist is ${bookingDataList}");
       return bookingDataList;
     } on FirebaseException catch (e) {
       print(e.message);

@@ -2,15 +2,17 @@ class UserModel {
   String id;
   String name;
   String email;
-  String? mobile;
+  //String? mobile;
   String? profile;
+  String? location;
 
   UserModel(
       {required this.id,
       required this.name,
       required this.email,
-       this.mobile,
-       this.profile 
+      // this.mobile,
+       this.profile ,
+       this.location
       });
 
 
@@ -19,8 +21,9 @@ class UserModel {
         id: json['uid'],
         name: json['name'],
         email: json['email'],
-       mobile: json['mobile'] ?? '',
-       profile: json['profile'] ?? ''
+       //mobile: json['mobile'] ?? '',
+       profile: json['profile'] ?? '',
+       location: json['location'] ?? '',
        );
   }
 
@@ -29,8 +32,9 @@ class UserModel {
     data['uid'] = id;
     data['name'] = name;
     data['email'] = email;
-    data['mobile'] = mobile;
+    //ata['mobile'] = mobile;
     data['profile'] = profile;
+    data['locaton'] =location;
 
     return data;
   }

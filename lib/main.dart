@@ -11,12 +11,14 @@ import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/domain/Userauth/user_verify.dart';
-import 'package:urbandrive/domain/booking_repo.dart';
+
 import 'package:urbandrive/domain/cardata_repo.dart';
 import 'package:urbandrive/domain/location_repo.dart';
 
 import 'package:urbandrive/domain/profileutils/user_repos.dart';
 import 'package:urbandrive/domain/profileutils/profile_image.dart';
+import 'package:urbandrive/presentation/pages/location_permission_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +60,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         // theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        home: UserVarify(),
+        home: 
+        //LocationPermissionScreen()
+      UserVarify(),
       ),
     );
   }

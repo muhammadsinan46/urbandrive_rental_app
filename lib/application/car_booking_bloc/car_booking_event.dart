@@ -22,3 +22,10 @@ class CarBookingLoadedEvent extends CarBookingEvent{
  CarBookingLoadedEvent({required this.updateStatus, required this.bookingId});
 
 }
+
+class CarBookingLogEvent extends CarBookingEvent{
+
+  final String userId;
+
+  CarBookingLogEvent({required this.userId});
+}

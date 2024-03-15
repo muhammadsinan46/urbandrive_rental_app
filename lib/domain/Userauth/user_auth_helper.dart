@@ -14,6 +14,9 @@ class UserauthHelper {
 BuildContext? context;
   User? user;
 
+
+
+    String? userId;
   // get user => auth.currentUser;
 
   //google signin
@@ -82,7 +85,7 @@ Future<UserCredential?> signUp({
                             "mobile": mobile,
                           });
       }
-
+        userId =auth.currentUser!.uid;
       return userCredential;
     } catch (e) {
            ScaffoldMessenger.of(context!).showSnackBar(

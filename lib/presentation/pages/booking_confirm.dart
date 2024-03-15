@@ -65,8 +65,8 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
     Fluttertoast.showToast(
       msg: "Payment Failed",
     );
-    context.read<CarBookingBloc>().add(
-        CarBookingLoadedEvent(updateStatus: "Incomplete", bookingId: bookingId!));
+    context.read<CarBookingBloc>().add(CarBookingLoadedEvent(
+        updateStatus: "Incomplete", bookingId: bookingId!));
 
     Map<String, dynamic> updateStatus = {"payment-status": "Cancelled"};
 
@@ -77,16 +77,16 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
     Fluttertoast.showToast(
       msg: "EXTERNAL WALLET IS : ${response.walletName}",
     );
-    context.read<CarBookingBloc>().add(
-        CarBookingLoadedEvent(updateStatus: "Successful", bookingId: bookingId!));
+    context.read<CarBookingBloc>().add(CarBookingLoadedEvent(
+        updateStatus: "Successful", bookingId: bookingId!));
   }
 
-  handlePaymentSuccessResponse(PaymentSuccessResponse response)async {
+  handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
     Fluttertoast.showToast(
       msg: "Payment Successful",
     );
-    context.read<CarBookingBloc>().add(
-        CarBookingLoadedEvent(updateStatus: "Incomplete", bookingId: bookingId!));
+    context.read<CarBookingBloc>().add(CarBookingLoadedEvent(
+        updateStatus: "Incomplete", bookingId: bookingId!));
     Map<String, dynamic> updateStatus = {"payment-status": "Successful"};
 
     await firestore
@@ -108,10 +108,27 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
               int.parse(carmodelData[0].price!))
           .toString();
 
+      final usermodelData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.bookedData!.userId)
+          .get();
+
+      final carmodelCollection = await FirebaseFirestore.instance
+          .collection('models')
+          .doc(carmodelData[0].id)
+          .get();
+
+
+        print(widget.bookedData!.PickupDate,);
+     
+     
+      Map<String, dynamic> modeldata = carmodelCollection.data() ?? {};
+      Map<String, dynamic> userdata = usermodelData.data() ?? {};
+
       Map<String, dynamic> bookingdata = {
-        "uid": widget.bookedData!.userId,
+        "userdata": userdata,
         "booking-id": bookId,
-        "carmodel-id": carmodelData[0].id,
+        "carmodel": modeldata,
         "pickup-address": widget.bookedData!.PickupAddress,
         "dropoff-location": widget.bookedData!.DropoffAddress,
         "pickup-date": widget.bookedData!.PickupDate,
@@ -124,11 +141,13 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
         "payment-status": widget.bookedData!.PaymentStatus,
       };
 
-      await FirebaseFirestore.instance.collection('bookings').doc(bookId).set(bookingdata).then((value) => razorpay?.open(options));
+      await FirebaseFirestore.instance
+          .collection('bookings')
+          .doc(bookId)
+          .set(bookingdata)
+          .then((value) => razorpay?.open(options));
       bookingId = bookId;
       bookingData = bookingdata;
-
-
     } catch (e) {
       print("erroris ${e.toString()}");
     }

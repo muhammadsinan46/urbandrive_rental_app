@@ -15,7 +15,9 @@ try{
     final data = userdata.data();
 
     final users = UserModel(id: data!['uid'],email: data['email'],name: data['name'],
-     mobile: data['mobile'], profile: data['profile']
+   //  mobile: data['mobile'],
+      profile: data['profile'],
+      location: data['location']
     
     );
 

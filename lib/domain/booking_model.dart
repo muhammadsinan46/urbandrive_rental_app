@@ -1,7 +1,7 @@
 class BookingModel {
   String ? userId;
   String? CarmodelId;
- // String? BookingId;
+   String? BookingId;
   String? BookingDays;
   String? PickupTime;
   String? PickupDate;
@@ -12,13 +12,16 @@ class BookingModel {
   String? PaymentAmount;
   String? PaymentStatus;
   bool? agrchcked;
+  Map<String, dynamic>? carmodel;
+  Map<String, dynamic>? userdata;
 
   
 
   BookingModel({
-    required this.userId,
+     this.userId,
+
     required this.CarmodelId,
-   // required this.BookingId,
+   this.BookingId,
     required this.BookingDays,
     required this.PickupDate,
     required this.PickupTime,
@@ -29,6 +32,8 @@ class BookingModel {
     required this.PaymentAmount,
     required this.PaymentStatus,
     required this.agrchcked,
+    this.carmodel,
+    this.userdata
 
   });
 }

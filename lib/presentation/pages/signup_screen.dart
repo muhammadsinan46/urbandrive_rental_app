@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:urbandrive/infrastructure/user_model.dart';
 import 'package:urbandrive/presentation/widgets/signup_form.dart';
 
 class SignupPage extends StatelessWidget {
@@ -11,6 +12,8 @@ class SignupPage extends StatelessWidget {
   var nameController = TextEditingController();
   var mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+
 
   @override
   Widget build(BuildContext context) {

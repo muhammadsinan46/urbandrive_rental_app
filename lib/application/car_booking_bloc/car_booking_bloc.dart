@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:urbandrive/domain/booking_model.dart';
 import 'package:urbandrive/domain/car_model.dart';
 import 'package:urbandrive/domain/cardata_repo.dart';
 
@@ -15,6 +16,7 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
   on<CarDataLaodingEvent>(carDataLoading);
   on<CardDataLoadedEvent>(carDataLoaded);
   on<CarBookingLoadedEvent>(carbookingloading);
+  on<CarBookingLogEvent>(bookingdataLoading);
   }
 
   FutureOr<void> carDataLoading(CarDataLaodingEvent event, Emitter<CarBookingState> emit) {
@@ -39,5 +41,11 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
     }
 
 
+  }
+
+  FutureOr<void> bookingdataLoading(CarBookingLogEvent event, Emitter<CarBookingState> emit)async {
+    final bookingData = await carRepo.getBookingData(event.userId);
+
+    emit(CarBookingLogState(bookingdata: bookingData));
   }
 }
