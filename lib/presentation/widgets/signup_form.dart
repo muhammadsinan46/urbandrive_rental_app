@@ -25,7 +25,7 @@ class SignupForm extends StatefulWidget {
       required this.nameController,
       required this.emailController,
       required this.passwordController,
-      required this.mobileController,
+      // required this.mobileController,
        required this.currentLocation})
       : _formKey = formKey;
 
@@ -33,7 +33,7 @@ class SignupForm extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController mobileController;
+  // final TextEditingController mobileController;
   final String currentLocation;
 
   @override
@@ -73,7 +73,7 @@ class _SignupFormState extends State<SignupForm> {
         SizedBox(
             height: 120,
             width: 120,
-            child: Image.asset('lib/assets/images/lj-removebg-preview.jpg')),
+            child: Image.asset('lib/assets/images/udlogo.png')),
         Container(
           //  color: Colors.redAccent,
           margin: const EdgeInsets.only(top: 50, right: 150),
@@ -121,38 +121,38 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                 ),
                 SizedBox(height:10),
-                Card(
-                  color: Colors.white,
-                  child: IntlPhoneField(
-                    dropdownTextStyle: const TextStyle(fontSize: 15),
-                    style: const TextStyle(fontSize: 15),
-                    controller: widget.mobileController,
-                    decoration: InputDecoration(
+                // Card(
+                //   color: Colors.white,
+                //   child: IntlPhoneField(
+                //     dropdownTextStyle: const TextStyle(fontSize: 15),
+                //     style: const TextStyle(fontSize: 15),
+                //     controller: widget.mobileController,
+                //     decoration: InputDecoration(
                        
-                        filled: true,
-                        fillColor: Colors.white,
-                        prefixIconColor:
-                            const Color.fromARGB(255, 191, 191, 191),
+                //         filled: true,
+                //         fillColor: Colors.white,
+                //         prefixIconColor:
+                //             const Color.fromARGB(255, 191, 191, 191),
                        
-                        prefixIcon: Icon(Icons.email_outlined),
+                //         prefixIcon: Icon(Icons.email_outlined),
                       
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          // borderRadius: BorderRadius.circular(30)
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 79, 107, 158)),
-                          //  borderRadius: BorderRadius.circular(30)
-                        ),
-                        hintStyle: TextStyle(
-                          color: Color.fromARGB(255, 191, 191, 191),
-                        ),
-                        hintText: "Mobile number"),
-                    initialCountryCode: 'IN',
-                    onChanged: (phone) {},
-                  ),
-                ),
+                //         enabledBorder: OutlineInputBorder(
+                //           borderSide: BorderSide(color: Colors.white),
+                //           // borderRadius: BorderRadius.circular(30)
+                //         ),
+                //         focusedBorder: OutlineInputBorder(
+                //           borderSide: BorderSide(
+                //               color: Color.fromARGB(255, 79, 107, 158)),
+                //           //  borderRadius: BorderRadius.circular(30)
+                //         ),
+                //         hintStyle: TextStyle(
+                //           color: Color.fromARGB(255, 191, 191, 191),
+                //         ),
+                //         hintText: "Mobile number"),
+                //     initialCountryCode: 'IN',
+                //     onChanged: (phone) {},
+                //   ),
+                // ),
                 SizedBox(height: 10),
                 Card(
                   color: Colors.white,
@@ -236,13 +236,13 @@ class _SignupFormState extends State<SignupForm> {
                         await userauth.signUp(
                           userName: widget.nameController.text,
                           email: widget.emailController.text,
-                          mobile: widget.mobileController.text,
+                        //  mobile: widget.mobileController.text,
                           password: widget.passwordController.text,
                           
 
                          // id: fireauth!.uid
                         );
-                          print("Userdata is ${userauth.userId}");
+                    
                        Navigator.push(context, MaterialPageRoute(builder: (context) => LocationPermissionScreen(currentUser:userauth.userId!,),));
                       } catch (e) {
                         print(e);

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 import 'package:urbandrive/domain/booking_model.dart';
@@ -15,6 +17,8 @@ class BookingConfirmScreen extends StatefulWidget {
   BookingConfirmScreen({super.key, required this.bookedData});
 
   BookingModel? bookedData;
+
+
 
   @override
   State<BookingConfirmScreen> createState() => _BookingConfirmScreenState();
@@ -49,6 +53,8 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
   final firestore = FirebaseFirestore.instance;
 
   Razorpay? razorpay;
+ 
+
 
   @override
   void initState() {
@@ -185,7 +191,18 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
 
           int totalamount = (price + deposit + ConFee) - discount;
           return Scaffold(
-              appBar: AppBar(),
+              appBar:AppBar(
+                leading: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(Icons.arrow_back_ios_new, color: Colors.white,)),
+                title: Text("Confirm details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                shadowColor: Colors.blueGrey,
+                  shape:ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50))),
+                  backgroundColor: Colors.blue,
+                    ),
               body: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -194,18 +211,20 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.lightBlue),
-                        height: 160,
+                 
                         width: MediaQuery.sizeOf(context).width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
+                              clipBehavior: Clip.antiAlias,
                               child: Image.network(
                                 carmodel[0].images[1],
                                 fit: BoxFit.cover,
                               ),
-                              margin: EdgeInsets.only(left: 5),
+                    
                               decoration: BoxDecoration(
+                          
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               height: 150,
@@ -458,7 +477,7 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                                   height: 80,
                                   child: Text(
                                       maxLines: 5,
-                                      "${widget.bookedData!.PickupAddress}")),
+                                      "${widget.bookedData!.PickupAddress}", style: TextStyle(fontSize: 12),)),
                             ),
                             trailing: Padding(
                               padding: const EdgeInsets.only(top: 20.0),
@@ -490,7 +509,7 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                                   height: 80,
                                   child: Text(
                                       maxLines: 5,
-                                      "${widget.bookedData!.DropoffAddress}")),
+                                      "${widget.bookedData!.DropoffAddress}", style: TextStyle(fontSize: 12))),
                             ),
                             trailing: Padding(
                               padding: const EdgeInsets.only(top: 20.0),
@@ -512,159 +531,160 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                     Card(
                       clipBehavior: Clip.antiAlias,
                       child: Container(
-                        color: Color.fromARGB(255, 237, 245, 249),
-                        //  color: Colors.amberAccent,
-                        width: MediaQuery.sizeOf(context).width,
-
-                        child: Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 4),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Price Summary",
+                            color: Color.fromARGB(255, 237, 245, 249),
+                                            //  color: Colors.amberAccent,
+                                            width: MediaQuery.sizeOf(context).width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.white, width: 4),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Price Summary",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "price Amount",
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.blue,
+                                          fontSize: 16,
+                                          color: const Color.fromARGB(
+                                              255, 106, 106, 106),
                                           fontWeight: FontWeight.w400),
                                     ),
-                                    ListTile(
-                                      title: Text(
-                                        "price Amount",
+                                    trailing: Text("${carmodel[0].price}",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: const Color.fromARGB(
                                                 255, 106, 106, 106),
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      trailing: Text("${carmodel[0].price}",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: const Color.fromARGB(
-                                                  255, 106, 106, 106),
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        "Deposit Amount",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: const Color.fromARGB(
-                                                255, 106, 106, 106),
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      trailing: Text("${carmodel[0].deposit}",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: const Color.fromARGB(
-                                                  255, 106, 106, 106),
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        "Convenience  Fee",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: const Color.fromARGB(
-                                                255, 106, 106, 106),
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      trailing: Text("${ConFee}",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: const Color.fromARGB(
-                                                  255, 106, 106, 106),
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        "Tax(GST)",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: const Color.fromARGB(
-                                                255, 106, 106, 106),
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      trailing: Text("${taxAmount}",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: const Color.fromARGB(
-                                                  255, 106, 106, 106),
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        "discount applied",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: const Color.fromARGB(
-                                                255, 106, 106, 106),
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      leading: Image.asset(
-                                        'lib/assets/images/discount.png',
-                                        height: 20,
-                                        width: 20,
-                                      ),
-                                      trailing: Text("-${discount}",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Color.fromARGB(
-                                                  255, 160, 160, 160),
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              //  Divider(),
-                              Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 4),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ListTile(
-                                  title: Text("Total"),
-                                  trailing: Text("₹ ${totalamount}",
+                                            fontWeight: FontWeight.w400)),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Deposit Amount",
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          color: Color.fromARGB(
-                                              255, 160, 160, 160),
-                                          fontWeight: FontWeight.w400)),
-                                ),
+                                          fontSize: 16,
+                                          color: const Color.fromARGB(
+                                              255, 106, 106, 106),
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    trailing: Text("${carmodel[0].deposit}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: const Color.fromARGB(
+                                                255, 106, 106, 106),
+                                            fontWeight: FontWeight.w400)),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Convenience  Fee",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: const Color.fromARGB(
+                                              255, 106, 106, 106),
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    trailing: Text("${ConFee}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: const Color.fromARGB(
+                                                255, 106, 106, 106),
+                                            fontWeight: FontWeight.w400)),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Tax(GST)",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: const Color.fromARGB(
+                                              255, 106, 106, 106),
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    trailing: Text("${taxAmount}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: const Color.fromARGB(
+                                                255, 106, 106, 106),
+                                            fontWeight: FontWeight.w400)),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "discount applied",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: const Color.fromARGB(
+                                              255, 106, 106, 106),
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    leading: Image.asset(
+                                      'lib/assets/images/discount.png',
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                    trailing: Text("-${discount}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color.fromARGB(
+                                                255, 160, 160, 160),
+                                            fontWeight: FontWeight.w400)),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                                                    
+                            //  Divider(),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.white, width: 4),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: ListTile(
+                                title: Text("Total"),
+                                trailing: Text("₹ ${totalamount}",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color.fromARGB(
+                                            255, 160, 160, 160),
+                                        fontWeight: FontWeight.w400)),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 10,
                     )
                   ],
                 ),
               ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
               bottomNavigationBar: Card(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
+
                 child: BottomAppBar(
-                  color: Colors.blue,
+                
+                  height: 70,
+                  color: Color.fromARGB(255, 0, 98, 179),
                   child: GestureDetector(
                     onTap: () async {
                       final razorKey = "rzp_test_M3Qr6Ay0H4LabB";
                       bookingId =
                           await firestore.collection('bookings').doc().id;
-
+                
                       String modelDetails =
                           "${carmodel[0].brand!}\t${carmodel[0].model}";
-
+                
                       var options = {
                         'key': razorKey,
                         'amount': totalamount,
@@ -676,7 +696,7 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                           'email': 'admin@urbandrive.com'
                         }
                       };
-
+                
                       addBooking(carmodel, options, bookingId!);
                     },
                     child: Center(
@@ -1147,34 +1167,9 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
       },
     );
   }
+
+ 
 }
 
-// Future<List<CarModels>> getCarModelData(String carmodelId) async {
-//     final collection = await FirebaseFirestore.instance
-//         .collection('models')
-//         .where(carmodelId)
-//         .get();
 
-//     collection.docs.forEach((element) {
-//       final data = element.data();
-
-//       final cardetails = CarModels(
-//           id: data['id'],
-//           category: data['category'],
-//           brand: data['brand'],
-//           model: data['model'],
-//           transmit: data['transmit'],
-//           fuel: data['fuel'],
-//           baggage: data['baggage'],
-//           price: data['price'],
-//           seats: data['seats'],
-//           deposit: data['deposit'],
-//           freekms: data['freekms'],
-//           extrakms: data['extrakms'],
-//           images: data['images']);
-
-//        carmodel.add(cardetails);
-//     });
-//        return carmodel;
-//   }
 

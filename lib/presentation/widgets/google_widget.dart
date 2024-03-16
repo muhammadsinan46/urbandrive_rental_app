@@ -26,7 +26,7 @@ class GoogleWidget extends StatelessWidget {
             "Continue with Google",
             style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 18),
+                fontSize: 16),
           ),
           // Icon(Icons.arrow_forward)
         ],

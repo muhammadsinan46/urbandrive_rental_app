@@ -35,7 +35,12 @@ class ActivityScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is CarBookingLogState) {
                   bookingdata = state.bookingdata;
-                  return Container(
+                  return
+
+                  bookingdata!.length==0?
+                  
+                   Container(
+             
                     child: ListView.builder(
                       itemCount: bookingdata!.length,
                       itemBuilder: (context, index) {
@@ -194,7 +199,9 @@ class ActivityScreen extends StatelessWidget {
                         //ListTile(title: Text("${bookingdata![index].BookingId}"));
                       },
                     ),
-                  );
+                  ):Container(
+                    color: Colors.red,
+                    child: Center(child: Text("Looks Empty. No upcoming trips Available", style: TextStyle(color: Colors.black),),));
                 } else if (state is CarDataLoadingState) {
                   return Container(
                     child: Text("loading.."),

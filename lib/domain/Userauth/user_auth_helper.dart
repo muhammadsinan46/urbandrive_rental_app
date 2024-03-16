@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:urbandrive/presentation/pages/location_permission_screen.dart';
 import 'package:urbandrive/presentation/pages/main_page.dart';
 
 class UserauthHelper {
@@ -44,8 +45,14 @@ BuildContext? context;
           "uid": user.uid,
           "name": user.displayName,
           "email": user.email,
-          "profile": user.photoURL
+          "profile": user.photoURL,
+           "location-status":false 
         });
+
+         //   final googleUser = await firestore.collection("users").doc(user.uid).get();
+            
+
+        //  Navigator.push(context, MaterialPageRoute(builder: (context) =>googleUser.exists==true?  MainPage():LocationPermissionScreen(currentUser:user.uid,),));
 
         Navigator.pushAndRemoveUntil(
             context,
@@ -66,7 +73,7 @@ Future<UserCredential?> signUp({
     required String email,
     required String password,
     required String userName,
-    required String mobile,
+   // required String mobile,
   }) async {
 
         //final userid = auth.currentUser!.uid;
@@ -82,7 +89,8 @@ Future<UserCredential?> signUp({
                            "uid":auth.currentUser!.uid,
                             "name": userName,
                             "email": email,
-                            "mobile": mobile,
+                             "location-status":false 
+                           // "mobile": mobile,
                           });
       }
         userId =auth.currentUser!.uid;

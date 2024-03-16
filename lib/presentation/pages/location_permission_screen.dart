@@ -34,7 +34,9 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
       currentAddress = place.locality;
     });
 
-    Map<String, dynamic> location = {"location": currentAddress};
+    Map<String, dynamic> location = {
+      "location": currentAddress,
+      "location-status":true      };
 
     await FirebaseFirestore.instance
         .collection('users')
@@ -44,7 +46,7 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => MainPage(
-                currentAddress: currentAddress,
+              
               ),
             ),
             (route) => false));
@@ -93,7 +95,7 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MainPage(
-                            isLocGranded: isLocPermitted,
+                          
                           ),
                         ),
                         (route) => false);
@@ -125,7 +127,7 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => MainPage(
-              isLocGranded: isLocPermitted,
+            
             ),
           ),
           (route) => false);

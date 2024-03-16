@@ -16,16 +16,16 @@ import '../../application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({Key? key,
-   this.currentAddress,
+  
 
-   this.isLocGranded
+
    });
 
   // double? lat;
   // double? long;
 
-String? currentAddress;
-bool ? isLocGranded;
+
+
 
  String logUser = FirebaseAuth.instance.currentUser!.uid;
 
@@ -36,9 +36,9 @@ bool ? isLocGranded;
   @override
   Widget build(BuildContext context) {
     //print("user logged is ${logUser}");
-   print("Aadress is $currentAddress");
+
      List<Widget> _screens = [
-    HomeScreen(currentLocation: currentAddress,isLocation: isLocGranded,),
+    HomeScreen(),
     ActivityScreen(
       userId: FirebaseAuth.instance.currentUser!.uid,
     ),

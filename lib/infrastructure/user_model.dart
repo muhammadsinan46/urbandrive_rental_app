@@ -5,6 +5,7 @@ class UserModel {
   //String? mobile;
   String? profile;
   String? location;
+  bool ? locationStatus;
 
   UserModel(
       {required this.id,
@@ -12,7 +13,8 @@ class UserModel {
       required this.email,
       // this.mobile,
        this.profile ,
-       this.location
+       this.location,
+       this.locationStatus,
       });
 
 
@@ -24,6 +26,7 @@ class UserModel {
        //mobile: json['mobile'] ?? '',
        profile: json['profile'] ?? '',
        location: json['location'] ?? '',
+       locationStatus:json['location-status']
        );
   }
 
@@ -35,6 +38,7 @@ class UserModel {
     //ata['mobile'] = mobile;
     data['profile'] = profile;
     data['locaton'] =location;
+    data['location-status']=locationStatus;
 
     return data;
   }

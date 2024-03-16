@@ -30,28 +30,30 @@ class CardataRepo {
     }
   }
 
-  Future<List<CategoryModel>> getCategoryData()async{
-    List<CategoryModel> categorylist =[];
+  Future<List<CategoryModel>> getCategoryData() async {
+    List<CategoryModel> categorylist = [];
 
-    try{
-      final categoryCollection = await FirebaseFirestore.instance.collection('category').get();
+    try {
+      final categoryCollection =
+          await FirebaseFirestore.instance.collection('category').get();
 
-      categoryCollection.docs.forEach((element) { 
-
+      categoryCollection.docs.forEach((element) {
         final data = element.data();
-        final categoryData =CategoryModel(name: data['name'], description:  data['description'], image: data['image']);
+        final categoryData = CategoryModel(
+            name: data['name'],
+            description: data['description'],
+            image: data['image']);
 
         categorylist.add(categoryData);
       });
       return categorylist;
-    }on FirebaseException catch(e){
-
+    } on FirebaseException catch (e) {
       print("error occured ${e.message}");
-    return categorylist;
+      return categorylist;
     }
-
   }
-    Future<List<CarModels>> getCarModels() async {
+
+  Future<List<CarModels>> getCarModels() async {
     final List<CarModels> carmodelslist = [];
 
     try {
@@ -87,18 +89,19 @@ class CardataRepo {
     }
   }
 
-  Future<List<CarModels>> getSpecificModel(String id)async{
+  Future<List<CarModels>> getSpecificModel(String id) async {
+    List<CarModels> carmodelData = [];
 
-    List<CarModels> carmodelData =[];
-
-    try{
-
-      final cardata = await FirebaseFirestore.instance.collection('models').where('id',isEqualTo: id).get();
+    try {
+      final cardata = await FirebaseFirestore.instance
+          .collection('models')
+          .where('id', isEqualTo: id)
+          .get();
 
       cardata.docs.forEach((element) {
-      final   data = element.data();
+        final data = element.data();
 
-      final cardata = CarModels(
+        final cardata = CarModels(
             id: data['id'],
             category: data['category'],
             brand: data['brand'],
@@ -113,41 +116,36 @@ class CardataRepo {
             extrakms: data['extrakms'],
             images: data['carImages']);
 
-            carmodelData.add(cardata);
-       });
+        carmodelData.add(cardata);
+      });
 
-       return carmodelData;
-
-      
-    }on FirebaseException catch(e){
-
+      return carmodelData;
+    } on FirebaseException catch (e) {
       print(e.message);
 
       return carmodelData;
     }
-
   }
 
-
   Future<List<BookingModel>> getBookingData(String userId) async {
-        List<BookingModel> bookingDataList = [];
-          print("booking ");
+    List<BookingModel> bookingDataList = [];
+
     try {
       final bookingCollection = await FirebaseFirestore.instance
           .collection('bookings')
-          .where(userId)
+          .where('userdata.uid', isEqualTo: userId)
           .get();
 
       bookingCollection.docs.forEach((element) {
         final data = element.data();
 
         final bookingdetails = BookingModel(
-          agrchcked: data['checked'],
+            agrchcked: data['checked'],
             userId: data['uid'],
             CarmodelId: data['carmodel-id'],
-           BookingId: data['booking-id'],
+            BookingId: data['booking-id'],
             BookingDays: data['booking-days'],
-            PickupDate: data['picup-date'],
+            PickupDate: data['pickup-date'],
             PickupTime: data['pick-up time'],
             PickupAddress: data['pickup-address'],
             DropOffDate: data['dropoff-date'],
@@ -156,11 +154,9 @@ class CardataRepo {
             PaymentAmount: data['toal-pay'].toString(),
             PaymentStatus: data['payment-status'],
             carmodel: data['carmodel'],
-            userdata:data['userdata']
-            );
-   
+            userdata: data['userdata']);
 
-            print("booking confirmed data is $bookingdetails");
+        print("booking confirmed data is $bookingdetails");
 
         bookingDataList.add(bookingdetails);
       });
@@ -169,6 +165,45 @@ class CardataRepo {
     } on FirebaseException catch (e) {
       print(e.message);
       return bookingDataList;
+    }
+  }
+
+  Future<List<BookingModel>> getBookingHistory(String userId) async {
+    List<BookingModel> bookingHistoryList = [];
+    try {
+  //    DateTime currentDate = DateTime.now();
+      final collection = await FirebaseFirestore.instance
+          .collection('bookings')
+          .where('uid', isEqualTo: userId).get();
+
+      collection.docs.forEach((element) {
+        final data = element.data();
+
+        final bookingHistory = BookingModel(
+            agrchcked: data['checked'],
+            userId: data['uid'],
+            CarmodelId: data['carmodel-id'],
+            BookingId: data['booking-id'],
+            BookingDays: data['booking-days'],
+            PickupDate: data['pickup-date'],
+            PickupTime: data['pick-up time'],
+            PickupAddress: data['pickup-address'],
+            DropOffDate: data['dropoff-date'],
+            DropOffTime: data['drop-off time'],
+            DropoffAddress: data['dropoff-location'],
+            PaymentAmount: data['toal-pay'].toString(),
+            PaymentStatus: data['payment-status'],
+            carmodel: data['carmodel'],
+            userdata: data['userdata']);
+
+        bookingHistoryList.add(bookingHistory);
+      });
+        print(bookingHistoryList.length);
+      return bookingHistoryList;
+    } on FirebaseException catch (e) {
+      print("error of booking history is ${e.message}");
+
+      return bookingHistoryList;
     }
   }
 }

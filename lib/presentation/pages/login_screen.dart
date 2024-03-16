@@ -2,11 +2,13 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:urbandrive/domain/Userauth/formvalidator.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/main_page.dart';
 import 'package:urbandrive/presentation/pages/signup_screen.dart';
+import 'package:urbandrive/presentation/widgets/google_widget.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key});
@@ -55,10 +57,11 @@ bool isHidden = true;
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  Container(
+                    
                     height: 120,
                     width: 120,
-                    child: Image.asset('lib/assets/images/lj-removebg-preview.jpg'),
+                    child: Image.asset('lib/assets/images/udlogo.png',),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 50, right: 150),
@@ -202,32 +205,7 @@ bool isHidden = true;
                         const Divider(),
                         GestureDetector(
                           onTap: () => userauth.signInWithGoogle(context),
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 20, bottom: 20),
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              borderRadius: BorderRadius.circular(30)
-                            ),
-                            height: 50,
-                            width: 220,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image.asset(
-                                  'lib/assets/images/pngegg.png',
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                const Text(
-                                  "Continue with Google",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          child:GoogleWidget(),
                         )
                       ],
                     ),
