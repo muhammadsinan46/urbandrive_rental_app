@@ -17,8 +17,9 @@ final class CarDataLoadedState extends CarBookingState {
 
 class CarBookingLogState extends CarBookingState {
   final List<BookingModel> bookingdata;
+  final List<BookingModel>bookingHistory;
 
-  const CarBookingLogState({required this.bookingdata});
+  const CarBookingLogState({required this.bookingdata, required this.bookingHistory});
 
-  List<Object> get props => [bookingdata];
+  List<Object> get props => [bookingdata, bookingHistory];
 }

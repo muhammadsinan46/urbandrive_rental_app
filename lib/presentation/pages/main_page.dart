@@ -3,15 +3,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
 import 'package:urbandrive/presentation/pages/activivty_screen.dart';
 import 'package:urbandrive/presentation/pages/home_screen.dart';
-
 import 'package:urbandrive/presentation/pages/settings_screen.dart';
 import 'package:urbandrive/presentation/pages/support_screen.dart';
-
 import '../../application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 class MainPage extends StatelessWidget {
@@ -43,7 +40,8 @@ class MainPage extends StatelessWidget {
       userId: FirebaseAuth.instance.currentUser!.uid,
     ),
     SupportScreen(),
-    SettingsScreen()
+   
+  SettingsScreen()
   ];
     return BlocBuilder<BottomNavBloc, BottomNavState>(
       builder: (context, state) {

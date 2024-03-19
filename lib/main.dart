@@ -17,7 +17,8 @@ import 'package:urbandrive/domain/location_repo.dart';
 
 import 'package:urbandrive/domain/profileutils/user_repos.dart';
 import 'package:urbandrive/domain/profileutils/profile_image.dart';
-import 'package:urbandrive/presentation/pages/location_permission_screen.dart';
+
+
 
 
 void main() async {
@@ -54,7 +55,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CarBookingBloc(CardataRepo()),),
         BlocProvider(create: (context) => LocationBloc(LocationRepo()),),
         BlocProvider(create: (context) => DropoffLocationBloc(LocationRepo()),),
-        BlocProvider(create: (context) => BottomNavBloc(),)
+        BlocProvider(create: (context) => BottomNavBloc(),),
+
+
         // BlocProvider(create: (context) => BookingConfirmBloc(BookingRepo()),)
       ],
       child: MaterialApp(

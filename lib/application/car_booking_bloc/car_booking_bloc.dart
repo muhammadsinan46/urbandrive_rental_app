@@ -44,8 +44,11 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
   }
 
   FutureOr<void> bookingdataLoading(CarBookingLogEvent event, Emitter<CarBookingState> emit)async {
-    final bookingData = await carRepo.getBookingData(event.userId);
+    final upcomingData = await carRepo.getUpcomingBookingData(event.userId);
+    final historyData = await carRepo.getBookingHistory(event.userId);
 
-    emit(CarBookingLogState(bookingdata: bookingData));
+    print("pickup date is ${historyData[0].PickupDate}");
+
+    emit(CarBookingLogState(bookingdata: upcomingData, bookingHistory: historyData));
   }
 }

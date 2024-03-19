@@ -12,6 +12,7 @@ class ActivityScreen extends StatelessWidget {
   final String userId;
 
   List<BookingModel>? bookingdata;
+  List<BookingModel>? bookingHistoryList;
 
   @override
   Widget build(BuildContext context) {
@@ -35,203 +36,430 @@ class ActivityScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is CarBookingLogState) {
                   bookingdata = state.bookingdata;
-                  return
 
-                  bookingdata!.length==0?
-                  
-                   Container(
-             
-                    child: ListView.builder(
-                      itemCount: bookingdata!.length,
-                      itemBuilder: (context, index) {
-
-                        DateTime pickupDate = DateTime.parse(bookingdata![index].DropOffDate!);
-                        DateTime dropOffDate = DateTime.parse(bookingdata![index].DropOffDate!);
-                        String  pickMonth = DateFormat('MMM').format(DateTime(0, pickupDate.month));
-                        String dropMonth = DateFormat('MMM').format(DateTime(0, dropOffDate.month));
-                        return Card(
-                          color: const Color.fromARGB(255, 237, 247, 255),
-                          child: Container(
-                            //  color: Colors.lightBlue,
-                            height: 240,
-                            width: MediaQuery.sizeOf(context).width,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 40,
-                                  child: ListTile(
-                                    trailing: Text(
-                                        "${bookingdata![index].PaymentStatus}"),
-                                    //subtitle: Text(),
-                                    title: Text(
-                                        "${bookingdata![index].carmodel!['brand']}"
-                                        "\t${bookingdata![index].carmodel!['model']}", style: TextStyle(fontWeight: FontWeight.w600),),
+                  print("bookingdata list of length is ${bookingdata!.length}");
+                  return bookingdata!.length != 0
+                      ? Container(
+                          child: ListView.builder(
+                            itemCount: bookingdata!.length,
+                            itemBuilder: (context, index) {
+                              DateTime pickupDate = DateTime.parse(
+                                  bookingdata![index].DropOffDate!);
+                              DateTime dropOffDate = DateTime.parse(
+                                  bookingdata![index].DropOffDate!);
+                              String pickMonth = DateFormat('MMM')
+                                  .format(DateTime(0, pickupDate.month));
+                              String dropMonth = DateFormat('MMM')
+                                  .format(DateTime(0, dropOffDate.month));
+                              return Card(
+                                color: const Color.fromARGB(255, 237, 247, 255),
+                                child: Container(
+                                  //  color: Colors.lightBlue,
+                                  height: 240,
+                                  width: MediaQuery.sizeOf(context).width,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 40,
+                                        child: ListTile(
+                                          trailing: Text(
+                                              "${bookingdata![index].PaymentStatus}"),
+                                          //subtitle: Text(),
+                                          title: Text(
+                                            "${bookingdata![index].carmodel!['brand']}"
+                                            "\t${bookingdata![index].carmodel!['model']}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            margin: EdgeInsets.only(left: 5),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            width: 100,
+                                            height: 80,
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  "${bookingdata![index].carmodel!['carImages'][0]}",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                  height: 40,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          120,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child: Icon(Icons
+                                                            .event_available_rounded),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                150,
+                                                        child: Text(
+                                                          maxLines: 5,
+                                                          "${pickupDate.day}\t ${pickMonth}"
+                                                          "-\t${dropOffDate.day}\t${dropMonth}",
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Container(
+                                                  height: 40,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          120,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child: Icon(
+                                                            Icons.location_on),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                150,
+                                                        child: Text(
+                                                          maxLines: 5,
+                                                          "${bookingdata![index].PickupAddress}",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Container(
+                                                  height: 40,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          120,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child: Icon(
+                                                            Icons.location_on),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                150,
+                                                        child: Text(
+                                                          maxLines: 5,
+                                                          "${bookingdata![index].DropoffAddress}",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.white,
+                                            ),
+                                            child:
+                                                Center(child: Text("Cancel")),
+                                            height: 40,
+                                            width: 120,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            child: Center(
+                                              child: Text(
+                                                "Modify",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.blue,
+                                            ),
+                                            height: 40,
+                                            width: 120,
+                                          )
+                                        ],
+                                      )
+                                    ],
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                           
-                                    Container(
-                                      clipBehavior: Clip.antiAlias,
-                                      margin: EdgeInsets.only(left: 5),
-                                      decoration:
-                                          BoxDecoration( borderRadius: BorderRadius.circular(10)),
-                                      width: 100,
-                                      height: 80,
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            "${bookingdata![index].carmodel!['carImages'][0]}",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
+                              );
 
-                                        Container(
-                                           
-                                            height: 40,
-                                            width: MediaQuery.sizeOf(context)
-                                                    .width -
-                                                120,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:Icon(Icons.event_available_rounded) ,),
-
-                                                  Container(
-                                                    width: MediaQuery.sizeOf(context).width-150,
-                                                    child: Text(
-                                                    
-                                                maxLines: 5,
-                                              "${pickupDate.day}\t ${pickMonth}"  "-\t${dropOffDate.day}\t${dropMonth}",
-                                                style: TextStyle(fontSize: 16),
-                                              ),)
-                                            ],)
-                                            
-                                            
-                                            
-                                            ),
-                                       
-                                        Container(
-                                           
-                                            height: 40,
-                                            width: MediaQuery.sizeOf(context)
-                                                    .width -
-                                                120,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:Icon(Icons.location_on) ,),
-
-                                                  Container(
-                                                    width: MediaQuery.sizeOf(context).width-150,
-                                                    child: Text(
-                                                    
-                                                maxLines: 5,
-                                                "${bookingdata![index].PickupAddress}",
-                                                style: TextStyle(fontSize: 12),
-                                              ),)
-                                            ],)
-                                            ),
-                                                     Container(
-                                           
-                                            height: 40,
-                                            width: MediaQuery.sizeOf(context)
-                                                    .width -
-                                                120,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:Icon(Icons.location_on) ,),
-
-                                                  Container(
-                                                    width: MediaQuery.sizeOf(context).width-150,
-                                                    child: Text(
-                                                    
-                                                maxLines: 5,
-                                                "${bookingdata![index].DropoffAddress}",
-                                                style: TextStyle(fontSize: 12),
-                                              ),)
-                                            ],)
-                                            
-                                            
-                                            
-                                            ),
-                                            
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                  Container(
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white,),
-                                    child: Center(child: Text("Cancel")),
-                              
-                                    height: 40,width: 120,),
-                                    SizedBox(width: 10,),
-                                       Container(
-                                        child: Center(child: Text("Modify", style: TextStyle(color: Colors.white),),),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.blue,),
-                                    height: 40,width: 120,)
-                                ],)
-                              ],
-                            ),
+                              //ListTile(title: Text("${bookingdata![index].BookingId}"));
+                            },
                           ),
-                        );
-
-                        //ListTile(title: Text("${bookingdata![index].BookingId}"));
-                      },
-                    ),
-                  ):Container(
-                    color: Colors.red,
-                    child: Center(child: Text("Looks Empty. No upcoming trips Available", style: TextStyle(color: Colors.black),),));
+                        )
+                      : Container(
+                          child: Center(
+                          child: Text(
+                            "Looks Empty. No upcoming trips available",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ));
                 } else if (state is CarDataLoadingState) {
-                  return Container(
-                    child: Text("loading.."),
-                  );
+                  return Center(child: Text("Looks Empty. No upcoming trips available", style: TextStyle(color: Colors.grey)));
                 }
                 return Container();
               },
             ),
-            HistoryTab()
+            BlocBuilder<CarBookingBloc, CarBookingState>(
+              builder: (context, state) {
+
+
+
+                if(state is CarBookingLogState){
+                  bookingHistoryList = state.bookingHistory;
+
+                //  print("booking history is ${bookingHistoryList[0]}");
+                   return Container(
+                  child:bookingHistoryList!.length !=0? ListView.builder(
+                    itemCount: bookingHistoryList!.length,
+                    itemBuilder: (context, index) {
+                          DateTime pickupDate = DateTime.parse(
+                                  bookingHistoryList![index].DropOffDate!);
+                              DateTime dropOffDate = DateTime.parse(
+                                  bookingHistoryList![index].DropOffDate!);
+                              String pickMonth = DateFormat('MMM')
+                                  .format(DateTime(0, pickupDate.month));
+                              String dropMonth = DateFormat('MMM')
+                                  .format(DateTime(0, dropOffDate.month));
+                   return Card(
+                                color: const Color.fromARGB(255, 237, 247, 255),
+                                child: Container(
+                                  //  color: Colors.lightBlue,
+                                  height: 240,
+                                  width: MediaQuery.sizeOf(context).width,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 40,
+                                        child: ListTile(
+                                          trailing: Text(
+                                              "${bookingHistoryList![index].PaymentStatus}"),
+                                          //subtitle: Text(),
+                                          title: Text(
+                                            "${bookingHistoryList![index].carmodel!['brand']}"
+                                            "\t${bookingHistoryList![index].carmodel!['model']}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            margin: EdgeInsets.only(left: 5),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            width: 100,
+                                            height: 80,
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  "${bookingHistoryList![index].carmodel!['carImages'][0]}",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                  height: 40,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          120,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child: Icon(Icons
+                                                            .event_available_rounded),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                150,
+                                                        child: Text(
+                                                          maxLines: 5,
+                                                          "${pickupDate.day}\t ${pickMonth}"
+                                                          "-\t${dropOffDate.day}\t${dropMonth}",
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Container(
+                                                  height: 40,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          120,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child: Icon(
+                                                            Icons.location_on),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                150,
+                                                        child: Text(
+                                                          maxLines: 5,
+                                                          "${bookingHistoryList![index].PickupAddress}",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Container(
+                                                  height: 40,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width -
+                                                          120,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child: Icon(
+                                                            Icons.location_on),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                150,
+                                                        child: Text(
+                                                          maxLines: 5,
+                                                          "${bookingHistoryList![index].DropoffAddress}",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Divider(),
+                                      Container(
+                                            child: Center(
+                                              child: Text(
+                                                "Rebook",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.blue,
+                                            ),
+                                            height: 40,
+                                            width: 120,
+                                          )
+                                    ],
+                                  ),
+                                ),
+                              );
+                    },
+                  ):  Center(child: Text("Looks Empty. No history bookings available", style: TextStyle(color: Colors.grey)))
+                );
+
+                }
+      return Center(child: Text("Looks Empty. No history bookings available", style: TextStyle(color: Colors.grey)));
+              },
+            )
           ])),
     );
   }
 }
 
-class HistoryTab extends StatelessWidget {
-  const HistoryTab({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text("upcoming"),
-          );
-        },
-      ),
-    );
-  }
-}

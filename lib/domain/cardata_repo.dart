@@ -127,38 +127,43 @@ class CardataRepo {
     }
   }
 
-  Future<List<BookingModel>> getBookingData(String userId) async {
+  Future<List<BookingModel>> getUpcomingBookingData(String userId) async {
     List<BookingModel> bookingDataList = [];
 
     try {
+      DateTime pickupDate;
+      DateTime currentDate = DateTime.now();
+
       final bookingCollection = await FirebaseFirestore.instance
           .collection('bookings')
           .where('userdata.uid', isEqualTo: userId)
+          .orderBy('pickup-date')
           .get();
 
       bookingCollection.docs.forEach((element) {
-        final data = element.data();
+        final bookingdate = element['pickup-date'];
+        pickupDate = DateTime.parse(bookingdate);
 
-        final bookingdetails = BookingModel(
-            agrchcked: data['checked'],
-            userId: data['uid'],
-            CarmodelId: data['carmodel-id'],
-            BookingId: data['booking-id'],
-            BookingDays: data['booking-days'],
-            PickupDate: data['pickup-date'],
-            PickupTime: data['pick-up time'],
-            PickupAddress: data['pickup-address'],
-            DropOffDate: data['dropoff-date'],
-            DropOffTime: data['drop-off time'],
-            DropoffAddress: data['dropoff-location'],
-            PaymentAmount: data['toal-pay'].toString(),
-            PaymentStatus: data['payment-status'],
-            carmodel: data['carmodel'],
-            userdata: data['userdata']);
-
-        print("booking confirmed data is $bookingdetails");
-
-        bookingDataList.add(bookingdetails);
+        if (pickupDate.isAfter(currentDate)) {
+          final data = element.data();
+          final bookingdetails = BookingModel(
+              agrchcked: data['checked'],
+              userId: data['uid'],
+              CarmodelId: data['carmodel-id'],
+              BookingId: data['booking-id'],
+              BookingDays: data['booking-days'],
+              PickupDate: data['pickup-date'],
+              PickupTime: data['pick-up time'],
+              PickupAddress: data['pickup-address'],
+              DropOffDate: data['dropoff-date'],
+              DropOffTime: data['drop-off time'],
+              DropoffAddress: data['dropoff-location'],
+              PaymentAmount: data['toal-pay'].toString(),
+              PaymentStatus: data['payment-status'],
+              carmodel: data['carmodel'],
+              userdata: data['userdata']);
+          bookingDataList.add(bookingdetails);
+        }
       });
 
       return bookingDataList;
@@ -171,34 +176,44 @@ class CardataRepo {
   Future<List<BookingModel>> getBookingHistory(String userId) async {
     List<BookingModel> bookingHistoryList = [];
     try {
-  //    DateTime currentDate = DateTime.now();
+      DateTime pickupDate;
+      DateTime currentDate = DateTime.now();
+
+      print("current date is ${currentDate}");
       final collection = await FirebaseFirestore.instance
           .collection('bookings')
-          .where('uid', isEqualTo: userId).get();
+          .where('userdata.uid', isEqualTo: userId)
+          .orderBy('pickup-date')
+          .get();
 
-      collection.docs.forEach((element) {
-        final data = element.data();
+      collection.docs.forEach((doc) {
+        final bookingdate = doc['pickup-date'];
+        pickupDate = DateTime.parse(bookingdate);
 
-        final bookingHistory = BookingModel(
-            agrchcked: data['checked'],
-            userId: data['uid'],
-            CarmodelId: data['carmodel-id'],
-            BookingId: data['booking-id'],
-            BookingDays: data['booking-days'],
-            PickupDate: data['pickup-date'],
-            PickupTime: data['pick-up time'],
-            PickupAddress: data['pickup-address'],
-            DropOffDate: data['dropoff-date'],
-            DropOffTime: data['drop-off time'],
-            DropoffAddress: data['dropoff-location'],
-            PaymentAmount: data['toal-pay'].toString(),
-            PaymentStatus: data['payment-status'],
-            carmodel: data['carmodel'],
-            userdata: data['userdata']);
+        if (pickupDate.isBefore(currentDate)) {
+          final data = doc.data();
+          print("data  is holding ${data['pickup-date']}");
+          final bookingHistory = BookingModel(
+              agrchcked: data['checked'],
+              userId: data['uid'],
+              CarmodelId: data['carmodel-id'],
+              BookingId: data['booking-id'],
+              BookingDays: data['booking-days'],
+              PickupDate: data['pickup-date'],
+              PickupTime: data['pick-up time'],
+              PickupAddress: data['pickup-address'],
+              DropOffDate: data['dropoff-date'],
+              DropOffTime: data['drop-off time'],
+              DropoffAddress: data['dropoff-location'],
+              PaymentAmount: data['toal-pay'].toString(),
+              PaymentStatus: data['payment-status'],
+              carmodel: data['carmodel'],
+              userdata: data['userdata']);
 
-        bookingHistoryList.add(bookingHistory);
+          bookingHistoryList.add(bookingHistory);
+        }
       });
-        print(bookingHistoryList.length);
+
       return bookingHistoryList;
     } on FirebaseException catch (e) {
       print("error of booking history is ${e.message}");
