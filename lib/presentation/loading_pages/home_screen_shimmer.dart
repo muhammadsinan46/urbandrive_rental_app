@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:urbandrive/domain/brand_model.dart';
 import 'package:urbandrive/domain/car_model.dart';
-import 'package:urbandrive/presentation/pages/home_screen.dart';
+import 'package:urbandrive/presentation/home_screen/pages/home_screen.dart';
 class HomeScreenShimmer extends StatelessWidget {
   const HomeScreenShimmer({
     super.key,

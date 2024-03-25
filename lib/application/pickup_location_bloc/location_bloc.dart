@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rxdart/rxdart.dart';
+
 import 'package:urbandrive/domain/location_repo.dart';
 
 part 'location_event.dart';
@@ -25,7 +25,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   FutureOr<void> pickuplocationloaded(
       PickupLocationLoadedEvent event, Emitter<LocationState> emit) async {
     final suggestionlist = await locationrepo.getsuggestion(event.pickuplocation);
-    print("listed values are $suggestionlist");
+   
     emit(PickUpLocationLoadedState(pickuplocation: suggestionlist!));
   }
 

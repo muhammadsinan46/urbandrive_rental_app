@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
-import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
+
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
-import 'package:urbandrive/application/hom_screen_bloc/homescreen_bloc_bloc.dart';
+import 'package:urbandrive/presentation/features/search_screen/application/search_bloc/search_bloc.dart';
+import 'package:urbandrive/presentation/features/search_screen/search_repo.dart';
+import 'package:urbandrive/presentation/home_screen/bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
-import 'package:urbandrive/domain/Userauth/user_verify.dart';
+import 'package:urbandrive/domain/user_authentication/user_verify.dart';
+import 'package:urbandrive/presentation/booking/bloc/car_booking_bloc/car_booking_bloc.dart';
 
-import 'package:urbandrive/domain/cardata_repo.dart';
+import 'package:urbandrive/presentation/booking/domain/cardata_repo.dart';
 import 'package:urbandrive/domain/location_repo.dart';
 
 import 'package:urbandrive/domain/profileutils/user_repos.dart';
@@ -56,11 +59,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LocationBloc(LocationRepo()),),
         BlocProvider(create: (context) => DropoffLocationBloc(LocationRepo()),),
         BlocProvider(create: (context) => BottomNavBloc(),),
+        BlocProvider(create: (context) => SearchBloc(SearchRepo()),)
 
 
         // BlocProvider(create: (context) => BookingConfirmBloc(BookingRepo()),)
       ],
       child: MaterialApp(
+      
         // theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
         home: 

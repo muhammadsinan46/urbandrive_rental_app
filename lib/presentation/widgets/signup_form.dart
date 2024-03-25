@@ -1,21 +1,14 @@
 // ignore_for_file: must_be_immutable
 
-
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import 'package:urbandrive/domain/Userauth/formvalidator.dart';
-import 'package:urbandrive/domain/Userauth/user_auth_helper.dart';
+import 'package:urbandrive/domain/user_authentication/formvalidator.dart';
+import 'package:urbandrive/domain/user_authentication/user_auth_helper.dart';
 import 'package:urbandrive/infrastructure/user_model.dart';
-import 'package:urbandrive/presentation/pages/location_permission_screen.dart';
-import 'package:urbandrive/presentation/pages/login_screen.dart';
-import 'package:urbandrive/presentation/pages/main_page.dart';
-
+import 'package:urbandrive/presentation/features/location_permission_screen.dart';
+import 'package:urbandrive/presentation/features/login_screen.dart';
 import 'package:urbandrive/presentation/widgets/google_widget.dart';
 
 class SignupForm extends StatefulWidget {
@@ -26,7 +19,7 @@ class SignupForm extends StatefulWidget {
       required this.emailController,
       required this.passwordController,
       // required this.mobileController,
-       required this.currentLocation})
+      required this.currentLocation})
       : _formKey = formKey;
 
   final GlobalKey<FormState> _formKey;
@@ -47,22 +40,14 @@ class _SignupFormState extends State<SignupForm> {
 
   final fireauth = FirebaseAuth.instance.currentUser;
 
+  bool isHidden = true;
 
-  bool isHidden =true;
-
-
-
-
-  
-
-    togglePassword() {
+  togglePassword() {
     setState(() {
       isHidden = !isHidden;
     });
   }
 
-
- 
   UserModel? userdata;
 
   @override
@@ -97,14 +82,11 @@ class _SignupFormState extends State<SignupForm> {
                         FormValidator().validatename("Full name", value),
                     controller: widget.nameController,
                     decoration: InputDecoration(
-                     
                         filled: true,
                         fillColor: Colors.white,
                         prefixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
-                      
                         prefixIcon: Icon(Icons.person_2_outlined),
-                       
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           // borderRadius: BorderRadius.circular(30)
@@ -120,7 +102,7 @@ class _SignupFormState extends State<SignupForm> {
                         hintText: "Full name"),
                   ),
                 ),
-                SizedBox(height:10),
+                SizedBox(height: 10),
                 // Card(
                 //   color: Colors.white,
                 //   child: IntlPhoneField(
@@ -128,14 +110,14 @@ class _SignupFormState extends State<SignupForm> {
                 //     style: const TextStyle(fontSize: 15),
                 //     controller: widget.mobileController,
                 //     decoration: InputDecoration(
-                       
+
                 //         filled: true,
                 //         fillColor: Colors.white,
                 //         prefixIconColor:
                 //             const Color.fromARGB(255, 191, 191, 191),
-                       
+
                 //         prefixIcon: Icon(Icons.email_outlined),
-                      
+
                 //         enabledBorder: OutlineInputBorder(
                 //           borderSide: BorderSide(color: Colors.white),
                 //           // borderRadius: BorderRadius.circular(30)
@@ -160,7 +142,7 @@ class _SignupFormState extends State<SignupForm> {
                     validator: (value) => FormValidator().validateEmail(value),
                     controller: widget.emailController,
                     decoration: InputDecoration(
-                      //  errorStyle: TextStyle(color: Colors.white),
+                        //  errorStyle: TextStyle(color: Colors.white),
                         filled: true,
                         fillColor: Colors.white,
                         prefixIconColor:
@@ -168,7 +150,6 @@ class _SignupFormState extends State<SignupForm> {
                         suffixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
                         prefixIcon: Icon(Icons.email_outlined),
-                     
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           // borderRadius: BorderRadius.circular(30)
@@ -193,8 +174,8 @@ class _SignupFormState extends State<SignupForm> {
                         FormValidator().validatePassword(value),
                     controller: widget.passwordController,
                     decoration: InputDecoration(
-                      //  errorStyle: TextStyle(color: Colors.white),
-                        filled: isHidden? true:false,
+                        //  errorStyle: TextStyle(color: Colors.white),
+                        filled: isHidden ? true : false,
                         fillColor: Colors.white,
                         prefixIconColor:
                             const Color.fromARGB(255, 191, 191, 191),
@@ -204,8 +185,8 @@ class _SignupFormState extends State<SignupForm> {
                         suffixIcon: GestureDetector(
                           onTap: togglePassword,
                           child: Icon(isHidden
-                                  ? Icons.visibility_off
-                                  : Icons.visibility),
+                              ? Icons.visibility_off
+                              : Icons.visibility),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -231,19 +212,28 @@ class _SignupFormState extends State<SignupForm> {
                             builder: (context) {
                               return Center(
                                   child: LoadingAnimationWidget.stretchedDots(
-                                      color: const Color.fromARGB(255, 255, 255, 255), size: 50));
+                                      color: const Color.fromARGB(
+                                          255, 255, 255, 255),
+                                      size: 50));
                             });
                         await userauth.signUp(
                           userName: widget.nameController.text,
                           email: widget.emailController.text,
-                        //  mobile: widget.mobileController.text,
+                          //  mobile: widget.mobileController.text,
                           password: widget.passwordController.text,
-                          
 
-                         // id: fireauth!.uid
+                          // id: fireauth!.uid
                         );
-                    
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => LocationPermissionScreen(currentUser:userauth.userId!,),));
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                              
+                               LocationPermissionScreen(
+                                currentUser: userauth.userId!,
+                              ),
+                            ));
                       } catch (e) {
                         print(e);
                       }
@@ -256,14 +246,14 @@ class _SignupFormState extends State<SignupForm> {
                         borderRadius: BorderRadius.circular(10)),
                     height: 60,
                     width: 250,
-                    child:   Center(
+                    child: Center(
                       child: Text(
-                            "Sign up",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18),
-                          ),
+                        "Sign up",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18),
+                      ),
                     ),
                   ),
                 ),
