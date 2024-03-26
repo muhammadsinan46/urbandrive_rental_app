@@ -81,8 +81,7 @@ try{
 }
   }
 
-
-
+  
   getFilterData(List<String >filterData)async{
 
     List<CarModels> allCarData =await getallModels() ;
@@ -97,13 +96,47 @@ try{
 
       if(data.category!.contains(filter)){
 
-        print("founded data is ${data.brand}");
+        print("founded data is ${data.model}");
+      }else if(data.brand!.contains(filter)){
+
+           print("founded data is ${data.model}");
       }
     }
 
 
   }
 
+
+
+  }
+
+
+
+ Future< List<CarModels> > getCarStyleFilterData(List<String >filterData)async{
+
+    List<CarModels> allCarData =await getallModels() ;
+
+    List<CarModels> carStyleList =[];
+
+    allCarData.where((element) => false);
+
+  for(final filter in filterData){
+
+    for(final data in allCarData){
+
+      if(data.category!.contains(filter)){
+          carStyleList.add(data);
+      
+      }
+      else if(data.brand!.contains(filter)){
+
+        carStyleList.add(data);
+      }
+    }
+
+
+  }
+  return carStyleList;
 
 
   }

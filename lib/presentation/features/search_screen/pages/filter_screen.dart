@@ -45,8 +45,10 @@ class _CarFilterButtonState extends State<CarFilterButton> {
   @override
   Widget build(BuildContext context) {
     context.read<HomescreenBloc>().add(HomescreenLoadedEvent());
+    context.read<SearchBloc>().add(SearchScreenInitialEvent());
     return InkWell(
       onTap: () {
+          context.read<SearchBloc>().add(SearchScreenInitialEvent());
         double maxHeight = MediaQuery.sizeOf(context).height;
         showModalBottomSheet(
           isScrollControlled: true,
@@ -405,8 +407,19 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                     ),
                     InkWell(
                       onTap: () async {
-                        // context.read<SearchBloc>().add(FilterScreenLoadedEvent(filterData: carselected));
-                        SearchRepo().getFilterData(carselectedStyle);
+                        // SearchRepo().getFilterData(carselectedStyle);
+                        context.read<SearchBloc>().add(
+                            CarStyleFilterEvent(filterData: carselectedStyle));
+
+
+                        if (carselectedStyle.isEmpty) {
+                          context
+                              .read<SearchBloc>()
+                              .add(SearchScreenInitialEvent());
+                        }
+                 
+                    //  carselectedStyle.clear();
+                        Navigator.pop(context);
                       },
                       child: Container(
                         decoration: BoxDecoration(

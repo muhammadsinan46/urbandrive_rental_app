@@ -26,6 +26,7 @@ import 'package:urbandrive/domain/profileutils/profile_image.dart';
 
 
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -62,18 +63,17 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => DropoffLocationBloc(LocationRepo()),),
         BlocProvider(create: (context) => BottomNavBloc(),),
         BlocProvider(create: (context) => SearchBloc(SearchRepo()),),
-        BlocProvider(create: (context) => FavouriteBloc(FavouriteRepo()),)
+        BlocProvider(create: (context) => FavouriteBloc(FavouriteRepo()),),
+   
 
 
         // BlocProvider(create: (context) => BookingConfirmBloc(BookingRepo()),)
       ],
       child: MaterialApp(
-      
+      theme: ThemeData(scaffoldBackgroundColor:   const Color.fromARGB(255, 233, 245, 255),),
         // theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        home: 
-        //LocationPermissionScreen()
-      UserVarify(),
+        home:  UserVarify(),
       ),
     );
   }

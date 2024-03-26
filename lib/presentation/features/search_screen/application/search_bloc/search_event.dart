@@ -18,10 +18,18 @@ class SearchWordEvent extends SearchEvent{
 class SearchScreenInitialEvent extends SearchEvent{
 
 }
-class FilterScreenLoadedEvent extends SearchEvent{
+class CarStyleFilterEvent extends SearchEvent{
 
   final List<String> filterData;
 
-  FilterScreenLoadedEvent({required this.filterData});
+  CarStyleFilterEvent({required this.filterData});
+
+}
+
+class CarBrandFilterEvent extends SearchEvent{
+
+  final List<String> filterData;
+
+  CarBrandFilterEvent({required this.filterData});
 
 }

@@ -8,7 +8,7 @@ import 'package:urbandrive/domain/user_authentication/user_auth_helper.dart';
 import 'package:urbandrive/presentation/booking/pages/activivty_screen.dart';
 import 'package:urbandrive/presentation/home_screen/pages/home_screen.dart';
 import 'package:urbandrive/presentation/features/settings/pages/settings_screen.dart';
-import 'package:urbandrive/presentation/features/support_screen.dart';
+import 'package:urbandrive/presentation/support/pages/support_screen.dart';
 import '../../application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 class MainPage extends StatelessWidget {

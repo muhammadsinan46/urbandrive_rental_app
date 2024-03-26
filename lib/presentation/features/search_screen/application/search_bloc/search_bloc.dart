@@ -19,6 +19,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     ) : super(SearchState()) {
     on<SearchScreenInitialEvent>(allModelsLoading);
     on<SearchWordEvent>(onSearchCars);
+    on<CarStyleFilterEvent>(onCarStyleFilter);
+    on<CarBrandFilterEvent>(onCarBrandFilter);
 
   }
 
@@ -42,5 +44,21 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     final wholeList =await searchRepo.getallModels();
     emit(SearchInitialState(allModelList: wholeList));
+  }
+
+  FutureOr<void> onCarStyleFilter(CarStyleFilterEvent event, Emitter<SearchState> emit)async {
+
+
+final carStyleList = await searchRepo.getCarStyleFilterData(event.filterData);
+
+
+emit(FilterDataLoadedState(filteredCarList: carStyleList));
+
+  }
+
+  FutureOr<void> onCarBrandFilter(CarBrandFilterEvent event, Emitter<SearchState> emit) {
+
+    
+
   }
 }

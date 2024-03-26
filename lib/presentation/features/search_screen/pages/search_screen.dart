@@ -88,6 +88,17 @@ class _SearchScreenState extends State<SearchScreen> {
                     
                   },);
 
+                  }else if(state is FilterDataLoadedState){
+                      final carstylelList = state.filteredCarList;
+                    ;
+                      return ListView.builder(
+                    itemCount: carstylelList.length ,
+                    itemBuilder: (context, index) {
+
+                    return SearchCarCard(list:carstylelList, index: index);
+                    
+                  },);
+                  
                   }
                   return ListView.builder(
                     itemCount: widget.allModelslist.length ,

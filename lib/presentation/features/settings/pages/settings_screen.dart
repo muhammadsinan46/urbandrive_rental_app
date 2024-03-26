@@ -46,120 +46,123 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 245, 255),
-      appBar: AppBar(backgroundColor: Colors.blue,),
-      body: Column(
-       
-        children: [
-             SizedBox(height: 20,),
-          UserProfileCard(),
-          SizedBox(height: 50,),
-          Card(
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)    ,   color: Colors.white,),
-       
-                height: 350,
-                width: MediaQuery.sizeOf(context).width,
-                child: Column(
-                  children: [
-                    FavouriteCard(),
-                         Divider(color: const Color.fromARGB(255, 233, 245, 255),),
-
-               
-                    ListTile(
-                      onTap: () => privacyPolicy(),
-                      leading:ImageIcon(AssetImage('lib/assets/images/privacyicon.png',)) ,
-                      title: Text("Privacy Policy",),
-                     
-                     
-                    ),
-                    Divider(color: const Color.fromARGB(255, 233, 245, 255),),
-                      
-                    ListTile(
-                      onTap: () => termsCondition(),
-                      leading: ImageIcon(AssetImage('lib/assets/images/termsicon.png')),
-                      title: Text("Terms and Conditions"),
-                     
-                    ),
-                         Divider(color: const Color.fromARGB(255, 233, 245, 255),),
-                
-                    ListTile(
-                      onTap: () {
-                          showDialog(context: context, builder: (context) {
-                              return AlertDialog(
-                                backgroundColor:  Color.fromARGB(255, 193, 229, 254),
-                                title: Text("Log out"),
-                                content:Text("Are you sure ?") ,
-                                actions: [
-                                  InkWell(
-                                    onTap: () => Navigator.pop(context),
-                                    child: Container(
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-                                      height: 40,width: 100,child: Center(child: Text("Cancel")),)),
-                                  InkWell(
-                                    onTap: () {
-                                         userauthHelper.signOut();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(),
-                          ),
-                          (route) => false,
-                        );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
-                                      height: 40,width: 100,child: Center(child: Text("Log out", style: TextStyle(color: Colors.white),)),)),
-                                ],
-                              );
-                          },);
-                              
-                     
-                      },
-                      leading:ImageIcon(AssetImage('lib/assets/images/logout.png')),
-                      title: Text("Logout"),
-                     
-                    ),
-                         Divider(color: const Color.fromARGB(255, 233, 245, 255),),
-                
-                    ListTile(
-                       onTap: () => showDialog(context: context, builder: (context) {
-                              return AlertDialog(
-                                backgroundColor:  Color.fromARGB(255, 193, 229, 254),
-                                title: Text("Delete your account"),
-                                content:Text("Are you sure you want to delete your account ?") ,
-                                actions: [
-                                  InkWell(
-                                    onTap: () => Navigator.pop(context),
-                                    child: Container(
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-                                      height: 40,width: 100,child: Center(child: Text("Cancel")),)),
-                                  InkWell(
-                                    onTap: () {
-                                        userauthHelper.deleteAccount();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignupPage(),
-                          ),
-                          (route) => false,
-                        );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
-                                      height: 40,width: 100,child: Center(child: Text("Delete", style: TextStyle(color: Colors.white),)),)),
-                                ],
-                              );
-                          },),
-                      leading:ImageIcon(AssetImage('lib/assets/images/delaccount.png')),
-                      title: Text("Delete My Account"),
-                      
-                    ),
-                
-                  ],
-                )),
-          )
-        ],
+      
+     
+      body: SafeArea(
+        child: Column(
+         
+          children: [
+        
+            UserProfileCard(),
+            SizedBox(height:30,),
+            Card(
+              margin: EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)    ,   color: Colors.white,),
+         
+                  height: 350,
+                  width: MediaQuery.sizeOf(context).width,
+                  child: Column(
+                    children: [
+                      FavouriteCard(),
+                           Divider(color: const Color.fromARGB(255, 233, 245, 255),),
+        
+                 
+                      ListTile(
+                        onTap: () => privacyPolicy(),
+                        leading:ImageIcon(AssetImage('lib/assets/images/privacyicon.png',)) ,
+                        title: Text("Privacy Policy",),
+                       
+                       
+                      ),
+                      Divider(color: const Color.fromARGB(255, 233, 245, 255),),
+                        
+                      ListTile(
+                        onTap: () => termsCondition(),
+                        leading: ImageIcon(AssetImage('lib/assets/images/termsicon.png')),
+                        title: Text("Terms and Conditions"),
+                       
+                      ),
+                           Divider(color: const Color.fromARGB(255, 233, 245, 255),),
+                  
+                      ListTile(
+                        onTap: () {
+                            showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  backgroundColor:  Color.fromARGB(255, 193, 229, 254),
+                                  title: Text("Log out"),
+                                  content:Text("Are you sure ?") ,
+                                  actions: [
+                                    InkWell(
+                                      onTap: () => Navigator.pop(context),
+                                      child: Container(
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                                        height: 40,width: 100,child: Center(child: Text("Cancel")),)),
+                                    InkWell(
+                                      onTap: () {
+                                           userauthHelper.signOut();
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                            (route) => false,
+                          );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
+                                        height: 40,width: 100,child: Center(child: Text("Log out", style: TextStyle(color: Colors.white),)),)),
+                                  ],
+                                );
+                            },);
+                                
+                       
+                        },
+                        leading:ImageIcon(AssetImage('lib/assets/images/logout.png')),
+                        title: Text("Logout"),
+                       
+                      ),
+                           Divider(color: const Color.fromARGB(255, 233, 245, 255),),
+                  
+                      ListTile(
+                         onTap: () => showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  backgroundColor:  Color.fromARGB(255, 193, 229, 254),
+                                  title: Text("Delete your account"),
+                                  content:Text("Are you sure you want to delete your account ?") ,
+                                  actions: [
+                                    InkWell(
+                                      onTap: () => Navigator.pop(context),
+                                      child: Container(
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                                        height: 40,width: 100,child: Center(child: Text("Cancel")),)),
+                                    InkWell(
+                                      onTap: () {
+                                          userauthHelper.deleteAccount();
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignupPage(),
+                            ),
+                            (route) => false,
+                          );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
+                                        height: 40,width: 100,child: Center(child: Text("Delete", style: TextStyle(color: Colors.white),)),)),
+                                  ],
+                                );
+                            },),
+                        leading:ImageIcon(AssetImage('lib/assets/images/delaccount.png')),
+                        title: Text("Delete My Account"),
+                        
+                      ),
+                  
+                    ],
+                  )),
+            )
+          ],
+        ),
       ),
     );
   }

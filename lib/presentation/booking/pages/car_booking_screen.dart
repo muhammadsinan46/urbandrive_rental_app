@@ -47,11 +47,11 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.sizeOf(context).width;
-    print("car id  is ${widget.carId}");
+
     context
         .read<CarBookingBloc>()
         .add(CardDataLoadedEvent(modelId: widget.carId));
-    //context.read<LocationBloc>().add(GetLocationEvent(pickedLocation: pickedLocation))
+ 
     final startdate = bookingdata.selectedDate.start;
     final enddate = bookingdata.selectedDate.end;
 
@@ -86,6 +86,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                             ),
                           ),
                           actions: [
+                            
                             Container(
                                 margin: EdgeInsets.only(right: 10),
                                 child: Icon(
@@ -184,20 +185,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 ],
                               ),
                             ),
-                            BlocBuilder<FavouriteBloc, FavouriteState>(
-                              builder: (context, state) {
-                                return Positioned(
-                                    top: 222,
-                                    left: 120,
-                                    child: IconButton(
-                                        onPressed: () {
-
-                                        
-                                        },
-                                        icon: Icon(
-                                            Icons.favorite_border_outlined)));
-                              },
-                            )
+                           
                           ],
                         ),
                         Container(
@@ -360,7 +348,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 child: Column(
                                   children: [
                                     Text("Free Kms"),
-                                    Text(bookingdata.carmodelData[0].freekms!)
+                                    Text("${bookingdata.carmodelData[0].freekms!}/day")
                                   ],
                                 ),
                               ),
@@ -370,7 +358,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 child: Column(
                                   children: [
                                     Text("Extra Kms"),
-                                    Text(bookingdata.carmodelData[0].extrakms!)
+                                    Text("₹ ${bookingdata.carmodelData[0].extrakms!}")
                                   ],
                                 ),
                               )

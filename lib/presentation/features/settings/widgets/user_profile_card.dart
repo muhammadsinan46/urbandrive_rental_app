@@ -18,12 +18,13 @@ class UserProfileCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ShowProfileScreen(),));
       }, 
       child: Card(
+        margin: EdgeInsets.all(10),
          color: Color.fromARGB(255, 216, 237, 255),
         child: AnimatedContainer(
             
           duration: Duration(seconds: 3),
           
-            height: 100,
+            height: 150,
             width: MediaQuery.sizeOf(context).width,
             child: BlocBuilder<UsersBloc, UsersState>(
       
