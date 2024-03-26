@@ -62,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 width: MediaQuery.sizeOf(context).width,
                 child: Column(
                   children: [
-                    FavouriteCarCard(),
+                    FavouriteCard(),
                          Divider(color: const Color.fromARGB(255, 233, 245, 255),),
 
                

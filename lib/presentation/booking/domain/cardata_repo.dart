@@ -86,7 +86,8 @@ class CardataRepo {
             deposit: data['deposit'],
             freekms: data['freekms'],
             extrakms: data['extrakms'],
-            images: data['carImages']
+            images: data['carImages'], 
+          
             );
 
         carmodelslist.add(carmodel);

@@ -13,7 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/presentation/booking/bloc/car_booking_bloc/car_booking_bloc.dart';
-import 'package:urbandrive/presentation/booking/bloc/fav_bloc/favaourite_bloc.dart';
+import 'package:urbandrive/presentation/features/favourite/bloc/favourite_bloc.dart';
 import 'package:urbandrive/presentation/booking/data_sources/booking_model.dart';
 import 'package:urbandrive/presentation/booking/domain/booking_screeen_helper.dart';
 import 'package:urbandrive/presentation/booking/pages/booking_confirm.dart';
@@ -184,7 +184,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 ],
                               ),
                             ),
-                            BlocBuilder<FavaouriteBloc, FavaouriteState>(
+                            BlocBuilder<FavouriteBloc, FavouriteState>(
                               builder: (context, state) {
                                 return Positioned(
                                     top: 222,

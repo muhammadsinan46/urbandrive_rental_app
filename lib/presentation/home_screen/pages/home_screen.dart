@@ -3,8 +3,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urbandrive/presentation/booking/data_sources/fav_model.dart';
+import 'package:urbandrive/presentation/features/favourite/bloc/favourite_bloc.dart';
+import 'package:urbandrive/presentation/features/settings/widgets/favourite_car_card.dart';
+
 
 import 'package:urbandrive/presentation/home_screen/bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
@@ -16,16 +19,16 @@ import 'package:urbandrive/presentation/features/search_screen/pages/search_scre
 
 import 'package:urbandrive/presentation/loading_pages/home_screen_shimmer.dart';
 
-
 import 'package:urbandrive/presentation/features/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key, 
-  // this.isLocation
-   });
+  HomeScreen({
+    super.key,
+    // this.isLocation
+  });
 
   String? userLocation;
-  bool ? isLocation;
+  bool? isLocation;
   List<BrandModel> brandlist = [];
   List<CategoryModel> categorylist = [];
   List<CarModels> carmodelslist = [];
@@ -34,14 +37,11 @@ class HomeScreen extends StatelessWidget {
 
 
 
-    
   //UserModel userdata;
   // final UserModel user;
 
   @override
   Widget build(BuildContext context) {
-
-  
     context.read<UsersBloc>().add(GetUserEvent());
     context.read<HomescreenBloc>().add(HomescreenLoadedEvent());
     double sWidth = MediaQuery.sizeOf(context).width;
@@ -55,14 +55,12 @@ class HomeScreen extends StatelessWidget {
     // ];
     return Scaffold(body: BlocBuilder<HomescreenBloc, HomescreenState>(
       builder: (context, state) {
-    
         if (state is HomescreenLoadingState) {
           return NestedScrollView(
-          
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  backgroundColor:Colors.grey.shade100,
+                  backgroundColor: Colors.grey.shade100,
                   //  titleSpacing: BorderSide.strokeAlignCenter,
                   elevation: 0,
                   pinned: true,
@@ -75,16 +73,15 @@ class HomeScreen extends StatelessWidget {
                       child: Icon(Icons.person),
                     ),
                   ),
-             
+
                   actions: [
                     Container(
                       margin: EdgeInsets.only(right: 10),
                       child: CircleAvatar(
-                          backgroundColor:Colors.grey.shade300,
-                                         
-                    
-                          ///  Icon(Icons.search),
-                          ),
+                        backgroundColor: Colors.grey.shade300,
+
+                        ///  Icon(Icons.search),
+                      ),
                     ),
                     SizedBox(
                       height: 10,
@@ -114,20 +111,18 @@ class HomeScreen extends StatelessWidget {
 
           return BlocBuilder<UsersBloc, UsersState>(
             builder: (context, state) {
-       
               if (state is UsersLoadedState) {
-             userLocation= state.users.location;
-               userId = state.users.id;
-              isLocation =state.users.locationStatus ;
+                userLocation = state.users.location;
+                userId = state.users.id;
+                isLocation = state.users.locationStatus;
                 return NestedScrollView(
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
                     return [
                       SliverAppbarLoaded(context, state),
-                     sliverAppBar2(context, sWidth)
+                      sliverAppBar2(context, sWidth)
                     ];
                   },
                   body: CustomScrollView(
-                   
                     slivers: [
                       SliverToBoxAdapter(
                         child: Container(
@@ -265,20 +260,21 @@ class HomeScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CarBookingScreen(
-                                                locationStatus:isLocation! ,
+                                            locationStatus: isLocation!,
                                             carId: carmodelslist[index].id,
                                             userId: userId!,
-                                          //  userLocation: userLocation!,
+                                            //  userLocation: userLocation!,
                                           ),
                                         ));
                                   },
-                                  child: ShowCarDetailsCard(carmodelslist: carmodelslist, index:index),
+                                  child: ShowCarDetailsCard(
+                                      carmodelslist: carmodelslist,
+                                      index: index),
                                 );
                               },
                             ),
@@ -292,7 +288,11 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               }
-              return HomeScreenShimmer(sWidth: sWidth, brandlist: brandlist, sHeight: sHeight, carmodelslist: carmodelslist);
+              return HomeScreenShimmer(
+                  sWidth: sWidth,
+                  brandlist: brandlist,
+                  sHeight: sHeight,
+                  carmodelslist: carmodelslist);
             },
           );
         }
@@ -304,17 +304,16 @@ class HomeScreen extends StatelessWidget {
   SliverAppBar SliverAppbarLoaded(
       BuildContext context, UsersLoadedState state) {
     return SliverAppBar(
-
-        //  shape: ContinuousRectangleBorder(
-        //   borderRadius: BorderRadius.only(
-        //       bottomLeft: Radius.circular(50),
-        //       bottomRight: Radius.circular(50))),
-      backgroundColor:Colors.blue,
+      //  shape: ContinuousRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //       bottomLeft: Radius.circular(50),
+      //       bottomRight: Radius.circular(50))),
+      backgroundColor: Colors.blue,
       //  titleSpacing: BorderSide.strokeAlignCenter,
       elevation: 0,
       pinned: true,
       //expandedHeight: 10,
-   
+
       leading: GestureDetector(
         onTap: () {
           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
@@ -327,7 +326,6 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ShowProfileScreen()));
             },
             child: CircleAvatar(
-              
               backgroundColor: Colors.white,
               child: Icon(Icons.person),
             ),
@@ -335,7 +333,11 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       title: ListTile(
-        subtitle: Text(state.users.name, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
+        subtitle: Text(
+          state.users.name,
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
         title: Text(
           "Hi",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
@@ -347,10 +349,11 @@ class HomeScreen extends StatelessWidget {
           child: Container(
             margin: EdgeInsets.only(right: 10),
             child: CircleAvatar(
-
                 backgroundColor: Colors.white,
-                child:
-                    ImageIcon(AssetImage('lib/assets/images/notification.png'),color: Colors.blue,)
+                child: ImageIcon(
+                  AssetImage('lib/assets/images/notification.png'),
+                  color: Colors.blue,
+                )
 
                 ///  Icon(Icons.search),
                 ),
@@ -380,48 +383,61 @@ class HomeScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(50),
               bottomRight: Radius.circular(50))),
-
-      backgroundColor:Colors.blue,
-       pinned: true,
+      backgroundColor: Colors.blue,
+      pinned: true,
       flexibleSpace: Column(
         children: [
           Align(
               alignment: Alignment.topLeft,
               child: Container(
-    
                   margin: EdgeInsets.only(left: 12),
                   width: 200,
                   height: 35,
-                  child: userLocation ==null
+                  child: userLocation == null
                       ? Center(
-                        child:ListTile(leading: Icon(Icons.location_on, color: Color.fromARGB(96, 255, 255, 255),),title:     Text("Location?",
-                            style: TextStyle(color: Color.fromARGB(96, 255, 255, 255),
-                                fontSize: 16, )),)
-                        
-                     ,
-                      )
-                      : Center(
-                        child: ListTile(leading: Icon(Icons.location_on, color: Colors.white,),
-                          title: Text(
-                              "${userLocation}",
-                              style: TextStyle(color: Colors.white,
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.location_on,
+                              color: Color.fromARGB(96, 255, 255, 255),
                             ),
-                        ),
-                      ))),
+                            title: Text("Location?",
+                                style: TextStyle(
+                                  color: Color.fromARGB(96, 255, 255, 255),
+                                  fontSize: 16,
+                                )),
+                          ),
+                        )
+                      : Center(
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                            ),
+                            title: Text(
+                              "${userLocation}",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ))),
           Container(
-            margin: EdgeInsets.only(bottom:5, left: 10, top:10,right:10),
+            margin: EdgeInsets.only(bottom: 5, left: 10, top: 10, right: 10),
             height: 50,
-            width: width-10,
+            width: width - 10,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
             ),
             child: ListTile(
-              
               onTap: () {
-Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(allModelslist: carmodelslist,)));
-
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchScreen(
+                              allModelslist: carmodelslist,
+                            )));
               },
               leading: Icon(Icons.search),
               title: Text(
@@ -437,148 +453,143 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(all
 }
 
 class ShowCarDetailsCard extends StatelessWidget {
-  const ShowCarDetailsCard({
-    super.key,
-    required this.carmodelslist,
-    required this.index
-  });
-    final index;
+  const ShowCarDetailsCard(
+      {super.key, required this.carmodelslist, required this.index});
+  final index;
   final List<CarModels> carmodelslist;
+
+  
 
   @override
   Widget build(BuildContext context) {
+     final isFav = carmodelslist[index].favourite;
     return Container(
       decoration: BoxDecoration(),
       child: Card(
         color: Colors.white,
-        child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.start,
+        child: Stack(
           children: [
-            Container(
-              width: MediaQuery.sizeOf(context)
-                      .width *
-                  2,
-              height: 170,
-              child: CachedNetworkImage(
-                imageUrl: carmodelslist[index]
-                    .images
-                    .last,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment
-                        .spaceBetween,
-                children: [
-                  Column(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 2,
+                  height: 170,
+                  child: CachedNetworkImage(
+                    imageUrl: carmodelslist[index].images.last,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight:
-                                FontWeight.bold),
+                      Column(
+                        children: [
+                          Text(
+                            "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "₹ ${carmodelslist[index].price!}",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "9am -9pm",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
                       ),
                     ],
                   ),
-                  Column(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                       "₹ ${ carmodelslist[index].price!}",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight:
-                                FontWeight.bold),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(7)),
+                        child: Center(
+                            child: Text(
+                          carmodelslist[index].category!,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        )),
+                        height: 30,
+                        width: 80,
                       ),
-                      Text(
-                        "9am -9pm",
-                        style: TextStyle(
-                            fontSize: 12),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Colors.black,
+                        ),
+                        child: Center(
+                          child: Text("${carmodelslist[index].seats!} seats",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ),
+                        height: 30,
+                        width: 80,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Colors.black,
+                        ),
+                        child: Center(
+                          child: Text(carmodelslist[index].transmit!,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ),
+                        height: 30,
+                        width: 80,
                       )
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius:
-                            BorderRadius.circular(
-                                7)),
-                    child: Center(
-                        child: Text(
-                      carmodelslist[index]
-                          .category!,
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight:
-                              FontWeight.bold,
-                          color: Colors.white),
-                    )),
-                    height: 30,
-                    width: 80,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(
-                              7),
-                      color: Colors.black,
-                    ),
-                    child: Center(
-                      child: Text(
-                          "${carmodelslist[index].seats!} seats",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight:
-                                  FontWeight.bold,
-                              color:
-                                  Colors.white)),
-                    ),
-                    height: 30,
-                    width: 80,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(
-                              7),
-                      color: Colors.black,
-                    ),
-                    child: Center(
-                      child: Text(
-                          carmodelslist[index]
-                              .transmit!,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight:
-                                  FontWeight.bold,
-                              color:
-                                  Colors.white)),
-                    ),
-                    height: 30,
-                    width: 80,
-                  )
-                ],
+            Positioned(
+              left: 2,
+              top: 2,
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child:  IconButton(
+                        onPressed: () {
+
+                       
+                     
+                          context.read<FavouriteBloc>().add(AddFavouriteEvent(favModel: carmodelslist[index], isFav:isFav==true?false:true));
+                        },
+                        icon:Icon(isFav==true? Icons.favorite:Icons.favorite_border)
+                        
+                        
+                        
+                        )
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -597,7 +608,7 @@ class CarousalFirst extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-         color: Colors.white,
+      color: Colors.white,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       //  color: Colors.black26,
       child: Container(
@@ -655,9 +666,9 @@ class CarousalFirst extends StatelessWidget {
                       height: 40,
                       width: 140,
                       child: GestureDetector(
-                        onTap:() {
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: carId, userId: userId, locationStatus: locationStatus),)) 
-                        } ,
+                        onTap: () {
+                          //  Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: carId, userId: userId, locationStatus: locationStatus),))
+                        },
                         child: Text(
                           "BOOK NOW",
                           style: TextStyle(
@@ -678,4 +689,3 @@ class CarousalFirst extends StatelessWidget {
     );
   }
 }
-
