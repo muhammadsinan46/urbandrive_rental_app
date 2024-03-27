@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/presentation/support/widgets/chat_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class SupportScreen extends StatelessWidget {
   SupportScreen({super.key});
@@ -22,7 +23,7 @@ if(await canLaunchUrl(url)){
 }
 
   }
-
+var   _webcontroller = WebViewController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +74,9 @@ if(await canLaunchUrl(url)){
         
               Divider(color:  const Color.fromARGB(255, 233, 245, 255),),
               ListTile(
+                onTap: () {
+                  
+                },
                 title: Text("Help"),
                 trailing: Icon(Icons.help),
               ),
@@ -99,6 +103,9 @@ if(await canLaunchUrl(url)){
           ),
         ),
       ),
+      // bottomSheet:WebViewWidget(
+        
+      //   controller: _webcontroller) ,
     );
   }
 }

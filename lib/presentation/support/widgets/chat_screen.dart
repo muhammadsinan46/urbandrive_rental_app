@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:urbandrive/presentation/support/domain/chat_repostiory.dart';
+import 'package:urbandrive/domain/repository/chat_repo/chat_repostiory.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   ChatRoomScreen({super.key, required this.userId});

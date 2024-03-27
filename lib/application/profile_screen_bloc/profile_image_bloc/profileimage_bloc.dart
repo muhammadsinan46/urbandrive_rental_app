@@ -6,7 +6,7 @@ import 'package:bloc/bloc.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:urbandrive/domain/profileutils/profile_image.dart';
+import 'package:urbandrive/domain/utils/profile/profile_image_helper.dart';
 
 part 'profileimage_event.dart';
 part 'profileimage_state.dart';

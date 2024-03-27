@@ -4,22 +4,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:urbandrive/presentation/booking/data_sources/fav_model.dart';
-import 'package:urbandrive/presentation/features/favourite/bloc/favourite_bloc.dart';
-import 'package:urbandrive/presentation/features/settings/widgets/favourite_car_card.dart';
+import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
+import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
+import 'package:urbandrive/presentation/settings_screen/widgets/favourite_car_card.dart';
 
 
-import 'package:urbandrive/presentation/home_screen/bloc/homescreen_bloc_bloc.dart';
+import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
-import 'package:urbandrive/domain/brand_model.dart';
-import 'package:urbandrive/domain/car_model.dart';
-import 'package:urbandrive/domain/category_model.dart';
-import 'package:urbandrive/presentation/booking/pages/car_booking_screen.dart';
-import 'package:urbandrive/presentation/features/search_screen/pages/search_screen.dart';
+import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
+import 'package:urbandrive/infrastructure/car_model/car_model.dart';
+import 'package:urbandrive/infrastructure/category_model/category_model.dart';
+import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
+import 'package:urbandrive/presentation/search_screen/pages/search_screen.dart';
 
-import 'package:urbandrive/presentation/loading_pages/home_screen_shimmer.dart';
+import 'package:urbandrive/presentation/home_screen/pages/home_screen_shimmer.dart';
 
-import 'package:urbandrive/presentation/features/profile_screen.dart';
+import 'package:urbandrive/presentation/profile_screen/pages/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({
@@ -119,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
                     return [
                       SliverAppbarLoaded(context, state),
-                      sliverAppBar2(context, sWidth)
+                      sliverAppBar2(context, sWidth, isLocation!, userId!)
                     ];
                   },
                   body: CustomScrollView(
@@ -375,7 +375,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  SliverAppBar sliverAppBar2(context, double width) {
+  SliverAppBar sliverAppBar2(context, double width, bool isLocation, String userId) {
     return SliverAppBar(
       expandedHeight: 80,
       shadowColor: Colors.black,
@@ -436,6 +436,8 @@ class HomeScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SearchScreen(
+                          isLocation: isLocation,
+                          userId: userId,
                               allModelslist: carmodelslist,
                             )));
               },

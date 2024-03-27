@@ -6,22 +6,22 @@ import 'package:urbandrive/application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
-import 'package:urbandrive/presentation/booking/domain/favourite_repo.dart';
-import 'package:urbandrive/presentation/features/favourite/bloc/favourite_bloc.dart';
-import 'package:urbandrive/presentation/features/search_screen/application/search_bloc/search_bloc.dart';
-import 'package:urbandrive/presentation/features/search_screen/search_repo.dart';
-import 'package:urbandrive/presentation/home_screen/bloc/homescreen_bloc_bloc.dart';
+import 'package:urbandrive/domain/repository/favourite_repo/favourite_repo.dart';
+import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
+import 'package:urbandrive/application/search_bloc/search_bloc.dart';
+import 'package:urbandrive/presentation/search_screen/search_repo.dart';
+import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
-import 'package:urbandrive/domain/user_authentication/user_verify.dart';
-import 'package:urbandrive/presentation/booking/bloc/car_booking_bloc/car_booking_bloc.dart';
+import 'package:urbandrive/domain/utils/user_authentication/user_verification_helper.dart';
+import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 
-import 'package:urbandrive/presentation/booking/domain/cardata_repo.dart';
-import 'package:urbandrive/domain/location_repo.dart';
+import 'package:urbandrive/domain/repository/car_data_repo/cardata_repo.dart';
+import 'package:urbandrive/domain/repository/location_repo/location_repo.dart';
 
-import 'package:urbandrive/domain/profileutils/user_repos.dart';
-import 'package:urbandrive/domain/profileutils/profile_image.dart';
+import 'package:urbandrive/domain/repository/user_repo/user_repository.dart';
+import 'package:urbandrive/domain/utils/profile/profile_image_helper.dart';
 
 
 

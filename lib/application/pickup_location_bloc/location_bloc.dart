@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:urbandrive/domain/location_repo.dart';
+import 'package:urbandrive/domain/repository/location_repo/location_repo.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';
