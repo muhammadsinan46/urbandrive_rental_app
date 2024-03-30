@@ -31,8 +31,8 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
 
   FutureOr<void> addFavtoList(AddFavouriteEvent event, Emitter<FavouriteState> emit)async {
 
-    await favRepo.addFavourite(event.favModel);
-
+    await favRepo.addFavourite(event.favModel, );
+      
     Future.delayed(Duration(seconds: 1));
 
           final favList = await favRepo.getFavourite();

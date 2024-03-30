@@ -119,7 +119,7 @@ class PriceConfirmCard extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                     leading: Image.asset(
-                      'lib/assets/images/discount.png',
+                      'lib/assets/icons/discount.png',
                       height: 20,
                       width: 20,
                     ),

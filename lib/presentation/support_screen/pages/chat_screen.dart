@@ -19,8 +19,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   String receiverId = "admin@urbandrive.com";
 
   var _messageText = TextEditingController();
-  final DatabaseReference   chatdb =
-      FirebaseDatabase.instance.ref().child('chat_support');
+  final DatabaseReference   chatdb = FirebaseDatabase.instance.ref().child('chat_support');
   final DatabaseReference dbref = FirebaseDatabase.instance.ref();
 
   String? prevDate;
@@ -68,7 +67,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
                     messageList = messageList.reversed.toList();
 
-              messageList = messageList.reversed.toList();
+           //   messageList = messageList.reversed.toList();
                     return
                      Container(
                       child:
@@ -185,33 +184,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       text:messageList[index]['message'] );
     
     
-    
-    // Container(
-    //   margin: EdgeInsets.all(5),
-    //   padding: EdgeInsets.only(left: 12),
-    //   alignment: alignment,
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.only(
-    //         topLeft: Radius.circular(20),
-    //         bottomLeft: Radius.circular(20),
-    //         topRight: Radius.circular(20)),
-    //     color: const Color.fromARGB(255, 209, 234, 255),
-    //   ),
-    //   constraints: BoxConstraints(
-    //       minHeight: 50, maxWidth: MediaQuery.sizeOf(context).width * 0.7),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //     children: [
-    //       Text(),
-    //       Padding(
-    //    ],
 
-    //   )         padding: const EdgeInsets.only(right:8.0, top: 16),
-    //         child: Text(messageList[index]['datetime'].toString().substring(10,16),style: TextStyle(fontSize: 12),),
-    //       ),
-        
-    // ,
-    // );
   }
 
   void _sendMessage(BuildContext context, Map<String, dynamic> data) {

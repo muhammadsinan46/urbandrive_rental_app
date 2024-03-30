@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 import 'package:urbandrive/infrastructure/booking-models/booking_model.dart';
+import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
 
 class UpcomingTabScreen extends StatelessWidget {
    UpcomingTabScreen({super.key, required this.userId});
@@ -236,21 +237,36 @@ class UpcomingTabScreen extends StatelessWidget {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          Container(
-                                            child: Center(
-                                              child: Text(
-                                                "Modify",
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                          InkWell(
+
+                                            onTap: () {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  CarBookingScreen(
+                                                isEdit: true,
+                                            locationStatus: true,
+                                            carId: bookingdata![index].CarmodelId!,
+                                            userId: userId,
+                                            bookingDataList: bookingdata,
+                                            idx: index,
+                                            
+                                            //  userLocation: userLocation!,
+                                          ),));
+                                            },
+                                            child: Container(
+                                              child: Center(
+                                                child: Text(
+                                                  "Modify",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
                                               ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: Colors.blue,
+                                              ),
+                                              height: 40,
+                                              width: 120,
                                             ),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              color: Colors.blue,
-                                            ),
-                                            height: 40,
-                                            width: 120,
                                           )
                                         ],
                                       )

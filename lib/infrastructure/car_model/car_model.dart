@@ -11,8 +11,9 @@ class CarModels {
   String? deposit;
   String? freekms;
   String? extrakms;
-  bool? favourite;
+  bool? favourite =false;
   List images;
+
 
   CarModels(
       {
@@ -29,7 +30,7 @@ class CarModels {
       required this.freekms,
       required this.extrakms,
       required this.images,
-       this.favourite
+        this.favourite
       
       });
 

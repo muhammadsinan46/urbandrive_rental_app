@@ -34,8 +34,6 @@ class HomeScreen extends StatelessWidget {
   //UserModel userdata;
   // final UserModel user;
 
- 
-
   @override
   Widget build(BuildContext context) {
     context.read<UsersBloc>().add(GetUserEvent());
@@ -261,6 +259,7 @@ class HomeScreen extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CarBookingScreen(
+                                                isEdit: false,
                                             locationStatus: isLocation!,
                                             carId: carmodelslist[index].id,
                                             userId: userId!,
@@ -452,15 +451,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class ShowCarDetailsCard extends StatelessWidget {
-   ShowCarDetailsCard(
+  ShowCarDetailsCard(
       {super.key, required this.carmodelslist, required this.index});
   final index;
   final List<CarModels> carmodelslist;
-    List<FavouriteModel> favList =[];
+  List<FavouriteModel> favList = [];
 
   @override
   Widget build(BuildContext context) {
-       context.read<FavouriteBloc>().add(FetchFavouriteEvent());
+    context.read<FavouriteBloc>().add(FetchFavouriteEvent());
     return Container(
       decoration: BoxDecoration(),
       child: Card(
@@ -575,41 +574,36 @@ class ShowCarDetailsCard extends StatelessWidget {
               child: BlocBuilder<FavouriteBloc, FavouriteState>(
                 builder: (context, state) {
                   Color iconColor = Colors.black;
-                
-                  if(state is FavouriteLoadedState){
 
-                      favList = state.favlist;
-                    if(index >= 0 && index < state.favlist.length){
-                           
-                      if(favList[index].favId==carmodelslist[index].id){
-                     iconColor = Colors.red;
-                          
+                  if (state is FavouriteLoadedState) {
+                    favList = state.favlist;
+                    if (index >= 0 && index < state.favlist.length) {
+               
+                      if (favList[index].favId == carmodelslist[index].id) {
+                        iconColor = Colors.red;
                       }
-
                     }
-              
-
-
                   }
                   return CircleAvatar(
                       backgroundColor: Colors.white,
                       child: IconButton(
                           onPressed: () {
+                            //   if(favList[index].favId ==carmodelslist[index].id){
+                            //  // context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[index].favId));
 
-                            if(favList[index].favId ==carmodelslist[index].id){
-                           // context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[index].favId));
-
-                           print("exist");
-                            }else{
-                              print("please add");
-                            }
+                            //  print("exist");
+                            //   }else{
+                            //     print("please add");
+                            //   }
                             context.read<FavouriteBloc>().add(AddFavouriteEvent(
                                   favModel: carmodelslist[index],
                                 ));
-                              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
-
+                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
                           },
-                          icon: Icon(Icons.favorite,color: iconColor,)));
+                          icon: Icon(
+                            Icons.favorite,
+                            color: iconColor,
+                          )));
                 },
               ),
             )

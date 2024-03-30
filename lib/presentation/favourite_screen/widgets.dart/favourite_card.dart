@@ -135,7 +135,7 @@ class FavouriteCard extends StatelessWidget {
 
               context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[idx].favId));
             },
-            icon: Icon(Icons.favorite_border_outlined))
+            icon: Icon(Icons.favorite, color: Colors.red,))
                   ),
                 )
               ],

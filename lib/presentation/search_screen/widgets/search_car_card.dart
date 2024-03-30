@@ -31,6 +31,7 @@ final int index;
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CarBookingScreen(
+                                                isEdit: false,
                                             locationStatus: isLocation,
                                             carId: list![index].id,
                                             userId: userId,
