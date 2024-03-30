@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+
 
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/presentation/search_screen/search_repo.dart';

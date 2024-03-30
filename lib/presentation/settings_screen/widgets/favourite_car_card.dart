@@ -11,7 +11,7 @@ class FavouriteCard extends StatelessWidget {
     return ListTile(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen(),)),
       
-      leading: ImageIcon(AssetImage('lib/assets/images/favcar.png')),
+      leading: ImageIcon(AssetImage('lib/assets/icons/favcar.png')),
       title: Text("Favourite Cars"),
 
     );

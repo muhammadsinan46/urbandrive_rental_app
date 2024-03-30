@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:urbandrive/presentation/booking_screen/widgets/history_tab.dart';
-import 'package:urbandrive/presentation/booking_screen/widgets/upcoming_tab.dart';
+import 'package:urbandrive/presentation/activity_Screen/widgets/history_tab.dart';
+import 'package:urbandrive/presentation/activity_Screen/widgets/upcoming_tab.dart';
 
 class ActivityScreen extends StatelessWidget {
   ActivityScreen({super.key, required this.userId});

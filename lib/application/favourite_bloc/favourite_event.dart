@@ -16,9 +16,9 @@ class FetchFavouriteEvent extends FavouriteEvent{
 class AddFavouriteEvent extends FavouriteEvent{
 
   final CarModels favModel;
-  final bool isFav;
+ 
 
-  AddFavouriteEvent({required this.favModel, required this.isFav});
+  AddFavouriteEvent({required this.favModel});
 
 
 }

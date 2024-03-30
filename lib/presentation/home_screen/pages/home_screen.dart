@@ -1,24 +1,20 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
 import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
-import 'package:urbandrive/presentation/settings_screen/widgets/favourite_car_card.dart';
-
-
 import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/infrastructure/category_model/category_model.dart';
+import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
 import 'package:urbandrive/presentation/search_screen/pages/search_screen.dart';
-
 import 'package:urbandrive/presentation/home_screen/pages/home_screen_shimmer.dart';
-
 import 'package:urbandrive/presentation/profile_screen/pages/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -35,10 +31,10 @@ class HomeScreen extends StatelessWidget {
 
   String? userId;
 
-
-
   //UserModel userdata;
   // final UserModel user;
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -351,7 +347,7 @@ class HomeScreen extends StatelessWidget {
             child: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: ImageIcon(
-                  AssetImage('lib/assets/images/notification.png'),
+                  AssetImage('lib/assets/icons/notification.png'),
                   color: Colors.blue,
                 )
 
@@ -375,7 +371,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  SliverAppBar sliverAppBar2(context, double width, bool isLocation, String userId) {
+  SliverAppBar sliverAppBar2(
+      context, double width, bool isLocation, String userId) {
     return SliverAppBar(
       expandedHeight: 80,
       shadowColor: Colors.black,
@@ -436,8 +433,8 @@ class HomeScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SearchScreen(
-                          isLocation: isLocation,
-                          userId: userId,
+                              isLocation: isLocation,
+                              userId: userId,
                               allModelslist: carmodelslist,
                             )));
               },
@@ -455,16 +452,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class ShowCarDetailsCard extends StatelessWidget {
-  const ShowCarDetailsCard(
+   ShowCarDetailsCard(
       {super.key, required this.carmodelslist, required this.index});
   final index;
   final List<CarModels> carmodelslist;
-
-  
+    List<FavouriteModel> favList =[];
 
   @override
   Widget build(BuildContext context) {
-     final isFav = carmodelslist[index].favourite;
+       context.read<FavouriteBloc>().add(FetchFavouriteEvent());
     return Container(
       decoration: BoxDecoration(),
       child: Card(
@@ -576,20 +572,45 @@ class ShowCarDetailsCard extends StatelessWidget {
             Positioned(
               left: 2,
               top: 2,
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child:  IconButton(
-                        onPressed: () {
+              child: BlocBuilder<FavouriteBloc, FavouriteState>(
+                builder: (context, state) {
+                  Color iconColor = Colors.black;
+                
+                  if(state is FavouriteLoadedState){
 
-                       
-                     
-                          context.read<FavouriteBloc>().add(AddFavouriteEvent(favModel: carmodelslist[index], isFav:isFav==true?false:true));
-                        },
-                        icon:Icon(isFav==true? Icons.favorite:Icons.favorite_border)
-                        
-                        
-                        
-                        )
+                      favList = state.favlist;
+                    if(index >= 0 && index < state.favlist.length){
+                           
+                      if(favList[index].favId==carmodelslist[index].id){
+                     iconColor = Colors.red;
+                          
+                      }
+
+                    }
+              
+
+
+                  }
+                  return CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                          onPressed: () {
+
+                            if(favList[index].favId ==carmodelslist[index].id){
+                           // context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[index].favId));
+
+                           print("exist");
+                            }else{
+                              print("please add");
+                            }
+                            context.read<FavouriteBloc>().add(AddFavouriteEvent(
+                                  favModel: carmodelslist[index],
+                                ));
+                              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
+
+                          },
+                          icon: Icon(Icons.favorite,color: iconColor,)));
+                },
               ),
             )
           ],

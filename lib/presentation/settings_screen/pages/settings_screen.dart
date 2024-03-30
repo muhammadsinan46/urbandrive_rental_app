@@ -70,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                  
                       ListTile(
                         onTap: () => privacyPolicy(),
-                        leading:ImageIcon(AssetImage('lib/assets/images/privacyicon.png',)) ,
+                        leading:ImageIcon(AssetImage('lib/assets/icons/privacyicon.png',)) ,
                         title: Text("Privacy Policy",),
                        
                        
@@ -79,7 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         
                       ListTile(
                         onTap: () => termsCondition(),
-                        leading: ImageIcon(AssetImage('lib/assets/images/termsicon.png')),
+                        leading: ImageIcon(AssetImage('lib/assets/icons/termsicon.png')),
                         title: Text("Terms and Conditions"),
                        
                       ),
@@ -118,7 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 
                        
                         },
-                        leading:ImageIcon(AssetImage('lib/assets/images/logout.png')),
+                        leading:ImageIcon(AssetImage('lib/assets/icons/logout.png')),
                         title: Text("Logout"),
                        
                       ),
@@ -153,7 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ],
                                 );
                             },),
-                        leading:ImageIcon(AssetImage('lib/assets/images/delaccount.png')),
+                        leading:ImageIcon(AssetImage('lib/assets/icons/delaccount.png')),
                         title: Text("Delete My Account"),
                         
                       ),

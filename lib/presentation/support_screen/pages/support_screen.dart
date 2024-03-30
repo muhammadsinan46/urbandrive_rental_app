@@ -1,10 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
-import 'package:urbandrive/presentation/support/widgets/chat_screen.dart';
+import 'package:urbandrive/presentation/support_screen/pages/chat_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
 
 class SupportScreen extends StatelessWidget {
   SupportScreen({super.key});
@@ -23,7 +25,7 @@ if(await canLaunchUrl(url)){
 }
 
   }
-var   _webcontroller = WebViewController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

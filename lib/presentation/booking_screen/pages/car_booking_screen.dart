@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,7 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
-import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
+
 import 'package:urbandrive/infrastructure/booking-models/booking_model.dart';
 import 'package:urbandrive/domain/utils/booking/booking_screeen_helper.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/booking_confirm.dart';
@@ -220,7 +220,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              'lib/assets/images/car.png',
+                                              'lib/assets/icons/car.png',
                                               height: 20,
                                               width: 20,
                                             ),
@@ -240,7 +240,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              'lib/assets/images/luggage.png',
+                                              'lib/assets/icons/luggage.png',
                                               height: 20,
                                               width: 40,
                                             ),
@@ -260,7 +260,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              'lib/assets/images/car-seat.png',
+                                              'lib/assets/icons/car-seat.png',
                                               height: 20,
                                               width: 20,
                                             ),
@@ -280,7 +280,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              'lib/assets/images/gas-pump.png',
+                                              'lib/assets/icons/gas-pump.png',
                                               height: 20,
                                               width: 20,
                                             ),
@@ -300,7 +300,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              'lib/assets/images/gear-shift.png',
+                                              'lib/assets/icons/gear-shift.png',
                                               height: 20,
                                               width: 20,
                                             ),

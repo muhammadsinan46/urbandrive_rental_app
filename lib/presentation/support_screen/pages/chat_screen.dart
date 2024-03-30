@@ -1,3 +1,5 @@
+import 'package:chat_bubbles/bubbles/bubble_normal.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:urbandrive/domain/repository/chat_repo/chat_repostiory.dart';
@@ -17,14 +19,24 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   String receiverId = "admin@urbandrive.com";
 
   var _messageText = TextEditingController();
-  final DatabaseReference chatdb =
+  final DatabaseReference   chatdb =
       FirebaseDatabase.instance.ref().child('chat_support');
   final DatabaseReference dbref = FirebaseDatabase.instance.ref();
 
+  String? prevDate;
+  var scrollcontroller = ScrollController();
+
+  addChatUser()async{
+
+    await FirebaseFirestore.instance.collection('chat-user').doc(widget.userId).set({"userId":widget.userId});
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final DatabaseReference chatdb =
-    //     FirebaseDatabase.instance.ref().child('chat_support');
+    addChatUser();
+    DateTime dateNow = DateTime.now();
+
+    String currentDate = "${dateNow.year}-${dateNow.month.toString().padLeft(2,'0')}-${dateNow.day.toString().padLeft(2,"0")}";
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +57,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     Map<dynamic, dynamic> map =
                         snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
                     List<dynamic> messageList = map.values.toList();
-            
+                        
                     messageList.forEach((chat) {
                       if (chat['datetime'] is String) {
                         chat['datetime'] = DateTime.parse(chat['datetime']);
@@ -57,14 +69,32 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     messageList = messageList.reversed.toList();
 
               messageList = messageList.reversed.toList();
-                    return Container(
-                      child: ListView.builder(
+                    return
+                     Container(
+                      child:
+                      
+                       ListView.builder(
+                      controller: scrollcontroller,
                         reverse: true,
                         itemCount: snapshot.data!.snapshot.children.length,
                         itemBuilder: (context, index) {
+
+                           String messageDate = messageList[index]['datetime'].toString().substring(0,10);
+                           bool isDisplayed = true;
+
+                           if(prevDate==null && messageDate!=prevDate){
+                            isDisplayed =true;
+                            prevDate = messageDate;
+                           }
+
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [getmessages(context, messageList, index)],
+                            children: [
+                             
+                             
+                                if(isDisplayed)  Center(child: Text(messageDate==currentDate?"Today":messageDate.substring(0,10),style: TextStyle(color: Colors.grey),),),
+                              
+                              getmessages(context, messageList, index)],
                           );
                         },
                       ),
@@ -106,16 +136,17 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             Container(
         margin: EdgeInsets.all(8),
         padding: EdgeInsets.all(5),
-        height: 60,
+       // height: 60,
         decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(30)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
             Expanded(
+
             
                 child: TextField(
-  
+                  maxLines: 1,
               controller: _messageText,
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide.none),
@@ -143,35 +174,44 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   Widget getmessages(
       BuildContext context, List<dynamic> messageList, int index) {
-    var alignment = (messageList[index]['senderId'] == widget.userId)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
-    return Container(
-      margin: EdgeInsets.all(5),
-      padding: EdgeInsets.only(left: 12),
-      alignment: alignment,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            topRight: Radius.circular(20)),
-        color: const Color.fromARGB(255, 209, 234, 255),
-      ),
-      constraints: BoxConstraints(
-          minHeight: 50, maxWidth: MediaQuery.sizeOf(context).width * 0.7),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(messageList[index]['message']),
-          Padding(
-            padding: const EdgeInsets.only(right:8.0, top: 16),
-            child: Text(messageList[index]['datetime'].toString().substring(10,16),style: TextStyle(fontSize: 12),),
-          ),
-        
-        ],
+   
 
-      ),
-    );
+    bool isSender = messageList[index]['senderId'] ==widget.userId?true:false;
+    return   BubbleNormal(
+      
+              sent: true,
+      // trailing: Text(messageList[index]['datetime'].toString().substring(10,16), style: TextStyle(color: Colors.black),),
+      isSender: isSender,
+      text:messageList[index]['message'] );
+    
+    
+    
+    // Container(
+    //   margin: EdgeInsets.all(5),
+    //   padding: EdgeInsets.only(left: 12),
+    //   alignment: alignment,
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.only(
+    //         topLeft: Radius.circular(20),
+    //         bottomLeft: Radius.circular(20),
+    //         topRight: Radius.circular(20)),
+    //     color: const Color.fromARGB(255, 209, 234, 255),
+    //   ),
+    //   constraints: BoxConstraints(
+    //       minHeight: 50, maxWidth: MediaQuery.sizeOf(context).width * 0.7),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       Text(),
+    //       Padding(
+    //    ],
+
+    //   )         padding: const EdgeInsets.only(right:8.0, top: 16),
+    //         child: Text(messageList[index]['datetime'].toString().substring(10,16),style: TextStyle(fontSize: 12),),
+    //       ),
+        
+    // ,
+    // );
   }
 
   void _sendMessage(BuildContext context, Map<String, dynamic> data) {

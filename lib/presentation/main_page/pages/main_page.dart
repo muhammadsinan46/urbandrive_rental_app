@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:urbandrive/domain/utils/user_authentication/user_auth_helper.dart';
-import 'package:urbandrive/presentation/booking_screen/pages/activivty_screen.dart';
+import 'package:urbandrive/presentation/activity_Screen/pages/activivty_screen.dart';
 import 'package:urbandrive/presentation/home_screen/pages/home_screen.dart';
 import 'package:urbandrive/presentation/settings_screen/pages/settings_screen.dart';
-import 'package:urbandrive/presentation/support/pages/support_screen.dart';
+import 'package:urbandrive/presentation/support_screen/pages/support_screen.dart';
 import '../../../application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 class MainPage extends StatelessWidget {
@@ -63,47 +63,47 @@ class MainPage extends StatelessWidget {
                 items: [
                   SalomonBottomBarItem(
                       icon: ImageIcon(
-                          AssetImage('lib/assets/images/unhome.png'),
+                          AssetImage('lib/assets/icons/unhome.png'),
                           size: 30,
                               color: Colors.blue,
                           ),
                           
                       title: Text('Home'),
                       activeIcon: ImageIcon(
-                          AssetImage('lib/assets/images/home.png'),
+                          AssetImage('lib/assets/icons/home.png'),
                           size: 30,
                             color: Colors.blue,
                           )),
                   SalomonBottomBarItem(
                       activeIcon: ImageIcon(
-                          AssetImage('lib/assets/images/activityIcon.png'),
+                          AssetImage('lib/assets/icons/activityIcon.png'),
                           size: 30),
                       icon: ImageIcon(
-                        AssetImage('lib/assets/images/unactivityIcon.png'),
+                        AssetImage('lib/assets/icons/unactivityIcon.png'),
                         color: Colors.blue,
                         size: 30,
                       ),
                       title: Text('Activity')),
                   SalomonBottomBarItem(
                       activeIcon: ImageIcon(
-                        AssetImage('lib/assets/images/support.png'),
+                        AssetImage('lib/assets/icons/support.png'),
                         size: 30,
                       ),
                       icon: ImageIcon(
-                        AssetImage('lib/assets/images/unsupport.png'),
+                        AssetImage('lib/assets/icons/unsupport.png'),
                         size: 30,
                           color: Colors.blue,
                       ),
                       title: Text('Support')),
                   SalomonBottomBarItem(
                       activeIcon: ImageIcon(
-                        AssetImage('lib/assets/images/settings.png'),
+                        AssetImage('lib/assets/icons/settings.png'),
                         size: 30,
                           color: Colors.blue,
                       ),
                       icon: ImageIcon(
                         AssetImage(
-                          'lib/assets/images/unsettings.png',
+                          'lib/assets/icons/unsettings.png',
                         ),
                         size: 30,
                           color: Colors.blue,
