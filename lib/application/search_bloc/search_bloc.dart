@@ -21,6 +21,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchWordEvent>(onSearchCars);
     on<CarStyleFilterEvent>(onCarStyleFilter);
     on<PriceRangeFilterEvent>(priceRangeFilter);
+    on<PriceSortFilterEvent>(priceSorting);
 
   }
 
@@ -64,5 +65,12 @@ emit(FilterDataLoadedState(filteredCarList: carStyleList));
 
     emit(FilterDataLoadedState(filteredCarList: carPriceList));
 
+  }
+
+  FutureOr<void> priceSorting(PriceSortFilterEvent event, Emitter<SearchState> emit)async {
+
+    final sortedList = await searchRepo.getPriceSortFilter(event.radioValue);
+
+    emit(FilterDataLoadedState(filteredCarList: sortedList));
   }
 }

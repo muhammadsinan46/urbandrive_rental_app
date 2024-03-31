@@ -33,3 +33,11 @@ class PriceRangeFilterEvent extends SearchEvent{
   PriceRangeFilterEvent({required this.priceRange});
 
 }
+
+class PriceSortFilterEvent extends  SearchEvent{
+  final String radioValue;
+
+  PriceSortFilterEvent({required this.radioValue});
+
+
+}

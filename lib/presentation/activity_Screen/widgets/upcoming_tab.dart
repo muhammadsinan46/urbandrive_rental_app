@@ -207,7 +207,7 @@ class UpcomingTabScreen extends StatelessWidget {
                                                                   .BookingId)
                                                               .delete()
                                                               .then((value){ 
-                                                                context.read<CarBookingBloc>().add(HistoryCarBookingLogEvent(userId: bookingdata![index].userdata!['uid']));
+                                                                context.read<CarBookingBloc>().add(UpcomingCarBookingLogEvent(userId: bookingdata![index].userdata!['uid']));
                                                                 Navigator.pop(
                                                                       context);},
                                                                  );

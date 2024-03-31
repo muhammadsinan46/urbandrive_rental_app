@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
+import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
 import 'package:urbandrive/presentation/favourite_screen/widgets.dart/favourite_card.dart';
 
 class FavouriteScreen extends StatelessWidget {
@@ -26,9 +27,14 @@ class FavouriteScreen extends StatelessWidget {
                   : ListView.builder(
                       itemCount: favList.length,
                       itemBuilder: (context, index) {
-                        return FavouriteCard(
-                          favList: favList,
-                          idx: index,
+                        return InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: favList[index].carmodel['id'], userId: favList[index].userId, locationStatus: true, isEdit: false),));
+                          },
+                          child: FavouriteCard(
+                            favList: favList,
+                            idx: index,
+                          ),
                         );
                       },
                     );

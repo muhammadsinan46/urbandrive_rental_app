@@ -18,6 +18,8 @@ class HistoryTabScreen extends StatelessWidget {
      context.read<CarBookingBloc>().add(HistoryCarBookingLogEvent(userId: userId));
     return BlocBuilder<CarBookingBloc, CarBookingState>(
               builder: (context, state) {
+
+     
                 if (state is HistoryCarBookingState) {
                   bookingHistoryList = state.bookingHistory;
                   print(bookingHistoryList);
@@ -183,21 +185,42 @@ class HistoryTabScreen extends StatelessWidget {
                                           ],
                                         ),
                                         Divider(),
-                                        Container(
-                                          child: Center(
-                                            child: Text(
-                                              "Rebook",
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                               Container(
+                                              child: Center(
+                                                child: Text(
+                                                  "Give feedback",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: Colors.black,
+                                              ),
+                                              height: 40,
+                                              width: 120,
                                             ),
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.blue,
-                                          ),
-                                          height: 40,
-                                          width: 120,
+                                            Container(
+                                              child: Center(
+                                                child: Text(
+                                                  "Rebook",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: Colors.blue,
+                                              ),
+                                              height: 40,
+                                              width: 120,
+                                            ),
+                                          ],
                                         )
                                       ],
                                     ),
@@ -211,8 +234,8 @@ class HistoryTabScreen extends StatelessWidget {
                                   style: TextStyle(color: Colors.grey))));
                 }
                 return Center(
-                    child: Text("Looks Empty. No history bookings available",
-                        style: TextStyle(color: Colors.grey)));
+                    child: Center(child: CircularProgressIndicator(),)
+                        );
               },
             );
   }

@@ -45,7 +45,10 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
   }
 
   FutureOr<void> upcomingbookingLoading(UpcomingCarBookingLogEvent event, Emitter<CarBookingState> emit)async {
+
+
     final upcomingData = await carRepo.getUpcomingBookingData(event.userId);
+
 
 
     
@@ -54,6 +57,8 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
   }
 
   FutureOr<void> histoyBookingLoading(HistoryCarBookingLogEvent event, Emitter<CarBookingState> emit)async {
+
+  
 
         final historyData = await carRepo.getBookingHistory(event.userId);
 

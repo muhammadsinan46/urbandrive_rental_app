@@ -235,10 +235,7 @@ class HomeScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              trailing: Text(
-                                "View All",
-                                style: TextStyle(fontSize: 15),
-                              ),
+                          
                             ),
                             GridView.builder(
                               shrinkWrap: true,

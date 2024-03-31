@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
 import 'package:urbandrive/infrastructure/category_model/category_model.dart';
 import 'package:urbandrive/application/search_bloc/search_bloc.dart';
+import 'package:urbandrive/presentation/search_screen/search_repo.dart';
 import 'package:urbandrive/presentation/search_screen/widgets/brandstyle_loading.dart';
 import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 
@@ -33,7 +34,7 @@ class _CarFilterButtonState extends State<CarFilterButton> {
     "Price Low to high",
     "Price High to Low"
   ];
-  String radioValue = "Most popular";
+  String? radioValue;
   List<BrandModel> brandlist = [];
   List<CategoryModel> categorylist = [];
 
@@ -102,13 +103,12 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                                   groupValue: radioValue,
                                   onChanged: (values) {
                                     rstate(() {
-                                      print(values);
                                       radioValue = values!;
                                     });
                                   },
                                   items: radioValues,
                                   itemBuilder: (value) =>
-                                      RadioButtonBuilder(value),
+                                      RadioButtonBuilder(value!),
                                 );
                               },
                             )
@@ -417,19 +417,15 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                     ),
                     InkWell(
                       onTap: () async {
-                        //  SearchRepo().getPriceRangeFilter(priceRange);
-
-                        // if (carselectedStyle.isEmpty|| priceRange.isEmpty) {
-                        //   context
-                        //       .read<SearchBloc>()
-                        //       .add(SearchScreenInitialEvent());
-                        // }else
                         if (carselectedStyle.isNotEmpty) {
                           context.read<SearchBloc>().add(CarStyleFilterEvent(
                               filterData: carselectedStyle));
                         } else if (priceRange.isNotEmpty) {
                           context.read<SearchBloc>().add(
                               PriceRangeFilterEvent(priceRange: priceRange));
+                        } else if (radioValue!.isNotEmpty) {
+                          context.read<SearchBloc>().add(
+                              PriceSortFilterEvent(radioValue: radioValue!));
                         } else {
                           context
                               .read<SearchBloc>()
@@ -473,7 +469,7 @@ class _CarFilterButtonState extends State<CarFilterButton> {
           height: 50,
           width: 50,
           child: ImageIcon(
-            AssetImage('lib/assets/images/filter.png'),
+            AssetImage('lib/assets/icons/filter.png'),
             size: 2,
             color: Colors.white,
           ),

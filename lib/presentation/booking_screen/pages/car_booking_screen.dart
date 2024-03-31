@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,17 +31,16 @@ class CarBookingScreen extends StatefulWidget {
       required this.locationStatus,
       this.bookingDataList,
       this.idx,
-      required this.isEdit
-      });
+      required this.isEdit});
   final bool? locationStatus;
 //final String? userLocation;
   final String carId;
   final String userId;
 
   final List<BookingModel>? bookingDataList;
-    int? idx;
+  int? idx;
 
-  bool ? isEdit;
+  bool? isEdit;
 
   @override
   State<CarBookingScreen> createState() => _CarBookingScreenState();
@@ -52,6 +53,13 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
 
   bool agrchcked = false;
   String paymentStatus = "pending";
+  bool? isDateEdit;
+
+  @override
+  void initState() {
+    super.initState();
+    isDateEdit = widget.isEdit ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +68,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
     context
         .read<CarBookingBloc>()
         .add(CardDataLoadedEvent(modelId: widget.carId));
- 
+
     final startdate = bookingdata.selectedDate.start;
     final enddate = bookingdata.selectedDate.end;
 
@@ -70,10 +78,11 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
     String endMonth = DateFormat('MMMM').format(enddate);
     String endweek = DateFormat('EEE').format(enddate);
 
+    print("is checking ${isDateEdit}");
     return Scaffold(
         body: BlocBuilder<CarBookingBloc, CarBookingState>(
           builder: (context, state) {
-            print("object is ${state.runtimeType}");
+        
             if (state is CarDataLoadingState) {
               return ShimmerCarBookingScreen();
             } else if (state is CarDataLoadedState) {
@@ -88,14 +97,18 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
 
                         return SliverAppBar(
                           leading: InkWell(
-                            onTap: () => Navigator.pop(context),
+                            onTap: (){
+                              
+                            if(widget.isEdit==true){
+                                context.read<CarBookingBloc>().add(UpcomingCarBookingLogEvent(userId: widget.userId));
+                            }
+                              Navigator.pop(context);},
                             child: Icon(
                               Icons.arrow_back_ios_new,
                               color: scrolled ? Colors.white : Colors.blue,
                             ),
                           ),
                           actions: [
-                            
                             Container(
                                 margin: EdgeInsets.only(right: 10),
                                 child: Icon(
@@ -194,7 +207,6 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 ],
                               ),
                             ),
-                           
                           ],
                         ),
                         Container(
@@ -357,7 +369,8 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 child: Column(
                                   children: [
                                     Text("Free Kms"),
-                                    Text("${bookingdata.carmodelData[0].freekms!}/day")
+                                    Text(
+                                        "${bookingdata.carmodelData[0].freekms!}/day")
                                   ],
                                 ),
                               ),
@@ -367,7 +380,8 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                 child: Column(
                                   children: [
                                     Text("Extra Kms"),
-                                    Text("₹ ${bookingdata.carmodelData[0].extrakms!}")
+                                    Text(
+                                        "₹ ${bookingdata.carmodelData[0].extrakms!}")
                                   ],
                                 ),
                               )
@@ -426,9 +440,13 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                                     Icons.location_on_outlined),
                                                 titleAlignment:
                                                     ListTileTitleAlignment.top,
-                                                title: Text( widget.isEdit==false?
-                                                  "Search city or address":widget.bookingDataList![widget.idx!].PickupAddress!
-                                                ),
+                                                title: Text(widget.isEdit ==
+                                                        false
+                                                    ? "Search city or address"
+                                                    : widget
+                                                        .bookingDataList![
+                                                            widget.idx!]
+                                                        .PickupAddress!),
                                                 titleTextStyle: TextStyle(
                                                   fontSize: 14,
                                                   color: Color.fromARGB(
@@ -545,8 +563,13 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                                     Icons.location_on_outlined),
                                                 titleAlignment:
                                                     ListTileTitleAlignment.top,
-                                                title: Text( widget.isEdit==false?
-                                                  "Search city or address":widget.bookingDataList![widget.idx!].DropoffAddress!,
+                                                title: Text(
+                                                  widget.isEdit == false
+                                                      ? "Search city or address"
+                                                      : widget
+                                                          .bookingDataList![
+                                                              widget.idx!]
+                                                          .DropoffAddress!,
                                                 ),
                                                 titleTextStyle: TextStyle(
                                                   fontSize: 14,
@@ -630,16 +653,18 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                       widget.isEdit =false;
+                                  isDateEdit = false;
+                                  // widget.isEdit =false;
                                   final dateTimeRange =
                                       await showDateRangePicker(
                                           context: context,
                                           firstDate: DateTime(2000),
                                           lastDate: DateTime(3000));
 
+                                  print(isDateEdit);
+
                                   if (dateTimeRange != null) {
                                     setState(() {
-                                 
                                       bookingdata.selectedDate = dateTimeRange;
                                     });
                                   }
@@ -648,10 +673,9 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ShowPickupDate(
-                                      isEdit: widget.isEdit,
-                                      bookingDataList: widget.bookingDataList,
-                                      idx: widget.idx,
-
+                                        isEdit: isDateEdit,
+                                        bookingDataList: widget.bookingDataList,
+                                        idx: widget.idx,
                                         startdate: startdate,
                                         startweek: startweek,
                                         startMonth: startMonth),
@@ -659,9 +683,9 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                       child: Icon(Icons.arrow_forward),
                                     ),
                                     ShowDropoffDate(
-                                          isEdit: widget.isEdit,
-                                      bookingDataList: widget.bookingDataList,
-                                      idx: widget.idx,
+                                        isEdit: isDateEdit,
+                                        bookingDataList: widget.bookingDataList,
+                                        idx: widget.idx,
                                         enddate: enddate,
                                         endweek: endweek,
                                         endMonth: endMonth)
@@ -676,9 +700,13 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                   children: [
                                     GestureDetector(
                                         onTap: () => pickTimePicker(context),
-                                        child: Text( widget.isEdit==false?
-                                          "${bookingdata.pickedTime.inHours}${" : "}${bookingdata.pickedTime.inMinutes.remainder(60).toString().padLeft(2, "0")}":
-                                          widget.bookingDataList![widget.idx!].PickupTime!.substring(0,5),
+                                        child: Text(
+                                          widget.isEdit == false
+                                              ? "${bookingdata.pickedTime.inHours}${" : "}${bookingdata.pickedTime.inMinutes.remainder(60).toString().padLeft(2, "0")}"
+                                              : widget
+                                                  .bookingDataList![widget.idx!]
+                                                  .PickupTime!
+                                                  .substring(0, 5),
                                           style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 22,
@@ -686,10 +714,13 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                         )),
                                     GestureDetector(
                                         onTap: () => dropTimePicker(context),
-                                        child: Text( widget.isEdit==false?
-                                            "${bookingdata.dropTime.inHours}${" : "}${bookingdata.dropTime.inMinutes.remainder(60).toString().padLeft(2, "0")}":
-                                            widget.bookingDataList![widget.idx!].DropOffTime!.substring(0,5)
-                                          ,
+                                        child: Text(
+                                          widget.isEdit == false
+                                              ? "${bookingdata.dropTime.inHours}${" : "}${bookingdata.dropTime.inMinutes.remainder(60).toString().padLeft(2, "0")}"
+                                              : widget
+                                                  .bookingDataList![widget.idx!]
+                                                  .DropOffTime!
+                                                  .substring(0, 5),
                                           style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 22,
@@ -733,7 +764,10 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                         fontSize: 18),
                                   ),
                                 ),
-                                value:widget.isEdit==false? agrchcked:widget.bookingDataList![widget.idx!].agrchcked,
+                                value: widget.isEdit == false
+                                    ? agrchcked
+                                    : widget.bookingDataList![widget.idx!]
+                                        .agrchcked,
                                 onChanged: (bool? newvalue) {
                                   setState(() {
                                     agrchcked = newvalue!;
@@ -776,6 +810,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
             return Container();
           },
         ),
+        resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: BlocBuilder<CarBookingBloc, CarBookingState>(
           builder: (context, state) {
@@ -803,8 +838,9 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              widget.isEdit==false?
-                              "₹\t${bookingdata.amtformat.format(int.parse(state.carModel[0].price!))}": "₹\t${widget.bookingDataList![widget.idx!].PaymentAmount!}",
+                              widget.isEdit == false
+                                  ? "₹\t${bookingdata.amtformat.format(int.parse(state.carModel[0].price!))}"
+                                  : "₹\t${widget.bookingDataList![widget.idx!].PaymentAmount!}",
                               style: TextStyle(
                                   fontSize: 25,
                                   color: Colors.white,
@@ -814,26 +850,17 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: addBookingData,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: agrchcked == false &&
-                                      bookingdata.pickuplocation.length == 0 &&
-                                      bookingdata.dropofflocation.length == 0
-                                  ? Color.fromARGB(74, 255, 255, 255)
-                                  : Colors.green,
-                              borderRadius: BorderRadius.circular(10)),
-                          height: 70,
-                          width: 160,
-                          child: Center(
-                              child: Text(
-                            "Continue",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 18),
-                          )),
-                        ),
+                        onTap: (){
+
+                          if( widget.isEdit==false){
+                               addBookingData();
+                          }else{
+
+                        updateBooking(widget.bookingDataList!, widget.idx!);
+                          }
+
+                        },
+                        child:widget.isEdit==false? BookingButton(agrchcked: agrchcked, bookingdata: bookingdata):UpdateBookingButton(agrchcked: agrchcked, bookingdata: bookingdata),
                       )
                     ],
                   ));
@@ -984,29 +1011,119 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
       Navigator.pop(context);
     }
   }
+  
+  updateBooking(List<BookingModel> bookingList,int idx) async{
+
+   
+
+     String bookingdays = (bookingdata.selectedDate.end
+              .difference(bookingdata.selectedDate.start)
+              .inDays)
+          .toString();
+
+        Map<String, dynamic> updateData = {
+        "pickup-address": bookingdata.pickuplocation[0]['description'],
+        "dropoff-location": bookingdata.dropofflocation[0]['description'],
+        "pickup-date": bookingdata.selectedDate.start.toString(),
+        "dropoff-date":bookingdata.selectedDate.end.toString(),
+        "pick-up time": bookingdata.pickedTime.toString(),
+        "drop-off time": bookingdata.dropTime.toString(),
+        "booking-days":bookingdays,
+      };
+
+    await firestore.collection('bookings').doc(bookingList[idx].BookingId).update(updateData).then((value){
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.green,
+        content: Text("Booking data is updated", style: TextStyle(color: Colors.white),)));
+        context.read<CarBookingBloc>().add(UpcomingCarBookingLogEvent(userId: bookingList[idx].userId!));
+      Navigator.pop(context);
+    });
+  }
+}
+
+class UpdateBookingButton extends StatelessWidget {
+  const UpdateBookingButton({
+    super.key,
+    required this.agrchcked,
+    required this.bookingdata,
+  });
+
+  final bool agrchcked;
+  final BookingScreenHelper bookingdata;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+          decoration: BoxDecoration(
+              color:  Colors.green,
+              borderRadius: BorderRadius.circular(10)),
+          height: 70,
+          width: 160,
+          child: Center(
+              child: Text(
+            "Update",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 18),
+          )),
+        );
+  }
+}
+
+class BookingButton extends StatelessWidget {
+  const BookingButton({
+    super.key,
+    required this.agrchcked,
+    required this.bookingdata,
+  });
+
+  final bool agrchcked;
+  final BookingScreenHelper bookingdata;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: agrchcked == false &&
+                  bookingdata.pickuplocation.length == 0 &&
+                  bookingdata.dropofflocation.length == 0
+              ? Color.fromARGB(74, 255, 255, 255)
+              : Colors.green,
+          borderRadius: BorderRadius.circular(10)),
+      height: 70,
+      width: 160,
+      child: Center(
+          child: Text(
+        "Continue",
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 18),
+      )),
+    );
+  }
 }
 
 class ShowPickupDate extends StatelessWidget {
-
-   ShowPickupDate({
-    super.key,
-    required this.startdate,
-    required this.startweek,
-    required this.startMonth,
-         required this.bookingDataList,
+  ShowPickupDate(
+      {super.key,
+      required this.startdate,
+      required this.startweek,
+      required this.startMonth,
+      required this.bookingDataList,
       required this.idx,
-      required this.isEdit
-  });
+      required this.isEdit});
 
   final DateTime startdate;
   final String startweek;
   final String startMonth;
-    final List<BookingModel>? bookingDataList;
-  
-  int? idx;
-  
-   bool ?isEdit;
+  final List<BookingModel>? bookingDataList;
 
+  int? idx;
+
+  bool? isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -1021,11 +1138,17 @@ class ShowPickupDate extends StatelessWidget {
                   text: "Pick-Up",
                   style: TextStyle(fontWeight: FontWeight.w500)),
               TextSpan(
-                  text: isEdit==false? "\n${startdate.day}":"\n${bookingDataList![idx!].PickupDate}", style: TextStyle(fontSize: 60)),
+                  text: isEdit == false
+                      ? "\n${startdate.day}"
+                      : "\n${bookingDataList![idx!].PickupDate}",
+                  style: TextStyle(fontSize: 60)),
               TextSpan(style: TextStyle(wordSpacing: 10), children: [
-                TextSpan(text:  "\n ${startweek} "),
+                TextSpan(text: "\n ${startweek} "),
                 TextSpan(text: "|"),
-                TextSpan(text:isEdit==false?  " ${startMonth}": " ${bookingDataList![idx!].pickMonth}"),
+                TextSpan(
+                    text: isEdit == false
+                        ? " ${startMonth}"
+                        : " ${bookingDataList![idx!].pickMonth}"),
                 //  TextSpan(
                 //   text: "\n\n10:00",
                 //   style: TextStyle(
@@ -1039,24 +1162,23 @@ class ShowPickupDate extends StatelessWidget {
 }
 
 class ShowDropoffDate extends StatelessWidget {
-   ShowDropoffDate({
-    super.key,
-    required this.enddate,
-    required this.endweek,
-    required this.endMonth,
-             required this.bookingDataList,
+  ShowDropoffDate(
+      {super.key,
+      required this.enddate,
+      required this.endweek,
+      required this.endMonth,
+      required this.bookingDataList,
       required this.idx,
-      required this.isEdit
-  });
+      required this.isEdit});
 
   final DateTime enddate;
   final String endweek;
   final String endMonth;
-      final List<BookingModel>? bookingDataList;
-  
+  final List<BookingModel>? bookingDataList;
+
   int? idx;
-  
-   bool ?isEdit;
+
+  bool? isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -1072,7 +1194,11 @@ class ShowDropoffDate extends StatelessWidget {
               TextSpan(
                   text: "Drop -Off\n",
                   style: TextStyle(fontWeight: FontWeight.w500)),
-              TextSpan(text:isEdit==false? "${enddate.day}":bookingDataList![idx!].DropOffDate, style: TextStyle(fontSize: 60)),
+              TextSpan(
+                  text: isEdit == false
+                      ? "${enddate.day}"
+                      : bookingDataList![idx!].DropOffDate,
+                  style: TextStyle(fontSize: 60)),
               TextSpan(
                   style: TextStyle(
                     wordSpacing: 10,
@@ -1080,7 +1206,10 @@ class ShowDropoffDate extends StatelessWidget {
                   children: [
                     TextSpan(text: "\n${endweek}"),
                     TextSpan(text: "|"),
-                    TextSpan(text:isEdit==false? " ${endMonth} ":" ${bookingDataList![idx!].dropMonth}"),
+                    TextSpan(
+                        text: isEdit == false
+                            ? " ${endMonth} "
+                            : " ${bookingDataList![idx!].dropMonth}"),
 
                     // TextSpan(
                     //     text: "\n\n10:00",

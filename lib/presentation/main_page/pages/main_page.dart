@@ -46,6 +46,7 @@ class MainPage extends StatelessWidget {
         if (state is BottomNavChageState) {
           return Scaffold(
             body: _screens[state.index],
+          resizeToAvoidBottomInset: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: Card(

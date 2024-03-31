@@ -63,11 +63,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       }
                     });
 
-                    messageList.sort((a, b) => b['datetime'].compareTo(a['datetime']),);
+                   messageList.sort((a, b) => b['datetime'].compareTo(a['datetime']),);
 
-                    messageList = messageList.reversed.toList();
+                  messageList = messageList.reversed.toList();
 
-           //   messageList = messageList.reversed.toList();
+              messageList = messageList.reversed.toList();
                     return
                      Container(
                       child:
