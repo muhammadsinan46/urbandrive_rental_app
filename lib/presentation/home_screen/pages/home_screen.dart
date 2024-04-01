@@ -370,6 +370,7 @@ class HomeScreen extends StatelessWidget {
   SliverAppBar sliverAppBar2(
       context, double width, bool isLocation, String userId) {
     return SliverAppBar(
+      collapsedHeight: 80,
       expandedHeight: 80,
       shadowColor: Colors.black,
       shape: ContinuousRectangleBorder(

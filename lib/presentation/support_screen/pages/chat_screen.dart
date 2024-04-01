@@ -178,7 +178,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     bool isSender = messageList[index]['senderId'] ==widget.userId?true:false;
     return   BubbleNormal(
       
-              sent: true,
+              sent: isSender,
       // trailing: Text(messageList[index]['datetime'].toString().substring(10,16), style: TextStyle(color: Colors.black),),
       isSender: isSender,
       text:messageList[index]['message'] );

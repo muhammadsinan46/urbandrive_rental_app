@@ -18,7 +18,7 @@ class GoogleWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Image.asset(
-            'lib/assets/images/pngegg.png',
+            'lib/assets/icons/pngegg.png',
             width: 20,
             height: 20,
           ),

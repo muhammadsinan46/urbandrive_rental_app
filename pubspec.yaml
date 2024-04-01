@@ -45,6 +45,7 @@ dependencies:
   flutter_bloc: ^8.1.4
   flutter_chat_types: ^3.6.2
   flutter_chat_ui: ^1.6.12
+  flutter_rating_bar: ^4.0.1
   flutter_xlider: ^3.5.0
   fluttertoast: ^8.2.4
   font_awesome_flutter: ^10.7.0
