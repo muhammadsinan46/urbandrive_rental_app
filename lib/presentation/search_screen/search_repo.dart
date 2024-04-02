@@ -35,11 +35,13 @@ class SearchRepo {
   }
 
   Future<List<CarModels>> getSerachCars(String searchValue) async {
+ String search = "${searchValue[0].toUpperCase()}${searchValue.substring(1).toLowerCase()}";
+
     List<CarModels> searchCarList = [];
     try {
       final searchCollection = await FirebaseFirestore.instance
           .collection('models')
-          .where('brand', isEqualTo: searchValue)
+          .where('brand', isEqualTo: search)
           .get();
 
       searchCollection.docs.forEach((element) {
@@ -157,5 +159,8 @@ int lowHighPrices(String priceA, String priceB)  {
 
       return price2.compareTo(price1);
     }
+
+
+    
   
 }

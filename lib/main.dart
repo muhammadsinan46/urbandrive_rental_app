@@ -6,6 +6,7 @@ import 'package:urbandrive/application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
+import 'package:urbandrive/application/specific_category_bloc/specific_category_list_bloc.dart';
 import 'package:urbandrive/domain/repository/favourite_repo/favourite_repo.dart';
 import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
 import 'package:urbandrive/application/search_bloc/search_bloc.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => BottomNavBloc(),),
         BlocProvider(create: (context) => SearchBloc(SearchRepo()),),
         BlocProvider(create: (context) => FavouriteBloc(FavouriteRepo()),),
+        BlocProvider(create: (context) => SpecificCategoryBloc(CardataRepo()),),
    
 
 

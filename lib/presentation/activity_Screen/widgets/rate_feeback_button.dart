@@ -115,7 +115,7 @@ class RateFeedBackButton extends StatelessWidget {
                       "user-id":userId,
                       "booking-id":bookingId
                     };
-                            String fdId = await firestore.collection('user-feedback').doc().id;
+                           
 
 
                     

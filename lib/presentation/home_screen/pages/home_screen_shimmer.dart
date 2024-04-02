@@ -3,6 +3,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/presentation/home_screen/pages/home_screen.dart';
+import 'package:urbandrive/presentation/home_screen/widgets/homescreen_carousal.dart';
 class HomeScreenShimmer extends StatelessWidget {
   const HomeScreenShimmer({
     super.key,
@@ -64,15 +65,15 @@ class HomeScreenShimmer extends StatelessWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth)
-              //  CarouselSlider(
-              //     items: carousalitems,
-              //     options: CarouselOptions(
-              //       autoPlay: true,
-              //       aspectRatio: 2.0,
-              //       // enlargeCenterPage: true
-              //     )),
-              ),
+          // SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth, carmodelsList: [],)
+          //     //  CarouselSlider(
+          //     //     items: carousalitems,
+          //     //     options: CarouselOptions(
+          //     //       autoPlay: true,
+          //     //       aspectRatio: 2.0,
+          //     //       // enlargeCenterPage: true
+          //     //     )),
+          //     ),
           SliverToBoxAdapter(
             child: Column(
               children: [

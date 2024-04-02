@@ -18,8 +18,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   String receiverId = "admin@urbandrive.com";
 
+  
+
   var _messageText = TextEditingController();
-  final DatabaseReference   chatdb = FirebaseDatabase.instance.ref().child('chat_support');
+  final DatabaseReference   chatdb = FirebaseDatabase.instance.ref();
   final DatabaseReference dbref = FirebaseDatabase.instance.ref();
 
   String? prevDate;
@@ -50,7 +52,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               height: MediaQuery.sizeOf(context).height-180,
               width: MediaQuery.sizeOf(context).width,
               child: StreamBuilder(
-                stream: chatdb.onValue,
+                stream: chatdb.child(widget.userId!).onValue,
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.snapshot.value != null) {
                     Map<dynamic, dynamic> map =
@@ -188,8 +190,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 
   void _sendMessage(BuildContext context, Map<String, dynamic> data) {
-    dbref
-        .child('chat_support')
+    dbref.child(widget.userId!)
         .push()
         .set(data)
         .whenComplete(() => _messageText.clear());

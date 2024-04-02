@@ -13,6 +13,9 @@ import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/infrastructure/category_model/category_model.dart';
 import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
+import 'package:urbandrive/presentation/home_screen/widgets/homescreen_carousal.dart';
+import 'package:urbandrive/presentation/home_screen/widgets/specific_category_list.dart';
+import 'package:urbandrive/presentation/home_screen/widgets/show_car_detail_card.dart';
 import 'package:urbandrive/presentation/search_screen/pages/search_screen.dart';
 import 'package:urbandrive/presentation/home_screen/pages/home_screen_shimmer.dart';
 import 'package:urbandrive/presentation/profile_screen/pages/profile_screen.dart';
@@ -123,6 +126,7 @@ class HomeScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               ListTile(
+                                   trailing: Icon(Icons.arrow_forward_ios),
                                 leading: Text(
                                   "Brands",
                                   style: TextStyle(
@@ -168,23 +172,19 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth)
-                          //  CarouselSlider(
-                          //     items: carousalitems,
-                          //     options: CarouselOptions(
-                          //       autoPlay: false,
-                          //       aspectRatio: 2.0,
-                          //       // enlargeCenterPage: true
-                          //     )),
+                      SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth, carmodelsList: carmodelslist,userId: userId,)
+                    
                           ),
                       SliverToBoxAdapter(
                         child: Column(
                           children: [
                             ListTile(
+                              trailing: Icon(Icons.arrow_forward_ios),
                               leading: Text(
                                 "Categories",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
+                                    
                               ),
                               // trailing: Text(
                               //   "View All",
@@ -203,21 +203,28 @@ class HomeScreen extends StatelessWidget {
                                     margin: EdgeInsets.only(right: 12),
                                     height: 120,
                                     width: 150,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      categorylist[index]
-                                                          .image!))),
-                                          height: 100,
-                                          //  width: 150,
-                                        ),
-                                        Text(categorylist[index].name!)
-                                      ],
+                                    child: GestureDetector(
+
+                                      onTap: (){
+                                     
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => CarModelListScreen(category: categorylist[index].name,userId: userId,),));
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        categorylist[index]
+                                                            .image!))),
+                                            height: 100,
+                                            //  width: 150,
+                                          ),
+                                          Text(categorylist[index].name!)
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },
@@ -448,259 +455,3 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class ShowCarDetailsCard extends StatelessWidget {
-  ShowCarDetailsCard(
-      {super.key, required this.carmodelslist, required this.index});
-  final index;
-  final List<CarModels> carmodelslist;
-  List<FavouriteModel> favList = [];
-
-  @override
-  Widget build(BuildContext context) {
-    context.read<FavouriteBloc>().add(FetchFavouriteEvent());
-    return Container(
-      decoration: BoxDecoration(),
-      child: Card(
-        color: Colors.white,
-        child: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.sizeOf(context).width * 2,
-                  height: 170,
-                  child: CachedNetworkImage(
-                    imageUrl: carmodelslist[index].images.last,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            "₹ ${carmodelslist[index].price!}",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "9am -9pm",
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(7)),
-                        child: Center(
-                            child: Text(
-                          carmodelslist[index].category!,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        )),
-                        height: 30,
-                        width: 80,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: Colors.black,
-                        ),
-                        child: Center(
-                          child: Text("${carmodelslist[index].seats!} seats",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
-                        height: 30,
-                        width: 80,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: Colors.black,
-                        ),
-                        child: Center(
-                          child: Text(carmodelslist[index].transmit!,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
-                        height: 30,
-                        width: 80,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              left: 2,
-              top: 2,
-              child: BlocBuilder<FavouriteBloc, FavouriteState>(
-                builder: (context, state) {
-                  Color iconColor = Colors.black;
-
-                  if (state is FavouriteLoadedState) {
-                    favList = state.favlist;
-                    if (index >= 0 && index < state.favlist.length) {
-               
-                      if (favList[index].favId == carmodelslist[index].id) {
-                        iconColor = Colors.red;
-                      }
-                    }
-                  }
-                  return CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                          onPressed: () {
-                            //   if(favList[index].favId ==carmodelslist[index].id){
-                            //  // context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[index].favId));
-
-                            //  print("exist");
-                            //   }else{
-                            //     print("please add");
-                            //   }
-                            context.read<FavouriteBloc>().add(AddFavouriteEvent(
-                                  favModel: carmodelslist[index],
-                                ));
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
-                          },
-                          icon: Icon(
-                            Icons.favorite,
-                            color: iconColor,
-                          )));
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CarousalFirst extends StatelessWidget {
-  const CarousalFirst({
-    super.key,
-    required this.sWidth,
-  });
-
-  final double sWidth;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      //  color: Colors.black26,
-      child: Container(
-        width: sWidth,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'lib/assets/images/carousal1.jpg',
-              ),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(10)),
-        height: 250,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 50,
-              left: 10,
-              child: Container(
-                // margin: EdgeInsets.only(left: 50),
-                height: 150,
-                width: 250,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromARGB(176, 255, 255, 255),
-                ),
-
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: RichText(
-                            text: TextSpan(
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.black),
-                                children: [
-                              TextSpan(text: "Flat "),
-                              TextSpan(
-                                  text: "25% OFF",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: " on"),
-                              TextSpan(text: "\nyour first ride"),
-                            ])),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 8),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black),
-                      height: 40,
-                      width: 140,
-                      child: GestureDetector(
-                        onTap: () {
-                          //  Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId: carId, userId: userId, locationStatus: locationStatus),))
-                        },
-                        child: Text(
-                          "BOOK NOW",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Colors.white),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            //
-          ],
-        ),
-      ),
-    );
-  }
-}

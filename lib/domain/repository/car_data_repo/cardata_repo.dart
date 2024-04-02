@@ -6,6 +6,7 @@ import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/infrastructure/category_model/category_model.dart';
 
 class CardataRepo {
+  final categoryCollection = FirebaseFirestore.instance.collection('category');
   Future<List<BrandModel>> getBranddata() async {
     List<BrandModel> brandlist = [];
 
@@ -35,10 +36,9 @@ class CardataRepo {
     List<CategoryModel> categorylist = [];
 
     try {
-      final categoryCollection =
-          await FirebaseFirestore.instance.collection('category').get();
+      final categorydata = await categoryCollection.get();
 
-      categoryCollection.docs.forEach((element) {
+      categorydata.docs.forEach((element) {
         final data = element.data();
         final categoryData = CategoryModel(
             name: data['name'],
@@ -54,12 +54,54 @@ class CardataRepo {
     }
   }
 
-  // Future<List<CarModels>> getFavList()async{
+  Future<List<CarModels>> getSpecificCategoryList(String catename) async {
+
+    print("category is ${catename}");
+
+
+    List<CarModels> specificCateList = [];
+
+    try {
+      final CateCollection = await FirebaseFirestore.instance
+          .collection('models')
+          .where('category', isEqualTo: catename)
+          .get();
+
+      CateCollection.docs.forEach((element) {
+        final data = element.data();
+
+  
+
+        final carModels = CarModels(
+          id: data['id'],
+          category: data['category'],
+          brand: data['brand'],
+          model: data['model'],
+          transmit: data['transmit'],
+          fuel: data['fuel'],
+          baggage: data['baggage'],
+          price: data['price'],
+          seats: data['seats'],
+          deposit: data['deposit'],
+          freekms: data['freekms'],
+          extrakms: data['extrakms'],
+          images: data['carImages'],
+        );
+        specificCateList.add(carModels);
+      });
+
+      return specificCateList;
+    } on FirebaseException catch (e) {
+      print(e.message);
+      return specificCateList;
+    }
+  }
+
+  // getFavList()async{
 
   //   List<CarModels> favList =[];
 
-  //   final 
-
+  //   final
 
   // }
 
@@ -74,24 +116,22 @@ class CardataRepo {
         final data = element.data();
 
         final carmodel = CarModels(
-            id: data['id'],
-            category: data['category'],
-            brand: data['brand'],
-            model: data['model'],
-            transmit: data['transmit'],
-            fuel: data['fuel'],
-            baggage: data['baggage'],
-            price: data['price'],
-            seats: data['seats'],
-            deposit: data['deposit'],
-            freekms: data['freekms'],
-            extrakms: data['extrakms'],
-            images: data['carImages'], 
-          
-            );
+          id: data['id'],
+          category: data['category'],
+          brand: data['brand'],
+          model: data['model'],
+          transmit: data['transmit'],
+          fuel: data['fuel'],
+          baggage: data['baggage'],
+          price: data['price'],
+          seats: data['seats'],
+          deposit: data['deposit'],
+          freekms: data['freekms'],
+          extrakms: data['extrakms'],
+          images: data['carImages'],
+        );
 
         carmodelslist.add(carmodel);
-       
       });
 
       return carmodelslist;
@@ -112,7 +152,6 @@ class CardataRepo {
 
       cardata.docs.forEach((element) {
         final data = element.data();
-        
 
         final cardata = CarModels(
             id: data['id'],
@@ -157,30 +196,26 @@ class CardataRepo {
         final bookingdate = element['pickup-date'];
         pickupDate = DateTime.parse(bookingdate);
 
-
         if (pickupDate.isAfter(currentDate)) {
           final data = element.data();
-          
-      DateTime pickupDate = DateTime.parse(
-                                  data['pickup-date']);
-                              DateTime dropOffDate = DateTime.parse(
-                                  data['dropoff-date']);
-                              String pickMonth = DateFormat('MMM')
-                                  .format(DateTime(0, pickupDate.month));
-                              String dropMonth = DateFormat('MMM')
-                                  .format(DateTime(0, dropOffDate.month));
 
-      
+          DateTime pickupDate = DateTime.parse(data['pickup-date']);
+          DateTime dropOffDate = DateTime.parse(data['dropoff-date']);
+          String pickMonth =
+              DateFormat('MMM').format(DateTime(0, pickupDate.month));
+          String dropMonth =
+              DateFormat('MMM').format(DateTime(0, dropOffDate.month));
+
           final bookingdetails = BookingModel(
               agrchcked: data['agreement-tick'],
               userId: data['userdata']['uid'],
               CarmodelId: data['carmodel']['id'],
               BookingId: data['booking-id'],
               BookingDays: data['booking-days'],
-              PickupDate:pickupDate.day.toString(),
+              PickupDate: pickupDate.day.toString(),
               PickupTime: data['pick-up time'],
               PickupAddress: data['pickup-address'],
-              DropOffDate:dropOffDate.day.toString(),
+              DropOffDate: dropOffDate.day.toString(),
               DropOffTime: data['drop-off time'],
               DropoffAddress: data['dropoff-location'],
               PaymentAmount: data['toal-pay'].toString(),
@@ -188,15 +223,11 @@ class CardataRepo {
               carmodel: data['carmodel'],
               userdata: data['userdata'],
               pickMonth: pickMonth,
-              dropMonth: dropMonth
-              );
+              dropMonth: dropMonth);
 
-      
           bookingDataList.add(bookingdetails);
         }
       });
-
-     
 
       return bookingDataList;
     } on FirebaseException catch (e) {
@@ -206,21 +237,16 @@ class CardataRepo {
   }
 
   Future<List<BookingModel>> getBookingHistory(String userId) async {
-
- 
     List<BookingModel> bookingHistoryList = [];
     try {
       DateTime pickupDate;
       DateTime currentDate = DateTime.now();
 
-     
       final collection = await FirebaseFirestore.instance
           .collection('bookings')
           .where('userdata.uid', isEqualTo: userId)
           .orderBy('pickup-date')
           .get();
-
-          
 
       collection.docs.forEach((doc) {
         final bookingdate = doc['pickup-date'];
@@ -229,25 +255,23 @@ class CardataRepo {
         if (pickupDate.isBefore(currentDate)) {
           final data = doc.data();
 
-           DateTime pickupDate = DateTime.parse(
-                                  data['pickup-date']);
-                              DateTime dropOffDate = DateTime.parse(
-                                  data['dropoff-date']);
-                              String pickMonth = DateFormat('MMM')
-                                  .format(DateTime(0, pickupDate.month));
-                              String dropMonth = DateFormat('MMM')
-                                  .format(DateTime(0, dropOffDate.month));
-      
-          final bookingHistory =BookingModel(
+          DateTime pickupDate = DateTime.parse(data['pickup-date']);
+          DateTime dropOffDate = DateTime.parse(data['dropoff-date']);
+          String pickMonth =
+              DateFormat('MMM').format(DateTime(0, pickupDate.month));
+          String dropMonth =
+              DateFormat('MMM').format(DateTime(0, dropOffDate.month));
+
+          final bookingHistory = BookingModel(
               agrchcked: data['agreement-tick'],
               userId: data['userdata']['uid'],
               CarmodelId: data['carmodel']['id'],
               BookingId: data['booking-id'],
               BookingDays: data['booking-days'],
-              PickupDate:pickupDate.day.toString(),
+              PickupDate: pickupDate.day.toString(),
               PickupTime: data['pick-up time'],
               PickupAddress: data['pickup-address'],
-              DropOffDate:dropOffDate.day.toString(),
+              DropOffDate: dropOffDate.day.toString(),
               DropOffTime: data['drop-off time'],
               DropoffAddress: data['dropoff-location'],
               PaymentAmount: data['toal-pay'].toString(),
@@ -255,10 +279,8 @@ class CardataRepo {
               carmodel: data['carmodel'],
               userdata: data['userdata'],
               pickMonth: pickMonth,
-              dropMonth: dropMonth
-              );
+              dropMonth: dropMonth);
 
-             
           bookingHistoryList.add(bookingHistory);
         }
       });
