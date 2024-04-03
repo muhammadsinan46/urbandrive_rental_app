@@ -56,7 +56,6 @@ class CardataRepo {
 
   Future<List<CarModels>> getSpecificCategoryList(String catename) async {
 
-    print("category is ${catename}");
 
 
     List<CarModels> specificCateList = [];
@@ -108,12 +107,14 @@ class CardataRepo {
   Future<List<CarModels>> getCarModels() async {
     final List<CarModels> carmodelslist = [];
 
+
     try {
       final carDataModelCollection =
           await FirebaseFirestore.instance.collection('models').get();
 
-      carDataModelCollection.docs.forEach((element) {
+      carDataModelCollection.docs.forEach((element)async {
         final data = element.data();
+
 
         final carmodel = CarModels(
           id: data['id'],
@@ -129,11 +130,13 @@ class CardataRepo {
           freekms: data['freekms'],
           extrakms: data['extrakms'],
           images: data['carImages'],
+        //  rating:  rating
+
         );
 
         carmodelslist.add(carmodel);
       });
-
+                print("rating is ${carmodelslist[1].baggage}");
       return carmodelslist;
     } on FirebaseException catch (e) {
       print("error is ${e.message}");
@@ -149,7 +152,14 @@ class CardataRepo {
           .collection('models')
           .where('id', isEqualTo: id)
           .get();
-
+                final feedColl = await FirebaseFirestore.instance.collection('feedback').where('carmodel-id', isEqualTo: id, ).get();
+      double  ratingSum =0;
+      feedColl.docs.forEach((element) { 
+           final dat= element.get('rating');
+      ratingSum += dat;
+      });
+      double rating = ratingSum/feedColl.size;
+     
       cardata.docs.forEach((element) {
         final data = element.data();
 
@@ -166,7 +176,10 @@ class CardataRepo {
             deposit: data['deposit'],
             freekms: data['freekms'],
             extrakms: data['extrakms'],
-            images: data['carImages']);
+            images: data['carImages'],
+            rating: rating
+            
+            );
 
         carmodelData.add(cardata);
       });

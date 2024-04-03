@@ -19,6 +19,8 @@ import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 import 'package:urbandrive/infrastructure/booking-models/booking_model.dart';
 import 'package:urbandrive/domain/utils/booking/booking_screeen_helper.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/booking_confirm.dart';
+import 'package:urbandrive/presentation/booking_screen/widgets/booking_button.dart';
+import 'package:urbandrive/presentation/booking_screen/widgets/update_button.dart';
 import 'package:urbandrive/presentation/location_screen/widgets/location_search.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/car_booking_shimmer.dart';
 
@@ -82,7 +84,6 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
     return Scaffold(
         body: BlocBuilder<CarBookingBloc, CarBookingState>(
           builder: (context, state) {
-        
             if (state is CarDataLoadingState) {
               return ShimmerCarBookingScreen();
             } else if (state is CarDataLoadedState) {
@@ -97,12 +98,14 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
 
                         return SliverAppBar(
                           leading: InkWell(
-                            onTap: (){
-                              
-                            if(widget.isEdit==true){
-                                context.read<CarBookingBloc>().add(UpcomingCarBookingLogEvent(userId: widget.userId));
-                            }
-                              Navigator.pop(context);},
+                            onTap: () {
+                              if (widget.isEdit == true) {
+                                context.read<CarBookingBloc>().add(
+                                    UpcomingCarBookingLogEvent(
+                                        userId: widget.userId));
+                              }
+                              Navigator.pop(context);
+                            },
                             child: Icon(
                               Icons.arrow_back_ios_new,
                               color: scrolled ? Colors.white : Colors.blue,
@@ -188,11 +191,36 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            "${bookingdata.carmodelData[0].brand!} ${bookingdata.carmodelData[0].model}",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "${bookingdata.carmodelData[0].brand!} ${bookingdata.carmodelData[0].model}",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.star,
+                                                    size: 14,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  Text(
+                                                    " ${bookingdata.carmodelData[0].rating!.isNaN ? 0.00 : bookingdata.carmodelData[0].rating}",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                           Text(
                                             "₹ ${bookingdata.carmodelData[0].price} / day",
@@ -850,17 +878,18 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-
-                          if( widget.isEdit==false){
-                               addBookingData();
-                          }else{
-
-                        updateBooking(widget.bookingDataList!, widget.idx!);
+                        onTap: () {
+                          if (widget.isEdit == false) {
+                            addBookingData();
+                          } else {
+                            updateBooking(widget.bookingDataList!, widget.idx!);
                           }
-
                         },
-                        child:widget.isEdit==false? BookingButton(agrchcked: agrchcked, bookingdata: bookingdata):UpdateBookingButton(agrchcked: agrchcked, bookingdata: bookingdata),
+                        child: widget.isEdit == false
+                            ? BookingButton(
+                                agrchcked: agrchcked, bookingdata: bookingdata)
+                            : UpdateBookingButton(
+                                agrchcked: agrchcked, bookingdata: bookingdata),
                       )
                     ],
                   ));
@@ -1011,98 +1040,39 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
       Navigator.pop(context);
     }
   }
-  
-  updateBooking(List<BookingModel> bookingList,int idx) async{
 
-   
+  updateBooking(List<BookingModel> bookingList, int idx) async {
+    String bookingdays = (bookingdata.selectedDate.end
+            .difference(bookingdata.selectedDate.start)
+            .inDays)
+        .toString();
 
-     String bookingdays = (bookingdata.selectedDate.end
-              .difference(bookingdata.selectedDate.start)
-              .inDays)
-          .toString();
+    Map<String, dynamic> updateData = {
+      "pickup-address": bookingdata.pickuplocation[0]['description'],
+      "dropoff-location": bookingdata.dropofflocation[0]['description'],
+      "pickup-date": bookingdata.selectedDate.start.toString(),
+      "dropoff-date": bookingdata.selectedDate.end.toString(),
+      "pick-up time": bookingdata.pickedTime.toString(),
+      "drop-off time": bookingdata.dropTime.toString(),
+      "booking-days": bookingdays,
+    };
 
-        Map<String, dynamic> updateData = {
-        "pickup-address": bookingdata.pickuplocation[0]['description'],
-        "dropoff-location": bookingdata.dropofflocation[0]['description'],
-        "pickup-date": bookingdata.selectedDate.start.toString(),
-        "dropoff-date":bookingdata.selectedDate.end.toString(),
-        "pick-up time": bookingdata.pickedTime.toString(),
-        "drop-off time": bookingdata.dropTime.toString(),
-        "booking-days":bookingdays,
-      };
-
-    await firestore.collection('bookings').doc(bookingList[idx].BookingId).update(updateData).then((value){
-
+    await firestore
+        .collection('bookings')
+        .doc(bookingList[idx].BookingId)
+        .update(updateData)
+        .then((value) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.green,
-        content: Text("Booking data is updated", style: TextStyle(color: Colors.white),)));
-        context.read<CarBookingBloc>().add(UpcomingCarBookingLogEvent(userId: bookingList[idx].userId!));
+          backgroundColor: Colors.green,
+          content: Text(
+            "Booking data is updated",
+            style: TextStyle(color: Colors.white),
+          )));
+      context
+          .read<CarBookingBloc>()
+          .add(UpcomingCarBookingLogEvent(userId: bookingList[idx].userId!));
       Navigator.pop(context);
     });
-  }
-}
-
-class UpdateBookingButton extends StatelessWidget {
-  const UpdateBookingButton({
-    super.key,
-    required this.agrchcked,
-    required this.bookingdata,
-  });
-
-  final bool agrchcked;
-  final BookingScreenHelper bookingdata;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-          decoration: BoxDecoration(
-              color:  Colors.green,
-              borderRadius: BorderRadius.circular(10)),
-          height: 70,
-          width: 160,
-          child: Center(
-              child: Text(
-            "Update",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 18),
-          )),
-        );
-  }
-}
-
-class BookingButton extends StatelessWidget {
-  const BookingButton({
-    super.key,
-    required this.agrchcked,
-    required this.bookingdata,
-  });
-
-  final bool agrchcked;
-  final BookingScreenHelper bookingdata;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: agrchcked == false &&
-                  bookingdata.pickuplocation.length == 0 &&
-                  bookingdata.dropofflocation.length == 0
-              ? Color.fromARGB(74, 255, 255, 255)
-              : Colors.green,
-          borderRadius: BorderRadius.circular(10)),
-      height: 70,
-      width: 160,
-      child: Center(
-          child: Text(
-        "Continue",
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 18),
-      )),
-    );
   }
 }
 

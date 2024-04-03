@@ -13,6 +13,7 @@ class CarModels {
   String? extrakms;
   bool? favourite =false;
   List images;
+  double? rating;
 
 
   CarModels(
@@ -30,7 +31,8 @@ class CarModels {
       required this.freekms,
       required this.extrakms,
       required this.images,
-        this.favourite
+        this.favourite,
+        this.rating
       
       });
 
