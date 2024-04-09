@@ -45,21 +45,7 @@ if(await canLaunchUrl(url)){
                 builder: (context, state) {
         
                   if(state is UsersLoadedState){
-                     return Container(
-                      margin: EdgeInsets.all(12),
-                      height: 80,
-                       child: RichText(
-                        
-                                         text: TextSpan(children: [
-                        TextSpan(
-                            text: "Hi ${state.users.name}",
-                            style: TextStyle(color: const Color.fromARGB(255, 53, 125, 185), fontSize: 22, fontWeight: FontWeight.w900)),
-                        TextSpan(
-                            text: "\nHow can we help?",
-                            style: TextStyle(color:const Color.fromARGB(255, 53, 125, 185),fontSize: 20, fontWeight: FontWeight.bold)),
-                                         ]),
-                                       ),
-                     );
+                     return fetchUserData(state);
                   }
                   return RichText(
                     text: TextSpan(children: [
@@ -109,5 +95,23 @@ if(await canLaunchUrl(url)){
         
       //   controller: _webcontroller) ,
     );
+  }
+
+  Container fetchUserData(UsersLoadedState state) {
+    return Container(
+                    margin: EdgeInsets.all(12),
+                    height: 80,
+                     child: RichText(
+                      
+                                       text: TextSpan(children: [
+                      TextSpan(
+                          text: "Hi ${state.users.name}",
+                          style: TextStyle(color: const Color.fromARGB(255, 53, 125, 185), fontSize: 22, fontWeight: FontWeight.w900)),
+                      TextSpan(
+                          text: "\nHow can we help?",
+                          style: TextStyle(color:const Color.fromARGB(255, 53, 125, 185),fontSize: 20, fontWeight: FontWeight.bold)),
+                                       ]),
+                                     ),
+                   );
   }
 }

@@ -1,18 +1,17 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
+
 import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/infrastructure/category_model/category_model.dart';
-import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
+
 import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
+import 'package:urbandrive/presentation/home_screen/widgets/appbar_shimmer.dart';
 import 'package:urbandrive/presentation/home_screen/widgets/homescreen_carousal.dart';
 import 'package:urbandrive/presentation/home_screen/widgets/specific_category_list.dart';
 import 'package:urbandrive/presentation/home_screen/widgets/show_car_detail_card.dart';
@@ -23,19 +22,15 @@ import 'package:urbandrive/presentation/profile_screen/pages/profile_screen.dart
 class HomeScreen extends StatelessWidget {
   HomeScreen({
     super.key,
-    // this.isLocation
   });
 
   String? userLocation;
   bool? isLocation;
-  List<BrandModel> brandlist = [];
-  List<CategoryModel> categorylist = [];
-  List<CarModels> carmodelslist = [];
+  List<BrandModel> brandModelList = [];
+  List<CategoryModel> categoryList = [];
+  List<CarModels> carModelsList = [];
 
   String? userId;
-
-  //UserModel userdata;
-  // final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -44,67 +39,22 @@ class HomeScreen extends StatelessWidget {
     double sWidth = MediaQuery.sizeOf(context).width;
     double sHeight = MediaQuery.sizeOf(context).height;
 
-    // List<Widget> carousalitems = [
-    //   CarousalFirst(sWidth: sWidth),
-    //   // CarousalFirst(sWidth: sWidth),
-    //   // CarousalFirst(sWidth: sWidth),
-    //   // CarousalFirst(sWidth: sWidth),
-    // ];
     return Scaffold(body: BlocBuilder<HomescreenBloc, HomescreenState>(
       builder: (context, state) {
         if (state is HomescreenLoadingState) {
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
-                SliverAppBar(
-                  backgroundColor: Colors.grey.shade100,
-                  //  titleSpacing: BorderSide.strokeAlignCenter,
-                  elevation: 0,
-                  pinned: true,
-                  //expandedHeight: 10,
-                  floating: false,
-                  leading: Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey.shade300,
-                      child: Icon(Icons.person),
-                    ),
-                  ),
-
-                  actions: [
-                    Container(
-                      margin: EdgeInsets.only(right: 10),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.grey.shade300,
-
-                        ///  Icon(Icons.search),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    )
-                  ],
-
-                  flexibleSpace: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return FlexibleSpaceBar(
-                        collapseMode: CollapseMode.parallax,
-                      );
-                    },
-                  ),
-                ),
+                AppbarLoading(),
               ];
             },
             body: HomeScreenShimmer(
-                sWidth: sWidth,
-                brandlist: brandlist,
-                sHeight: sHeight,
-                carmodelslist: carmodelslist),
+                sWidth: sWidth, sHeight: sHeight, carModelsList: carModelsList),
           );
         } else if (state is HomescreenLoadedState) {
-          brandlist = state.brandList;
-          categorylist = state.categorylist;
-          carmodelslist = state.carmodelsList;
+          brandModelList = state.brandModelList;
+          categoryList = state.categoryList;
+          carModelsList = state.carModelsList;
 
           return BlocBuilder<UsersBloc, UsersState>(
             builder: (context, state) {
@@ -126,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               ListTile(
-                                   trailing: Icon(Icons.arrow_forward_ios),
+                                trailing: Icon(Icons.arrow_forward_ios),
                                 leading: Text(
                                   "Brands",
                                   style: TextStyle(
@@ -140,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                                 width: sWidth,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: brandlist.length,
+                                  itemCount: brandModelList.length,
                                   itemBuilder: (context, index) {
                                     return Container(
                                       height: 100,
@@ -151,13 +101,14 @@ class HomeScreen extends StatelessWidget {
                                             backgroundColor: Color.fromARGB(
                                                 35, 209, 232, 251),
                                             child: CachedNetworkImage(
-                                              imageUrl: brandlist[index].logo!,
+                                              imageUrl:
+                                                  brandModelList[index].logo!,
                                               fit: BoxFit.cover,
                                             ),
                                             radius: 35,
                                           ),
                                           Text(
-                                            brandlist[index].name!,
+                                            brandModelList[index].name!,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 12),
@@ -172,9 +123,12 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth, carmodelsList: carmodelslist,userId: userId,)
-                    
-                          ),
+                      SliverToBoxAdapter(
+                          child: CarousalFirst(
+                        sWidth: sWidth,
+                        carModelsList: carModelsList,
+                        userId: userId,
+                      )),
                       SliverToBoxAdapter(
                         child: Column(
                           children: [
@@ -184,12 +138,7 @@ class HomeScreen extends StatelessWidget {
                                 "Categories",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
-                                    
                               ),
-                              // trailing: Text(
-                              //   "View All",
-                              //   style: TextStyle(fontSize: 15),
-                              // ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 8, right: 8),
@@ -197,17 +146,24 @@ class HomeScreen extends StatelessWidget {
                               width: sWidth,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: categorylist.length,
+                                itemCount: categoryList.length,
                                 itemBuilder: (context, index) {
                                   return Container(
                                     margin: EdgeInsets.only(right: 12),
                                     height: 120,
                                     width: 150,
                                     child: GestureDetector(
-
-                                      onTap: (){
-                                     
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => CarModelListScreen(category: categorylist[index].name,userId: userId,),));
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CarModelListScreen(
+                                                category:
+                                                    categoryList[index].name,
+                                                userId: userId,
+                                              ),
+                                            ));
                                       },
                                       child: Column(
                                         children: [
@@ -217,12 +173,11 @@ class HomeScreen extends StatelessWidget {
                                                     BorderRadius.circular(30),
                                                 image: DecorationImage(
                                                     image: NetworkImage(
-                                                        categorylist[index]
+                                                        categoryList[index]
                                                             .image!))),
                                             height: 100,
-                                            //  width: 150,
                                           ),
-                                          Text(categorylist[index].name!)
+                                          Text(categoryList[index].name!)
                                         ],
                                       ),
                                     ),
@@ -242,19 +197,17 @@ class HomeScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                          
                             ),
                             GridView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              // primary: false,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                       childAspectRatio: 1.5,
                                       crossAxisCount: 1,
                                       mainAxisSpacing: 15,
                                       crossAxisSpacing: 5),
-                              itemCount: carmodelslist.length,
+                              itemCount: carModelsList.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
@@ -263,16 +216,15 @@ class HomeScreen extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CarBookingScreen(
-                                                isEdit: false,
+                                            isEdit: false,
                                             locationStatus: isLocation!,
-                                            carId: carmodelslist[index].id,
+                                            carId: carModelsList[index].id,
                                             userId: userId!,
-                                            //  userLocation: userLocation!,
                                           ),
                                         ));
                                   },
                                   child: ShowCarDetailsCard(
-                                      carmodelslist: carmodelslist,
+                                      carModelsList: carModelsList,
                                       index: index),
                                 );
                               },
@@ -289,9 +241,8 @@ class HomeScreen extends StatelessWidget {
               }
               return HomeScreenShimmer(
                   sWidth: sWidth,
-                  brandlist: brandlist,
                   sHeight: sHeight,
-                  carmodelslist: carmodelslist);
+                  carModelsList: carModelsList);
             },
           );
         }
@@ -303,31 +254,19 @@ class HomeScreen extends StatelessWidget {
   SliverAppBar SliverAppbarLoaded(
       BuildContext context, UsersLoadedState state) {
     return SliverAppBar(
-      //  shape: ContinuousRectangleBorder(
-      //   borderRadius: BorderRadius.only(
-      //       bottomLeft: Radius.circular(50),
-      //       bottomRight: Radius.circular(50))),
       backgroundColor: Colors.blue,
-      //  titleSpacing: BorderSide.strokeAlignCenter,
       elevation: 0,
       pinned: true,
-      //expandedHeight: 10,
-
-      leading: GestureDetector(
-        onTap: () {
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowProfileScreen()));
-        },
-        child: Container(
-          margin: EdgeInsets.only(left: 5),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ShowProfileScreen()));
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.person),
-            ),
+      leading: Container(
+        margin: EdgeInsets.only(left: 5),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ShowProfileScreen()));
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Icon(Icons.person),
           ),
         ),
       ),
@@ -362,15 +301,6 @@ class HomeScreen extends StatelessWidget {
           height: 10,
         )
       ],
-
-      // flexibleSpace: LayoutBuilder(
-      //   builder: (context, constraints) {
-      //     return FlexibleSpaceBar(
-      //       collapseMode: CollapseMode.parallax,
-      //       //background: ,
-      //     );
-      //   },
-      // ),
     );
   }
 
@@ -439,7 +369,7 @@ class HomeScreen extends StatelessWidget {
                         builder: (context) => SearchScreen(
                               isLocation: isLocation,
                               userId: userId,
-                              allModelslist: carmodelslist,
+                              allModelslist: carModelsList,
                             )));
               },
               leading: Icon(Icons.search),
@@ -454,4 +384,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

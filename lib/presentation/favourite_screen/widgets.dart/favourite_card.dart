@@ -134,6 +134,9 @@ class FavouriteCard extends StatelessWidget {
             onPressed: () {
 
               context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[idx].favId));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text("${favList[idx].carmodel['brand']} ${favList[idx].carmodel['model']} removed from favourite list")));
             },
             icon: Icon(Icons.favorite, color: Colors.red,))
                   ),

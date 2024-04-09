@@ -1,13 +1,9 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:urbandrive/domain/utils/user_authentication/user_auth_helper.dart';
 
 import 'package:urbandrive/presentation/main_page/pages/main_page.dart';
 
@@ -16,7 +12,6 @@ class LocationPermissionScreen extends StatefulWidget {
 
   final String currentUser;
 
-  UserauthHelper userdata = UserauthHelper();
 
   @override
   State<LocationPermissionScreen> createState() =>
@@ -28,37 +23,10 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
 
   bool? isLocPermitted;
 
-  getAddresslatLong(double lat, double long) async {
-    await placemarkFromCoordinates(lat, long).then((List<Placemark> placemark) {
-      Placemark place = placemark[0];
-
-      setState(() {});
-      currentAddress = place.locality;
-    });
-
-    Map<String, dynamic> location = {
-      "location": currentAddress,
-      "location-status":true      };
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.currentUser)
-        .update(location)
-        .then((value) => Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainPage(
-              
-              ),
-            ),
-            (route) => false));
-  }
-
   final locationPermission = Permission.location;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 248, 252),
       body: Center(
@@ -96,9 +64,7 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MainPage(
-                          
-                          ),
+                          builder: (context) => MainPage(),
                         ),
                         (route) => false);
                   },
@@ -128,11 +94,34 @@ class _LocationPermissionScreenState extends State<LocationPermissionScreen> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => MainPage(
-            
-            ),
+            builder: (context) => MainPage(),
           ),
           (route) => false);
     }
+  }
+
+  getAddresslatLong(double lat, double long) async {
+    await placemarkFromCoordinates(lat, long).then((List<Placemark> placemark) {
+      Placemark place = placemark[0];
+
+      setState(() {});
+      currentAddress = place.locality;
+    });
+
+    Map<String, dynamic> location = {
+      "location": currentAddress,
+      "location-status": true
+    };
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.currentUser)
+        .update(location)
+        .then((value) => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainPage(),
+            ),
+            (route) => false));
   }
 }

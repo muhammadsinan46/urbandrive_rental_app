@@ -26,7 +26,6 @@ String chatroomId = ids.join("_");
 
 Stream<QuerySnapshot> getMessages(String userId, String receiverId){
 
-  print("getting function calling");
 
   List<String> ids = [userId, receiverId];
 

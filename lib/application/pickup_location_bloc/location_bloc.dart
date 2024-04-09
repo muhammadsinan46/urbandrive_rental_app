@@ -19,7 +19,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   FutureOr<void> locationLoading(
       LocationLoadingEvent event, Emitter<LocationState> emit) {
-    print("loading...");
+
   }
 
   FutureOr<void> pickuplocationloaded(

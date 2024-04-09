@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
+
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
-import 'package:urbandrive/presentation/home_screen/pages/home_screen.dart';
-import 'package:urbandrive/presentation/home_screen/widgets/homescreen_carousal.dart';
+
 class HomeScreenShimmer extends StatelessWidget {
   const HomeScreenShimmer({
     super.key,
     required this.sWidth,
-    required this.brandlist,
+
     required this.sHeight,
-    required this.carmodelslist,
+    required this.carModelsList,
   });
 
   final double sWidth;
-  final List<BrandModel> brandlist;
+ 
   final double sHeight;
-  final List<CarModels> carmodelslist;
+  final List<CarModels> carModelsList;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class HomeScreenShimmer extends StatelessWidget {
               ),
             ),
           ),
-          // SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth, carmodelsList: [],)
+          // SliverToBoxAdapter(child: CarousalFirst(sWidth: sWidth, carModelsList: [],)
           //     //  CarouselSlider(
           //     //     items: carousalitems,
           //     //     options: CarouselOptions(
@@ -145,7 +144,7 @@ class HomeScreenShimmer extends StatelessWidget {
                               crossAxisCount: 1,
                               mainAxisSpacing: 8.0,
                               crossAxisSpacing: 2),
-                      itemCount: carmodelslist.length,
+                      itemCount: carModelsList.length,
                       itemBuilder: (context, index) {
                         return Container(
                             decoration:

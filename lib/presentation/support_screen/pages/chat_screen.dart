@@ -95,7 +95,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                              
                                 if(isDisplayed)  Center(child: Text(messageDate==currentDate?"Today":messageDate.substring(0,10),style: TextStyle(color: Colors.grey),),),
                               
-                              getmessages(context, messageList, index)],
+                              getMessages(context, messageList, index)],
                           );
                         },
                       ),
@@ -173,7 +173,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     );
   }
 
-  Widget getmessages(
+  Widget getMessages(
       BuildContext context, List<dynamic> messageList, int index) {
    
 

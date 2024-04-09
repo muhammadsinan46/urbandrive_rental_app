@@ -21,7 +21,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
 
      try{
       final userdata = await userRepo.getUser();
-      print("user data is ${userdata}");
+
       emit(UsersLoadedState( userdata));
       
      }catch (e){

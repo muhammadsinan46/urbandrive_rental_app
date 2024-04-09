@@ -22,7 +22,6 @@ class CarBookingBloc extends Bloc<CarBookingEvent, CarBookingState> {
 
   FutureOr<void> carDataLoading(CarDataLaodingEvent event, Emitter<CarBookingState> emit) {
 
-    print("loading...");
   }
 
   FutureOr<void> carDataLoaded(CardDataLoadedEvent event, Emitter<CarBookingState> emit)async {

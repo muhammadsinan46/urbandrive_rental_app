@@ -136,7 +136,7 @@ class CardataRepo {
 
         carmodelslist.add(carmodel);
       });
-                print("rating is ${carmodelslist[1].baggage}");
+              
       return carmodelslist;
     } on FirebaseException catch (e) {
       print("error is ${e.message}");

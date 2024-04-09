@@ -21,16 +21,16 @@ class HomescreenBloc
 
   FutureOr<void> homescreenloading(
       HomescreenLoadingEvent event, Emitter<HomescreenState> emit) {
-    print("loading...");
+   
   }
 
   FutureOr<void> homescreenloaded(
       HomescreenLoadedEvent event, Emitter<HomescreenState> emit) async {
     try {
-      final brandlist = await cardata.getBranddata();
+      final brandModelList = await cardata.getBranddata();
       final categorylist = await cardata.getCategoryData();
       final carmodellist =await cardata.getCarModels();
-      emit(HomescreenLoadedState(brandList: brandlist, categorylist: categorylist, carmodelsList:carmodellist ));
+      emit(HomescreenLoadedState(brandModelList: brandModelList, categoryList: categorylist, carModelsList:carmodellist ));
     } catch (e) {
       print(e.toString());
     }

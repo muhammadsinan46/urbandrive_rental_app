@@ -1,8 +1,6 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 
@@ -36,11 +34,11 @@ class LocationSearchScreen extends StatelessWidget {
                             },
                             controller: pickupsearchController,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                hintText: "City or Address",
-                                //label: Text("Search")
-                                ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              hintText: "City or Address",
+                              //label: Text("Search")
+                            ),
                           );
                         },
                       )
@@ -76,16 +74,8 @@ class LocationSearchScreen extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.pickuplocation.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  Navigator.pop(
-                                      context,
-                                      state.pickuplocation[index]
-                                          ['description']);
-                                },
-                                title: Text(
-                                    '${state.pickuplocation[index]['description']}'),
-                              );
+                              return fetchLocation(context,
+                                  state.pickuplocation[index]['description']);
                             },
                           ),
                         );
@@ -106,16 +96,8 @@ class LocationSearchScreen extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.dropoffLocation.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  Navigator.pop(
-                                      context,
-                                      state.dropoffLocation[index]
-                                          ['description']);
-                                },
-                                title: Text(
-                                    '${state.dropoffLocation[index]['description']}'),
-                              );
+                              return fetchLocation(context,
+                                  state.dropoffLocation[index]['description']);
                             },
                           ),
                         );
@@ -126,6 +108,18 @@ class LocationSearchScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  ListTile fetchLocation(
+    BuildContext context,
+    dynamic locationDesc,
+  ) {
+    return ListTile(
+      onTap: () {
+        Navigator.pop(context, locationDesc);
+      },
+      title: Text('${locationDesc['description']}'),
     );
   }
 }

@@ -1,5 +1,7 @@
 
 
+// ignore_for_file: must_be_immutable
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +11,9 @@ import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
 
 class ShowCarDetailsCard extends StatelessWidget {
   ShowCarDetailsCard(
-      {super.key, required this.carmodelslist, required this.index});
+      {super.key, required this.carModelsList, required this.index});
   final index;
-  final List<CarModels> carmodelslist;
+  final List<CarModels> carModelsList;
   List<FavouriteModel> favList = [];
 
   @override
@@ -30,7 +32,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                   width: MediaQuery.sizeOf(context).width * 2,
                   height: 170,
                   child: CachedNetworkImage(
-                    imageUrl: carmodelslist[index].images.last,
+                    imageUrl: carModelsList[index].images.last,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -42,7 +44,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            "${carmodelslist[index].brand!} ${carmodelslist[index].model}",
+                            "${carModelsList[index].brand!} ${carModelsList[index].model}",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -51,7 +53,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            "₹ ${carmodelslist[index].price!}",
+                            "₹ ${carModelsList[index].price!}",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -75,7 +77,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(7)),
                         child: Center(
                             child: Text(
-                          carmodelslist[index].category!,
+                          carModelsList[index].category!,
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -93,7 +95,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                           color: Colors.black,
                         ),
                         child: Center(
-                          child: Text("${carmodelslist[index].seats!} seats",
+                          child: Text("${carModelsList[index].seats!} seats",
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -111,7 +113,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                           color: Colors.black,
                         ),
                         child: Center(
-                          child: Text(carmodelslist[index].transmit!,
+                          child: Text(carModelsList[index].transmit!,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -136,7 +138,7 @@ class ShowCarDetailsCard extends StatelessWidget {
                     favList = state.favlist;
                     if (index >= 0 && index < state.favlist.length) {
                
-                      if (favList[index].favId == carmodelslist[index].id) {
+                      if (favList[index].favId == carModelsList[index].id) {
                         iconColor = Colors.red;
                       }
                     }
@@ -145,17 +147,13 @@ class ShowCarDetailsCard extends StatelessWidget {
                       backgroundColor: Colors.white,
                       child: IconButton(
                           onPressed: () {
-                            //   if(favList[index].favId ==carmodelslist[index].id){
-                            //  // context.read<FavouriteBloc>().add(RemoveFavouriteEvent(favId: favList[index].favId));
-
-                            //  print("exist");
-                            //   }else{
-                            //     print("please add");
-                            //   }
+                        
                             context.read<FavouriteBloc>().add(AddFavouriteEvent(
-                                  favModel: carmodelslist[index],
+                                  favModel: carModelsList[index],
                                 ));
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
+                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.blue,
+                            content: Text("${carModelsList[index].brand} ${carModelsList[index].model} added into favourite list")));
                           },
                           icon: Icon(
                             Icons.favorite,

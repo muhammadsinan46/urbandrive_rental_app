@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:urbandrive/domain/utils/user_authentication/user_auth_helper.dart';
+import 'package:urbandrive/presentation/settings_screen/widgets/about%20_us.dart';
 import 'package:urbandrive/presentation/user_auth_screen/pages/login_screen.dart';
 import 'package:urbandrive/presentation/settings_screen/widgets/favourite_car_card.dart';
 import 'package:urbandrive/presentation/settings_screen/widgets/user_profile_card.dart';
 import 'package:urbandrive/presentation/user_auth_screen/pages/signup_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import'package:package_info_plus/package_info_plus.dart';
 
 UserauthHelper userauthHelper = UserauthHelper();
 
@@ -38,13 +40,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   }
 
+
   @override
   Widget build(BuildContext context) {
 
- 
-
-
-
+    var divider = Divider(color: const Color.fromARGB(255, 233, 245, 255),);
     return Scaffold(
       
      
@@ -60,12 +60,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Container(
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)    ,   color: Colors.white,),
          
-                  height: 350,
+                  height: 400,
                   width: MediaQuery.sizeOf(context).width,
                   child: Column(
                     children: [
+
+
+
                       FavouriteCard(),
-                           Divider(color: const Color.fromARGB(255, 233, 245, 255),),
+                           divider,
         
                  
                       ListTile(
@@ -86,38 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                            Divider(color: const Color.fromARGB(255, 233, 245, 255),),
                   
                       ListTile(
-                        onTap: () {
-                            showDialog(context: context, builder: (context) {
-                                return AlertDialog(
-                                  backgroundColor:  Color.fromARGB(255, 193, 229, 254),
-                                  title: Text("Log out"),
-                                  content:Text("Are you sure ?") ,
-                                  actions: [
-                                    InkWell(
-                                      onTap: () => Navigator.pop(context),
-                                      child: Container(
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-                                        height: 40,width: 100,child: Center(child: Text("Cancel")),)),
-                                    InkWell(
-                                      onTap: () {
-                                           userauthHelper.signOut();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                            (route) => false,
-                          );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
-                                        height: 40,width: 100,child: Center(child: Text("Log out", style: TextStyle(color: Colors.white),)),)),
-                                  ],
-                                );
-                            },);
-                                
-                       
-                        },
+                        onTap: ()=> userLogoutPermission(context),
                         leading:ImageIcon(AssetImage('lib/assets/icons/logout.png')),
                         title: Text("Logout"),
                        
@@ -125,46 +97,102 @@ class _SettingsScreenState extends State<SettingsScreen> {
                            Divider(color: const Color.fromARGB(255, 233, 245, 255),),
                   
                       ListTile(
-                         onTap: () => showDialog(context: context, builder: (context) {
-                                return AlertDialog(
-                                  backgroundColor:  Color.fromARGB(255, 193, 229, 254),
-                                  title: Text("Delete your account"),
-                                  content:Text("Are you sure you want to delete your account ?") ,
-                                  actions: [
-                                    InkWell(
-                                      onTap: () => Navigator.pop(context),
-                                      child: Container(
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-                                        height: 40,width: 100,child: Center(child: Text("Cancel")),)),
-                                    InkWell(
-                                      onTap: () {
-                                          userauthHelper.deleteAccount();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignupPage(),
-                            ),
-                            (route) => false,
-                          );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
-                                        height: 40,width: 100,child: Center(child: Text("Delete", style: TextStyle(color: Colors.white),)),)),
-                                  ],
-                                );
-                            },),
+                         onTap: () => deleteAccountPermission(context),
                         leading:ImageIcon(AssetImage('lib/assets/icons/delaccount.png')),
                         title: Text("Delete My Account"),
                         
                       ),
+                           ListTile(
+                         onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUsScreen(),));
+                         },
+                        leading:Icon(Icons.info),
+                        title: Text("About Us"),
+                        
+                      ),
+
+                 
                   
                     ],
                   )),
-            )
+            ),
+                 showappVersion()
+
           ],
         ),
       ),
     );
+  }
+
+  FutureBuilder<PackageInfo> showappVersion() {
+    return FutureBuilder(future: PackageInfo.fromPlatform(), builder: (context, snapshot) {
+                      if(snapshot.hasData){
+                         return Text("version ${snapshot.data!.version}", style: TextStyle(fontSize:18, fontWeight: FontWeight.w400, color: Colors.grey),);
+                      }
+                      return SizedBox();
+                    },);
+  }
+
+  Future<dynamic> userLogoutPermission(BuildContext context) {
+    return showDialog(context: context, builder: (context) {
+                              return AlertDialog(
+                                backgroundColor:  Color.fromARGB(255, 193, 229, 254),
+                                title: Text("Log out"),
+                                content:Text("Are you sure ?") ,
+                                actions: [
+                                  InkWell(
+                                    onTap: () => Navigator.pop(context),
+                                    child: Container(
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                                      height: 40,width: 100,child: Center(child: Text("Cancel")),)),
+                                  InkWell(
+                                    onTap: () {
+                                         userauthHelper.signOut();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                          (route) => false,
+                        );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
+                                      height: 40,width: 100,child: Center(child: Text("Log out", style: TextStyle(color: Colors.white),)),)),
+                                ],
+                              );
+                          },);
+  }
+
+  Future<dynamic> deleteAccountPermission(BuildContext context) {
+    return showDialog(context: context, builder: (context) {
+                              return AlertDialog(
+                                backgroundColor:  Color.fromARGB(255, 193, 229, 254),
+                                title: Text("Delete your account"),
+                                content:Text("Are you sure you want to delete your account ?") ,
+                                actions: [
+                                  InkWell(
+                                    onTap: () => Navigator.pop(context),
+                                    child: Container(
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                                      height: 40,width: 100,child: Center(child: Text("Cancel")),)),
+                                  InkWell(
+                                    onTap: () {
+                                        userauthHelper.deleteAccount();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignupPage(),
+                          ),
+                          (route) => false,
+                        );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black),
+                                      height: 40,width: 100,child: Center(child: Text("Delete", style: TextStyle(color: Colors.white),)),)),
+                                ],
+                              );
+                          },);
   }
 }
 

@@ -7,19 +7,19 @@ class BookingButton extends StatelessWidget {
   const BookingButton({
     super.key,
     required this.agrchcked,
-    required this.bookingdata,
+    required this.bookingDataHelper,
   });
 
   final bool agrchcked;
-  final BookingScreenHelper bookingdata;
+  final BookingScreenHelper bookingDataHelper;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           color: agrchcked == false &&
-                  bookingdata.pickuplocation.length == 0 &&
-                  bookingdata.dropofflocation.length == 0
+                  bookingDataHelper.pickuplocation.length == 0 &&
+                  bookingDataHelper.dropofflocation.length == 0
               ? Color.fromARGB(74, 255, 255, 255)
               : Colors.green,
           borderRadius: BorderRadius.circular(10)),

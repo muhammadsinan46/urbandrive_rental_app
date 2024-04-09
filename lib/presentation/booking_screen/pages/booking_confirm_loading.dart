@@ -96,7 +96,7 @@ class CardataLoadingScreen extends StatelessWidget {
                             ],
                           )),
                           Text(
-                            "Booking for ${widget.bookedData!.BookingDays} day",
+                            "Booking for ${widget.bookingModel!.BookingDays} day",
                             style: TextStyle(color: Colors.white),
                           )
                         ],
@@ -289,7 +289,7 @@ class CardataLoadingScreen extends StatelessWidget {
                           height: 80,
                           child: Text(
                               maxLines: 5,
-                              "${widget.bookedData!.PickupAddress}")),
+                              "${widget.bookingModel!.PickupAddress}")),
                     ),
                     trailing: Padding(
                       padding: const EdgeInsets.only(top: 20.0),
@@ -321,7 +321,7 @@ class CardataLoadingScreen extends StatelessWidget {
                           height: 80,
                           child: Text(
                               maxLines: 5,
-                              "${widget.bookedData!.DropoffAddress}")),
+                              "${widget.bookingModel!.DropoffAddress}")),
                     ),
                     trailing: Padding(
                       padding: const EdgeInsets.only(top: 20.0),

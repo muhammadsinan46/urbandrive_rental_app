@@ -33,7 +33,7 @@ class PickpAddressTile extends StatelessWidget {
             height: 80,
             child: Text(
                 maxLines: 5,
-                "${widget.bookedData!.PickupAddress}", style: TextStyle(fontSize: 12),)),
+                "${widget.bookingModel!.PickupAddress}", style: TextStyle(fontSize: 12),)),
       ),
       trailing: Padding(
         padding: const EdgeInsets.only(top: 20.0),

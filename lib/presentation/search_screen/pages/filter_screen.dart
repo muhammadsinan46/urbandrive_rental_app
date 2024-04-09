@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
 import 'package:urbandrive/infrastructure/category_model/category_model.dart';
 import 'package:urbandrive/application/search_bloc/search_bloc.dart';
-import 'package:urbandrive/presentation/search_screen/search_repo.dart';
+
 import 'package:urbandrive/presentation/search_screen/widgets/brandstyle_loading.dart';
 import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 
@@ -35,12 +35,11 @@ class _CarFilterButtonState extends State<CarFilterButton> {
     "Price High to Low"
   ];
   String? radioValue;
-  List<BrandModel> brandlist = [];
-  List<CategoryModel> categorylist = [];
+  List<BrandModel> brandModelList = [];
+  List<CategoryModel> categoryList = [];
 
   List<int> carstyleItems = [];
   List<String> carselectedStyle = [];
-  List<String> carbrandselected = [];
 
   @override
   Widget build(BuildContext context) {
@@ -140,42 +139,7 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                             ),
                             StatefulBuilder(
                               builder: (context, state) {
-                                return SfRangeSliderTheme(
-                                  data: SfRangeSliderThemeData(
-                                      thumbColor: Colors.white,
-                                      tooltipTextStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.blue),
-                                      tooltipBackgroundColor:
-                                          Colors.transparent),
-                                  child: SfRangeSlider(
-                                    thumbShape: SfThumbShape(),
-                                    shouldAlwaysShowTooltip: true,
-                                    tooltipShape: SfRectangularTooltipShape(),
-                                    inactiveColor: const Color.fromARGB(
-                                        255, 238, 238, 238),
-                                    activeColor: Colors.blue,
-                                    numberFormat: NumberFormat("₹"),
-                                    min: 0,
-                                    max: 1000000,
-                                    showTicks: true,
-                                    showLabels: true,
-                                    enableTooltip: true,
-                                    values: priceValues,
-                                    onChanged: (value) {
-                                      state(() {
-                                        _min = value.start;
-                                        _max = value.end;
-                                        priceRange = [
-                                          _min.round(),
-                                          _max.round()
-                                        ];
-                                        priceValues = value;
-                                      });
-                                    },
-                                  ),
-                                );
+                                return showPriceSlider(state);
                               },
                             ),
                           ],
@@ -189,8 +153,8 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                           if (state is HomescreenLoadingState) {
                             return BrandAndStyleLoading();
                           } else if (state is HomescreenLoadedState) {
-                            brandlist = state.brandList;
-                            categorylist = state.categorylist;
+                            brandModelList = state.brandModelList;
+                            categoryList = state.categoryList;
 
                             return Column(
                               children: [
@@ -226,56 +190,10 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                                                     crossAxisSpacing: 8,
                                                     mainAxisSpacing: 10,
                                                     crossAxisCount: 3),
-                                            itemCount: categorylist.length,
+                                            itemCount: categoryList.length,
                                             itemBuilder: (context, index) {
-                                              return GestureDetector(
-                                                onTap: () => styleState(() {
-                                                  final value =
-                                                      categorylist[index].name;
-                                                  if (carselectedStyle
-                                                      .contains(value)) {
-                                                    // carstyleItems.remove(index);
-                                                    carselectedStyle
-                                                        .remove(value);
-                                                  } else {
-                                                    carselectedStyle
-                                                        .add(value!);
-                                                    // carstyleItems.add(index);
-                                                  }
-                                                }),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: carselectedStyle
-                                                            .contains(
-                                                                categorylist[
-                                                                        index]
-                                                                    .name)
-                                                        ? Colors.blue
-                                                        : null,
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        child: CachedNetworkImage(
-                                                            imageUrl:
-                                                                '${categorylist[index].image}'),
-                                                        height: 80,
-                                                        width: 150,
-                                                      ),
-                                                      Text(
-                                                        "${categorylist[index].name}",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
+                                              return fetchCategoryList(
+                                                  styleState, index);
                                             },
                                           ),
                                         ),
@@ -321,55 +239,10 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                                                       crossAxisSpacing: 8,
                                                       mainAxisSpacing: 10,
                                                       crossAxisCount: 3),
-                                              itemCount: brandlist.length,
+                                              itemCount: brandModelList.length,
                                               itemBuilder: (context, index) {
-                                                return InkWell(
-                                                  onTap: () => brState(() {
-                                                    if (carselectedStyle
-                                                        .contains(
-                                                            brandlist[index]
-                                                                .name)) {
-                                                      carselectedStyle.remove(
-                                                          brandlist[index]
-                                                              .name);
-                                                    } else {
-                                                      carselectedStyle.add(
-                                                          brandlist[index]
-                                                              .name!);
-                                                    }
-                                                  }),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        color: carselectedStyle
-                                                                .contains(
-                                                                    brandlist[
-                                                                            index]
-                                                                        .name)
-                                                            ? Colors.blue
-                                                            : null),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          child: CachedNetworkImage(
-                                                              imageUrl:
-                                                                  '${brandlist[index].logo}'),
-                                                          height: 80,
-                                                          width: 150,
-                                                        ),
-                                                        Text(
-                                                          "${brandlist[index].name}",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
+                                                return fecthBrandModel(
+                                                    brState, index);
                                               },
                                             ),
                                           )),
@@ -416,25 +289,7 @@ class _CarFilterButtonState extends State<CarFilterButton> {
                       ),
                     ),
                     InkWell(
-                      onTap: () async {
-                        if (carselectedStyle.isNotEmpty) {
-                          context.read<SearchBloc>().add(CarStyleFilterEvent(
-                              filterData: carselectedStyle));
-                        } else if (priceRange.isNotEmpty) {
-                          context.read<SearchBloc>().add(
-                              PriceRangeFilterEvent(priceRange: priceRange));
-                        } else if (radioValue!.isNotEmpty) {
-                          context.read<SearchBloc>().add(
-                              PriceSortFilterEvent(radioValue: radioValue!));
-                        } else {
-                          context
-                              .read<SearchBloc>()
-                              .add(SearchScreenInitialEvent());
-                        }
-
-                        //  carselectedStyle.clear();
-                        Navigator.pop(context);
-                      },
+                      onTap: () => getFilteredResult(),
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -476,5 +331,128 @@ class _CarFilterButtonState extends State<CarFilterButton> {
         ),
       ),
     );
+  }
+
+  InkWell fecthBrandModel(StateSetter brState, int index) {
+    return InkWell(
+      onTap: () => brState(() {
+        if (carselectedStyle.contains(brandModelList[index].name)) {
+          carselectedStyle.remove(brandModelList[index].name);
+        } else {
+          carselectedStyle.add(brandModelList[index].name!);
+        }
+      }),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: carselectedStyle.contains(brandModelList[index].name)
+                ? Colors.blue
+                : null),
+        child: Column(
+          children: [
+            Container(
+              child:
+                  CachedNetworkImage(imageUrl: '${brandModelList[index].logo}'),
+              height: 80,
+              width: 150,
+            ),
+            Text(
+              "${brandModelList[index].name}",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget fetchCategoryList(StateSetter styleState, int index) {
+    return GestureDetector(
+      onTap: () => styleState(() {
+        final value = categoryList[index].name;
+        if (carselectedStyle.contains(value)) {
+          // carstyleItems.remove(index);
+          carselectedStyle.remove(value);
+        } else {
+          carselectedStyle.add(value!);
+          // carstyleItems.add(index);
+        }
+      }),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: carselectedStyle.contains(categoryList[index].name)
+              ? Colors.blue
+              : null,
+        ),
+        child: Column(
+          children: [
+            Container(
+              child:
+                  CachedNetworkImage(imageUrl: '${categoryList[index].image}'),
+              height: 80,
+              width: 150,
+            ),
+            Text(
+              "${categoryList[index].name}",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget showPriceSlider(StateSetter state) {
+    return SfRangeSliderTheme(
+      data: SfRangeSliderThemeData(
+          thumbColor: Colors.white,
+          tooltipTextStyle: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
+          tooltipBackgroundColor: Colors.transparent),
+      child: SfRangeSlider(
+        thumbShape: SfThumbShape(),
+        shouldAlwaysShowTooltip: true,
+        tooltipShape: SfRectangularTooltipShape(),
+        inactiveColor: const Color.fromARGB(255, 238, 238, 238),
+        activeColor: Colors.blue,
+        numberFormat: NumberFormat("₹"),
+        min: 0,
+        max: 1000000,
+        showTicks: true,
+        showLabels: true,
+        enableTooltip: true,
+        values: priceValues,
+        onChanged: (value) {
+          state(() {
+            _min = value.start;
+            _max = value.end;
+            priceRange = [_min.round(), _max.round()];
+            priceValues = value;
+          });
+        },
+      ),
+    );
+  }
+
+  getFilteredResult() async {
+    if (carselectedStyle.isNotEmpty) {
+      context
+          .read<SearchBloc>()
+          .add(CarStyleFilterEvent(filterData: carselectedStyle));
+    } else if (priceRange.isNotEmpty) {
+      context
+          .read<SearchBloc>()
+          .add(PriceRangeFilterEvent(priceRange: priceRange));
+    } else if (radioValue!.isNotEmpty) {
+      context
+          .read<SearchBloc>()
+          .add(PriceSortFilterEvent(radioValue: radioValue!));
+    } else {
+      context.read<SearchBloc>().add(SearchScreenInitialEvent());
+    }
+
+    //  carselectedStyle.clear();
+    Navigator.pop(context);
   }
 }

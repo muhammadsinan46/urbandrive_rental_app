@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -9,7 +9,7 @@ import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/pr
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
 import 'package:urbandrive/domain/utils/user_authentication/user_auth_helper.dart';
 import 'package:urbandrive/infrastructure/user_model/user_model.dart';
-import 'package:urbandrive/presentation/user_auth_screen/pages/login_screen.dart';
+
 
 class ShowProfileScreen extends StatefulWidget {
   const ShowProfileScreen({Key? key});
@@ -43,9 +43,9 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
         builder: (context, state) {
             
           if (state is UsersLoadedState) {
-          //  print("user profile state is ${state.users.mobile}");
+
             UserModel userdata = state.users;
-          //  mobileController.text = userdata.mobile!;
+   
 
             return SingleChildScrollView(
               child: Center(
@@ -159,28 +159,7 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
                             BlocBuilder<ProfileimageBloc, ProfileimageState>(
                               builder: (context, pstate) {
                                 return InkWell(
-                                  onTap: () async {
-                                    firebase_storage.Reference ref =
-                                        firebase_storage
-                                            .FirebaseStorage.instance
-                                            .ref('/foldername' + '1224');
-                                    firebase_storage.UploadTask uploadTask =
-                                        ref.putFile(
-                                            File(pstate.file!.path.toString()));
-                                    await uploadTask;
-                                    String newUrl =
-                                        await ref.getDownloadURL();
-                                    print(newUrl);
-                                    FirebaseFirestore.instance
-                                        .collection('users')
-                                        .doc(userAuth!.uid)
-                                        .update({
-                                      'mobile': mobileController.text,
-                                    });
-                                    context
-                                        .read<UsersBloc>()
-                                        .add(GetUserEvent());
-                                  },
+                                  onTap: ()=> updateUsersData(),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
@@ -205,19 +184,7 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
                           ],
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          userauthHelper.signOut();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                            (route) => false,
-                          );
-                        },
-                        child: Text("Sign Out"),
-                      ),
+                
                     ],
                   ),
                 ),
@@ -247,4 +214,17 @@ class _ShowProfileScreenState extends State<ShowProfileScreen> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+  
+  updateUsersData() async {
+                                
+                                    FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(userAuth!.uid)
+                                        .update({
+                                      'mobile': mobileController.text,
+                                    });
+                                    context
+                                        .read<UsersBloc>()
+                                        .add(GetUserEvent());
+                                  }
 }

@@ -217,8 +217,8 @@ class _SignupFormState extends State<SignupForm> {
                                       size: 50));
                             });
                         await userauth.signUp(
-                          userName: widget.nameController.text,
-                          email: widget.emailController.text,
+                          userName: widget.nameController.text.trim(),
+                          email: widget.emailController.text.trim(),
                           //  mobile: widget.mobileController.text,
                           password: widget.passwordController.text,
 

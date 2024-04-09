@@ -12,41 +12,30 @@ import 'package:urbandrive/presentation/support_screen/pages/support_screen.dart
 import '../../../application/bottom_nav_bloc/bottom_nav_bloc.dart';
 
 class MainPage extends StatelessWidget {
-  MainPage({Key? key,
-  
+  MainPage({
+    Key? key,
+  });
 
-
-   });
-
-  // double? lat;
-  // double? long;
-
-
-
-
- String logUser = FirebaseAuth.instance.currentUser!.uid;
+  String logUser = FirebaseAuth.instance.currentUser!.uid;
 
   UserauthHelper userh = UserauthHelper();
 
-
-
   @override
   Widget build(BuildContext context) {
-     List<Widget> _screens = [
-    HomeScreen(),
-    ActivityScreen(
-      userId: FirebaseAuth.instance.currentUser!.uid,
-    ),
-    SupportScreen(),
-   
-  SettingsScreen()
-  ];
+    List<Widget> _screens = [
+      HomeScreen(),
+      ActivityScreen(
+        userId: FirebaseAuth.instance.currentUser!.uid,
+      ),
+      SupportScreen(),
+      SettingsScreen()
+    ];
     return BlocBuilder<BottomNavBloc, BottomNavState>(
       builder: (context, state) {
         if (state is BottomNavChageState) {
           return Scaffold(
             body: _screens[state.index],
-          resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: Card(
@@ -54,7 +43,7 @@ class MainPage extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               child: SalomonBottomBar(
                 curve: Curves.decelerate,
-                backgroundColor:  Colors.white,
+                backgroundColor: Colors.white,
                 margin: EdgeInsets.all(15),
                 selectedItemColor: Colors.blue,
                 //  type: BottomNavigationBarType.fixed,
@@ -64,17 +53,16 @@ class MainPage extends StatelessWidget {
                 items: [
                   SalomonBottomBarItem(
                       icon: ImageIcon(
-                          AssetImage('lib/assets/icons/unhome.png'),
-                          size: 30,
-                              color: Colors.blue,
-                          ),
-                          
+                        AssetImage('lib/assets/icons/unhome.png'),
+                        size: 30,
+                        color: Colors.blue,
+                      ),
                       title: Text('Home'),
                       activeIcon: ImageIcon(
-                          AssetImage('lib/assets/icons/home.png'),
-                          size: 30,
-                            color: Colors.blue,
-                          )),
+                        AssetImage('lib/assets/icons/home.png'),
+                        size: 30,
+                        color: Colors.blue,
+                      )),
                   SalomonBottomBarItem(
                       activeIcon: ImageIcon(
                           AssetImage('lib/assets/icons/activityIcon.png'),
@@ -93,21 +81,21 @@ class MainPage extends StatelessWidget {
                       icon: ImageIcon(
                         AssetImage('lib/assets/icons/unsupport.png'),
                         size: 30,
-                          color: Colors.blue,
+                        color: Colors.blue,
                       ),
                       title: Text('Support')),
                   SalomonBottomBarItem(
                       activeIcon: ImageIcon(
                         AssetImage('lib/assets/icons/settings.png'),
                         size: 30,
-                          color: Colors.blue,
+                        color: Colors.blue,
                       ),
                       icon: ImageIcon(
                         AssetImage(
                           'lib/assets/icons/unsettings.png',
                         ),
                         size: 30,
-                          color: Colors.blue,
+                        color: Colors.blue,
                       ),
                       title: Text('Settings')),
                 ],

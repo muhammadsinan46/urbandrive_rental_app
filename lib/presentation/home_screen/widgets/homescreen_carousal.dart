@@ -2,9 +2,10 @@
 
 
 
-import 'package:carousel_slider/carousel_slider.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
 
@@ -12,12 +13,12 @@ class CarousalFirst extends StatelessWidget {
    CarousalFirst({
     super.key,
     required this.sWidth,
-    required this.carmodelsList,
+    required this.carModelsList,
     required this.userId,
   });
 
   final double sWidth;
-  List<CarModels> carmodelsList =[];
+  List<CarModels> carModelsList =[];
 
   String? userId;
 
@@ -31,7 +32,7 @@ class CarousalFirst extends StatelessWidget {
       //  color: Colors.black26,
       child: 
             //  CarouselSlider(
-            //                   items: carmodelsList[0].images,
+            //                   items: carModelsList[0].images,
             //                   options: CarouselOptions(
             //                     autoPlay: false,
             //                     aspectRatio: 2.0,
@@ -45,7 +46,7 @@ class CarousalFirst extends StatelessWidget {
           color: Colors.white,
             image: DecorationImage(
               image: NetworkImage(
-               carmodelsList[20].images[1],
+               carModelsList[20].images[1],
               ),
               fit: BoxFit.cover,
             ),
@@ -57,7 +58,7 @@ class CarousalFirst extends StatelessWidget {
             Positioned(
               left: 10,
               top: 30,
-              child: Text("${carmodelsList[20].brand} ${carmodelsList[20].model}",style: TextStyle(
+              child: Text("${carModelsList[20].brand} ${carModelsList[20].model}",style: TextStyle(
                 shadows: [Shadow(
         offset: Offset(1.0, 1.0),
         blurRadius: 3.0,
@@ -115,7 +116,7 @@ class CarousalFirst extends StatelessWidget {
                       width: 140,
                       child: GestureDetector(
                         onTap: () {
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId:  carmodelsList[20].id, userId: userId!, locationStatus: true, isEdit: false,),));
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId:  carModelsList[20].id, userId: userId!, locationStatus: true, isEdit: false,),));
                         },
                         child: Text(
                           "BOOK NOW",

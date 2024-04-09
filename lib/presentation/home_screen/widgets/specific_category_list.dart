@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -20,7 +22,7 @@ class CarModelListScreen extends StatelessWidget {
       appBar: AppBar( leading: IconButton(onPressed: () => Navigator.pop(context),icon: Icon(Icons.arrow_back_ios_new)), title: Text(category!),),
       body: BlocBuilder<SpecificCategoryBloc, SpecificCategoryState>(
         builder: (context, state) {
-          print(state.runtimeType);
+         
           if (state is SpecificCategoryInitialState) {
 
           
@@ -55,7 +57,7 @@ class CarModelListScreen extends StatelessWidget {
                         ));
                   },
                   child: ShowCarDetailsCard(
-                    carmodelslist: state.specificCateList,
+                    carModelsList: state.specificCateList,
                     index: index,
                   ),
                 );

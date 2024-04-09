@@ -33,12 +33,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
         final SearchList = await searchRepo.getSerachCars(event.searchValue);
       emit(SearchLoadedState(searchedList: SearchList, modelList:wholeList ));
-    // try {
-    //   final searchDetails = await searchRepo.getSerachCars(event.serachValue);
-    //   emit(SearchLoadedState(searchedList: searchDetails));
-    // } catch (e) {
-    //   print(e.toString());
-    // }
+  
   }
 
   FutureOr<void> allModelsLoading(SearchScreenInitialEvent event, Emitter<SearchState> emit)async {

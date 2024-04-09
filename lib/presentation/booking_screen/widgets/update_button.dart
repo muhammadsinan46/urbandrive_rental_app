@@ -6,11 +6,11 @@ class UpdateBookingButton extends StatelessWidget {
   const UpdateBookingButton({
     super.key,
     required this.agrchcked,
-    required this.bookingdata,
+    required this.bookingDataHelper,
   });
 
   final bool agrchcked;
-  final BookingScreenHelper bookingdata;
+  final BookingScreenHelper bookingDataHelper;
 
   @override
   Widget build(BuildContext context) {
