@@ -1,6 +1,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
 
@@ -52,10 +53,12 @@ final int index;
                 
                 child:
                 CachedNetworkImage(
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                   imageUrl: 
-                 list![index].images.first
+                 list![index].images.first,
+                  placeholder: (context, url) => Center(child: LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50)),
                       
-                      ,
+                      
                   fit: BoxFit.cover,
                 ),
               ),

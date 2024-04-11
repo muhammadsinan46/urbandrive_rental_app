@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
@@ -101,6 +102,8 @@ class HomeScreen extends StatelessWidget {
                                             backgroundColor: Color.fromARGB(
                                                 35, 209, 232, 251),
                                             child: CachedNetworkImage(
+                                               errorWidget: (context, url, error) => Icon(Icons.error),
+                                              placeholder: (context, url) => LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50),
                                               imageUrl:
                                                   brandModelList[index].logo!,
                                               fit: BoxFit.cover,
@@ -168,13 +171,20 @@ class HomeScreen extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Container(
+                                            child: CachedNetworkImage(
+                                               errorWidget: (context, url, error) => Icon(Icons.error),
+                                              
+                                              placeholder: (context, url) => Center(child: LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50)),
+                                              imageUrl:
+                                                    categoryList[index]
+                                                            .image!,
+                                             fit: BoxFit.contain,
+                                            ),
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(30),
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        categoryList[index]
-                                                            .image!))),
+                                              
+                                                      ),
                                             height: 100,
                                           ),
                                           Text(categoryList[index].name!)

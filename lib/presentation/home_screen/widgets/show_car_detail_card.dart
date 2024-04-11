@@ -5,6 +5,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:urbandrive/application/favourite_bloc/favourite_bloc.dart';
 import 'package:urbandrive/infrastructure/car_model/car_model.dart';
 import 'package:urbandrive/infrastructure/favourite_model/fav_model.dart';
@@ -32,6 +33,9 @@ class ShowCarDetailsCard extends StatelessWidget {
                   width: MediaQuery.sizeOf(context).width * 2,
                   height: 170,
                   child: CachedNetworkImage(
+                     errorWidget: (context, url, error) => Icon(Icons.error),
+                       placeholder: (context, url) => Center(child: LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50)),
+                                          
                     imageUrl: carModelsList[index].images.last,
                     fit: BoxFit.cover,
                   ),

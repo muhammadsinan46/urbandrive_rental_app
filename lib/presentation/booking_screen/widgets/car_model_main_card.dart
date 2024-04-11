@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:urbandrive/domain/utils/booking/booking_screeen_helper.dart';
 
 class CarModelMainCard extends StatelessWidget {
@@ -40,6 +41,9 @@ class CarModelMainCard extends StatelessWidget {
                   return Card(
                       clipBehavior: Clip.antiAlias,
                       child: CachedNetworkImage(
+                                              errorWidget: (context, url, error) => Icon(Icons.error),
+                                              
+                                              placeholder: (context, url) => Center(child: LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50)),
                         imageUrl: carmodelImages[index],
                         fit: BoxFit.cover,
                       ));

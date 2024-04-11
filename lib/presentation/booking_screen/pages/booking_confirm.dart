@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
 import 'package:urbandrive/domain/utils/booking/booking_screeen_helper.dart';
@@ -72,6 +73,8 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     carmodelId = widget.bookingModel!.CarmodelId;
     pickedHours = widget.bookingModel!.PickupTime!.substring(0, 2);
     pickedMinutes = widget.bookingModel!.PickupTime!.substring(3, 5);
@@ -84,6 +87,7 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
     return BlocBuilder<CarBookingBloc, CarBookingState>(
       builder: (context, state) {
         if (state is CarDataLoadedState) {
+          
           carmodel = state.carModel;
           int price = int.parse(carmodel[0].price!);
           int deposit = int.parse(carmodel[0].deposit!);
@@ -212,17 +216,17 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 PickupDateandTime(
-                                    pickupDate: bookingdata.dateFormatter(
+                                    pickupDate: dateFormatter(
                                         widget.bookingModel!.PickupDate!),
-                                    pickMonth: bookingdata.detailMonthFormatter(
-                                        pickupDate!.month),
+                                    //  pickMonth:    DateFormat('MMMM').format(DateTime(0,widget.bookingModel!.PickupDate!)),
+                                    pickMonth:detailMonthFormatter( widget.bookingModel!.PickupDate!),
                                     pickedHours: pickedHours,
                                     pickedMinutes: pickedMinutes),
                                 DropoffDateandTime(
-                                    dropOffDate: bookingdata.dateFormatter(
+                                    dropOffDate: dateFormatter(
                                         widget.bookingModel!.DropOffDate!),
-                                    dropMonth: bookingdata.detailMonthFormatter(
-                                        dropOffDate!.month),
+                                    dropMonth: detailMonthFormatter(
+                                       widget.bookingModel!.DropOffDate!),
                                     dropHours: dropHours,
                                     dropMinutes: dropMinutes),
                               ],
@@ -289,6 +293,16 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
         return Container();
       },
     );
+  }
+
+    DateTime dateFormatter(String date) {
+    return DateTime.parse(date);
+  }
+
+  String detailMonthFormatter(String value) {
+    final date = DateTime.parse(value);
+    final  pickMonth = DateFormat('MMMM').format(DateTime(0, date.month));
+    return pickMonth;
   }
 
   addPaymentDetails(int amount) async {

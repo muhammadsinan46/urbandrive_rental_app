@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urbandrive/application/bottom_nav_bloc/bottom_nav_bloc.dart';
-
-
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/specific_category_bloc/specific_category_list_bloc.dart';
 import 'package:urbandrive/domain/repository/favourite_repo/favourite_repo.dart';
@@ -15,14 +13,12 @@ import 'package:urbandrive/application/homescreen_bloc/homescreen_bloc_bloc.dart
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/profile_image_bloc/profileimage_bloc.dart';
 import 'package:urbandrive/application/profile_screen_bloc/users/users_bloc.dart';
-import 'package:urbandrive/domain/utils/user_authentication/user_verification_helper.dart';
 import 'package:urbandrive/application/car_booking_bloc/car_booking_bloc.dart';
-
 import 'package:urbandrive/domain/repository/car_data_repo/cardata_repo.dart';
 import 'package:urbandrive/domain/repository/location_repo/location_repo.dart';
-
 import 'package:urbandrive/domain/repository/user_repo/user_repository.dart';
 import 'package:urbandrive/domain/utils/profile/profile_image_helper.dart';
+import 'package:urbandrive/presentation/splash_screen/pages/splash_screen.dart';
 
 
 
@@ -69,13 +65,12 @@ class MyApp extends StatelessWidget {
    
 
 
-        // BlocProvider(create: (context) => BookingConfirmBloc(BookingRepo()),)
+ 
       ],
       child: MaterialApp(
       theme: ThemeData(scaffoldBackgroundColor:   const Color.fromARGB(255, 233, 245, 255),),
-        // theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        home:  UserVarify(),
+        home:  SplashScreen(),
       ),
     );
   }

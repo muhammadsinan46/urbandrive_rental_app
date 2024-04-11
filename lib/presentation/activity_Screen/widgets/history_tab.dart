@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ import 'package:urbandrive/presentation/activity_Screen/widgets/rate_feeback_but
 import 'package:urbandrive/presentation/activity_Screen/widgets/rebook_button.dart';
 import 'package:urbandrive/presentation/activity_Screen/widgets/show_date_details.dart';
 import 'package:urbandrive/presentation/activity_Screen/widgets/show_locattion_details.dart';
+import 'package:urbandrive/presentation/booking_screen/pages/car_booking_screen.dart';
 
 class HistoryTabScreen extends StatelessWidget {
   HistoryTabScreen({super.key, required this.userId});
@@ -132,7 +134,14 @@ class HistoryTabScreen extends StatelessWidget {
                   userId: userId,
                   bookingId: bookingHistoryList![index].BookingId!,
                 ),
-                RebookButton(),
+                GestureDetector(
+                  onTap: (){
+    context
+        .read<CarBookingBloc>()
+        .add(CarDataLaodingEvent());
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CarBookingScreen(carId:  bookingHistoryList![index].CarmodelId!, userId: userId, locationStatus: true, isEdit: false),));
+                  },
+                  child: RebookButton()),
               ],
             )
           ],

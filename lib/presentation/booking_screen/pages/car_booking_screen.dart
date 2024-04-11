@@ -1,7 +1,4 @@
 // ignore_for_file: must_be_immutable
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -9,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:urbandrive/application/dropoff_location_bloc/dropoff_location_bloc.dart';
 import 'package:urbandrive/application/pickup_location_bloc/location_bloc.dart';
@@ -77,6 +73,7 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
     return Scaffold(
         body: BlocBuilder<CarBookingBloc, CarBookingState>(
           builder: (context, state) {
+   
             if (state is CarDataLoadingState) {
               return ShimmerCarBookingScreen();
             } else if (state is CarDataLoadedState) {
@@ -596,7 +593,9 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
         child: ListTile(
           leading: Icon(Icons.location_on_outlined),
           title: Text(
+     
               maxLines: 10,
+              overflow: TextOverflow.ellipsis,
               bookingDataHelper.pickuplocation[0]['description'].toString()),
           titleTextStyle: TextStyle(fontSize: 14, color: Colors.black),
         ),
@@ -772,6 +771,9 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
             .difference(bookingDataHelper.selectedDate.start)
             .inDays)
         .toString();
+
+
+        print("drop ${ bookingDataHelper.dropofflocation[0]['description']}");
 
     Map<String, dynamic> updateData = {
       "pickup-address": bookingDataHelper.pickuplocation[0]['description'],

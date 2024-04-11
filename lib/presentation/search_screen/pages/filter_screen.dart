@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:urbandrive/infrastructure/brand_model/brand_model.dart';
@@ -352,7 +353,11 @@ class _CarFilterButtonState extends State<CarFilterButton> {
           children: [
             Container(
               child:
-                  CachedNetworkImage(imageUrl: '${brandModelList[index].logo}'),
+                  CachedNetworkImage(
+                     errorWidget: (context, url, error) => Icon(Icons.error),
+                       placeholder: (context, url) => Center(child: LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50)),
+                                        
+                    imageUrl: '${brandModelList[index].logo}'),
               height: 80,
               width: 150,
             ),
@@ -389,7 +394,10 @@ class _CarFilterButtonState extends State<CarFilterButton> {
           children: [
             Container(
               child:
-                  CachedNetworkImage(imageUrl: '${categoryList[index].image}'),
+                  CachedNetworkImage(
+                     errorWidget: (context, url, error) => Icon(Icons.error),
+                     placeholder: (context, url) => Center(child: LoadingAnimationWidget.twoRotatingArc(color:  const Color.fromARGB(255, 119, 175, 221), size: 50)),
+                    imageUrl: '${categoryList[index].image}'),
               height: 80,
               width: 150,
             ),

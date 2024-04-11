@@ -6,18 +6,19 @@ class PickupDateandTime extends StatelessWidget {
   const PickupDateandTime({
     super.key,
     required this.pickupDate,
-    required this.pickMonth,
+     required this.pickMonth,
     required this.pickedHours,
     required this.pickedMinutes,
   });
 
   final DateTime? pickupDate;
-  final String? pickMonth;
+   final String? pickMonth;
   final String? pickedHours;
   final String? pickedMinutes;
 
   @override
   Widget build(BuildContext context) {
+    print(pickupDate!.day);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -52,7 +53,7 @@ class PickupDateandTime extends StatelessWidget {
                               FontWeight.bold,
                           color: Colors.white)),
                   TextSpan(
-                      text: "\n${pickMonth}",
+                      text: "\n${pickupDate!.month}",
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight:

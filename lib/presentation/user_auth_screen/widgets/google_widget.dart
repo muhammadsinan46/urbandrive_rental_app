@@ -28,7 +28,7 @@ class GoogleWidget extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 16),
           ),
-          // Icon(Icons.arrow_forward)
+ 
         ],
       ),
     );

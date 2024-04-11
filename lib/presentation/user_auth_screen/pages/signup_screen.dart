@@ -13,8 +13,6 @@ class SignupPage extends StatelessWidget {
   var mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Stack(

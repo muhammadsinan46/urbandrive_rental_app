@@ -96,7 +96,10 @@ class LocationSearchScreen extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.dropoffLocation.length,
                             itemBuilder: (context, index) {
-                              return fetchLocation(context,
+                              return
+                              
+                              
+                               fetchLocation(context,
                                   state.dropoffLocation[index]['description']);
                             },
                           ),
@@ -117,9 +120,9 @@ class LocationSearchScreen extends StatelessWidget {
   ) {
     return ListTile(
       onTap: () {
-        Navigator.pop(context, locationDesc);
+        Navigator.pop(context);
       },
-      title: Text('${locationDesc['description']}'),
+      title: Text('${locationDesc}'),
     );
   }
 }
