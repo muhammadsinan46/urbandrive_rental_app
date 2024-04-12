@@ -208,24 +208,14 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
                                             child: Container(
                                               padding:
                                                   EdgeInsets.only(left: 10),
-                                              child: ListTile(
-                                                leading: Icon(
-                                                    Icons.location_on_outlined),
-                                                titleAlignment:
-                                                    ListTileTitleAlignment.top,
-                                                title: Text(widget.isEdit ==
+                                              child: Text(widget.isEdit ==
                                                         false
                                                     ? "Search city or address"
                                                     : widget
                                                         .bookingDataList![
                                                             widget.idx!]
-                                                        .PickupAddress!),
-                                                titleTextStyle: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Color.fromARGB(
-                                                      255, 135, 135, 135),
-                                                ),
-                                              ),
+                                                        .PickupAddress!,
+                                                             overflow:TextOverflow.ellipsis),
                                               height: 60,
                                               width: sWidth - 50,
                                               decoration: BoxDecoration(
@@ -590,14 +580,13 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
       child: Container(
         height: 80,
         padding: EdgeInsets.only(left: 10),
-        child: ListTile(
-          leading: Icon(Icons.location_on_outlined),
-          title: Text(
-     
-              maxLines: 10,
-              overflow: TextOverflow.ellipsis,
-              bookingDataHelper.pickuplocation[0]['description'].toString()),
-          titleTextStyle: TextStyle(fontSize: 14, color: Colors.black),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+               
+                maxLines: 10,
+                overflow: TextOverflow.ellipsis,
+                bookingDataHelper.pickuplocation[0]['description'].toString()),
         ),
         width: sWidth - 50,
         decoration: BoxDecoration(
@@ -671,12 +660,12 @@ class _CarBookingScreenState extends State<CarBookingScreen> {
   Widget showDropoffLocation(double sWidth) {
     return Container(
       padding: EdgeInsets.only(left: 10),
-      child: ListTile(
-        leading: Icon(Icons.location_on_outlined),
-        title: Text(
-            maxLines: 10,
-            bookingDataHelper.dropofflocation[0]['description'].toString()),
-        titleTextStyle: TextStyle(fontSize: 14, color: Colors.black),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+             overflow: TextOverflow.ellipsis,
+              maxLines: 10,
+              bookingDataHelper.dropofflocation[0]['description'].toString()),
       ),
       height: 80,
       width: sWidth - 50,
